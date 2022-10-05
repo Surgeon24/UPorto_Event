@@ -103,9 +103,9 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 | ID | Name | Description |
 | ------ | ------ | ----- |
-| TR01 | Date/Time Consistency | Account registration date should be before account deletion date |
-| TR02 | Deleted Account |Upon account deletion , shared user data(i.e. events, comments)is kept but made anonymous|
-| TR03 | Admin Account |Administrators can comment on events|
+| BR01 | Date/Time Consistency | Account registration date should be before account deletion date |
+| BR02 | Deleted Account |Upon account deletion , shared user data(i.e. events, comments)is kept but made anonymous|
+| BR03 | Admin Account |Administrators can comment on events|
 
 
 #### 3.2. Technical requirements
@@ -141,6 +141,8 @@ In this Artifact we achieve to give a good base to our website in terms of struc
 UPorto events will have 4 main areas. The Home Page where visitors and authenticated users can explore as many public events as they want. Then, each authenticated user will have their own Profile Page with their personal public information and some other small features, which includes editing. Besides, any authenticated user can become an event organizer or participant when the event is created. The Event Page is created after the filling of details related to the event. Last but not least administrators will also have their major permissions.
 
 Here is the Sitemap:
+
+![SITE_MAP](Images/Site_Map.PNG) 
 
 
 ### 2. Wireframes
