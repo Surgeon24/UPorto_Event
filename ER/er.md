@@ -142,7 +142,7 @@ UPorto events will have 4 main areas. The Home Page where visitors and authentic
 
 Here is the Sitemap:
 
-![SITE_MAP](Images/Site_Map.PNG) 
+![SITE_MAP](Images/Site_Map.png) 
 
 
 ### 2. Wireframes
