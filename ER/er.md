@@ -110,6 +110,16 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 #### 3.2. Technical requirements
 
+| ID | Name | Description |
+| ------ | ------ | ----- |
+| TR01 | Data Quality |The system must have excellent data quality, such as the events from the users, we must ensure that such events exist|
+| TR02 | User Privacy |The system must protect users sensitive data from internal data professionals and employees|
+| TR03 | Accessibility |The system must ensure that everyone can access the pages|
+| TR04 | Scalability |The system must be prepared to deal with the increasing number of users and respective actions|
+| TR05 | Robustness |The system must be prepared to handle and continue operating when runtime errors|
+| TR06 | Performance |The system should have response times shorter than 2s to ensure the user's attention|
+
+
 #### 3.3. Restrictions
 
 | ID | Name | Description |
