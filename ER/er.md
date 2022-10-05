@@ -61,12 +61,12 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| au01 | Auth. user |Home|High|As an authenticated user, I want to access my home page, where I can see all information about myself.||
-| au02 | Auth. user |Events|High|As an authenticated user, I want to see all the events that I participate in.||
-| au03 | Auth. user |Create Event|High|As an authenticated user, I want to create new events by myself.||
-| au04 | Auth. user |Log Out|High|As an authenticated user, I want to be able to log out.||
-| au05 | Auth. user |Comment|High|As an authenticated user, I want to ask any questions I’d like about an event||
-| au06 | Auth. user |Participate|High|As an authenticated user, I want to show my interest in an event and participate in it.||
+| au01 | Auth. user |Home|High|As an authenticated user, I want to access my home page, where I can see all information about myself.| v0.1 |
+| au02 | Auth. user |Events|High|As an authenticated user, I want to see all the events that I participate in.| v0.1 |
+| au03 | Auth. user |Create Event|High|As an authenticated user, I want to create new events by myself.| v0.1 |
+| au04 | Auth. user |Log Out|High|As an authenticated user, I want to be able to log out.| v0.1 |
+| au05 | Auth. user |Comment|Medium|As an authenticated user, I want to ask any questions I’d like about an event| v0.2 |
+| au06 | Auth. user |Participate|High|As an authenticated user, I want to show my interest in an event and be able to send a request for participating.| v1.0 |
 
 #### 2.3. Event Moderator
 
@@ -82,7 +82,7 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ee01 | Organizer | Event Changes| medium |As an organizer of an event, I want to be able to edit the description of the event or delete it.||
+| ee01 | Organizer | Event Changes| medium |As an organizer of an event, I want to be able to edit the description of the event or delete it.| v1.0|
 
 
 #### 2.6. Administrator
