@@ -67,7 +67,9 @@ All actors that are implemented in “UPorto Event” web service are represente
 | au04 | Auth. user |Log Out|High|As an authenticated user, I want to be able to log out.| v0.1 |
 | au05 | Auth. user |Comment|Medium|As an authenticated user, I want to ask any questions I’d like about an event| v0.2 |
 | au06 | Auth. user |Participate|High|As an authenticated user, I want to show my interest in an event and be able to send a request for participating.| v1.0 |
-
+|au07| Auth. user| Edit Profile | High |As an authenticated user, I want to edit my profile whenever I please.|v0.1|
+|au08| Auth. user| Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it|v0.1|
+|au09| Auth. user| View Profile | High | As an authenticated user, I want to see my profile and others to check any information I want|v0.1| 
 #### 2.3. Event Moderator
 
 |ID | Actor | Name | Priority | Description | Plan Release|
