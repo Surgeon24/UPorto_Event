@@ -1,3 +1,8 @@
+-- The citext module provides a case-insensitive character string type. 
+-- Essentially, it internally calls lower when comparing values.
+-- https://www.postgresql.org/docs/current/citext.html
+CREATE EXTENSION IF NOT EXISTS citext;
+
 create table registered_users(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
