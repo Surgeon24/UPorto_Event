@@ -1,10 +1,10 @@
 # EBD: Database Specification Component
 
-> Project vision.
+***UPortoEvent*** will able all students of "Universidade do Porto" to explore all sorts of events inside their academic environment. Therefore in these three artifacts we will present our Database for this project. This way you'll see how your data will be stored.
 
 ## A4: Conceptual Data Model
 
-> Brief presentation of the artefact goals.
+In A4 we will take over our first database Topic. This will cover the **Class Diagram** which compiles all entities, attributes and relations of our Database.
 
 ### 1. Class diagram
 
