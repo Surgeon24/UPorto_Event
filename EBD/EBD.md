@@ -61,6 +61,39 @@ In A4 we will take over our first database Topic. This will cover the **Class Di
 > Justification of the BCNF.  
 
 
+### Annex A. SQL Code
+SQL script in included. It cintains the creation statements, cleans up the current database state 'The SQL script is cleaned (e.g. excluded from export comments)' - don't understand what does it mean. Indexes, triggers, transactions and database population - to be provided at A6.
+
+## A.1 Database Schema
+
+The SQL creation script is expanded in the A6 to include indexes, triggers, and transactions.
+
+
+
+`DROP TABLE IF EXISTS registered_users;
+create table registered_users(
+	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+	name VARCHAR default 'name' NOT NULL,
+	surename VARCHAR default 'family name' NOT NULL,
+	nickname VARCHAR UNIQUE NOT NULL,
+	password text default sha256('default_password') NOT NULL,
+	email citext UNIQUE NOT NULL,
+	birth_date date default (current_date - INTERVAL '18 YEAR') CHECK (birth_date <= (current_date - INTERVAL '18 YEAR')),
+	date_registered TIMESTAMP default current_timestamp NOT NULL,
+	last_seen TIMESTAMP,
+	url text UNIQUE,
+	status text,
+	is_admin BOOLEAN DEFAULT false NOT NULL	
+);
+`
+
+
+
+I want to add the code like in A05 example, but \`\` looks shitty. How to insert code on black background?
+
+see schema.sql
+
+
 ---
 
 
