@@ -7,6 +7,10 @@ CREATE EXTENSION IF NOT EXISTS citext;
 -- https://www.geeksforgeeks.org/postgresql-uuid-data-type/
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+
+
+DROP TABLE IF EXISTS event;
+
 DROP TABLE IF EXISTS registered_users;
 create table registered_users(
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -46,6 +50,7 @@ create table event(
 	
 );
 
+
 drop table if exists poll;
 create table poll(
 	title text default 'title' NOT NULL,
@@ -53,4 +58,33 @@ create table poll(
 	question text DEFAULT 'questions?' NOT NULL,
 	starts_at TIMESTAMP default (CURRENT_TIMESTAMP) NOT NULL,
 	end_at TIMESTAMP default (CURRENT_TIMESTAMP + INTERVAL '1 DAY') NOT NULL
+);
+
+
+drop table if exists location;
+
+create table location(
+	name text default 'Adega Leonor' NOT NULL
+);
+
+
+
+drop table if exists rating;
+CREATE TABLE rating(
+	comment_id SERIAL,
+	publish_date TIMESTAMP default current_timestamp check(publish_date <= CURRENT_TIMESTAMP) NOT NULL,
+	-- rating from 1 to 5 stars
+	rate integer check(rate > 0 AND rate <= 5) NOT NULL,
+	description text DEFAULT null
+);
+
+
+drop table if exists notification;
+DROP TYPE IF EXISTS notification_type;
+CREATE TYPE notification_type AS ENUM ('Reminder', 'Report', 'Comment');
+CREATE TABLE notification(
+	notification_id SERIAL PRIMARY KEY,
+	description text,
+	notification_date timestamp default current_timestamp,
+	type notification_type
 );
