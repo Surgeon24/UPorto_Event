@@ -1,3 +1,6 @@
+-- in order to import the file, in Query Tool click the left-most icon 
+-- 'open file' (alt+O), choose the file and execute
+
 -- The citext module provides a case-insensitive character string type. 
 -- Essentially, it internally calls lower when comparing values.
 -- https://www.postgresql.org/docs/current/citext.html
