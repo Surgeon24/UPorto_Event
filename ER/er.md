@@ -45,10 +45,11 @@ All actors that are implemented in “UPorto Event” web service are represente
 #### 2.1. User
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-|us01| User | Search | High |As a user, I want to search for events by name or organizer.|v0.1|
-|us02| User | Preferences | High| As a user, I want to be able to change my password or customize my notifications.|v0.2|
-|us03| User | About us | medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
-|us04| User | FAQ | medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
+| us01 | User | Search | High |As a user, I want to search for public events by name or organizer.| v0.1 |
+| us02 | User | View Event | High | As a User, I want to navigate through a specific public event so I can see more detailed information | v0.1 |
+| us03 | User | Preferences | High| As a user, I want to be able to change my password or customize my notifications.|v0.2|
+| us04 | User | About us | Medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
+| us05 | User | FAQ | Medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
 
 #### 2.2. Visistor
 
@@ -61,38 +62,43 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| au01 | Auth. user |Home|High|As an authenticated user, I want to access my home page, where I can see all information about myself.| v0.1 |
-| au02 | Auth. user |Events|High|As an authenticated user, I want to see all the events that I participate in.| v0.1 |
-| au03 | Auth. user |Create Event|High|As an authenticated user, I want to create new events by myself.| v0.1 |
-| au04 | Auth. user |Log Out|High|As an authenticated user, I want to be able to log out.| v0.1 |
-| au05 | Auth. user |Comment|Medium|As an authenticated user, I want to ask any questions I’d like about an event| v0.2 |
-| au06 | Auth. user |Participate|High|As an authenticated user, I want to show my interest in an event and be able to send a request for participating.| v1.0 |
-|au07| Auth. user| Edit Profile | High |As an authenticated user, I want to edit my profile whenever I please.|v0.1|
-|au08| Auth. user| Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it|v0.1|
-|au09| Auth. user| View Profile | High | As an authenticated user, I want to see my profile and others to check any information I want|v0.1| 
+| au01 | Auth. user | Home | High | As an authenticated user, I want to access my home page, where I can see all information about the website | v0.1 |
+| au02 | Auth. user | Events | High | As an authenticated user, I want to see all the events that I participate in, so I can manage them. | v0.1 |
+| au03 | Auth. user | Create Event | High | As an authenticated user, I want to create new events by myself.| v0.1 |
+| au04 | Auth. user | Log Out | High | As an authenticated user, I want to be able to log out.| v0.1 |
+| au05 | Auth. user | Participate | High | As an authenticated user, I want to show my interest in an event and be able to send a request for participating. | v1.0 |
+| au06 | Auth. user | Edit Profile | High | As an authenticated user, I want to edit my profile whenever I please.| v0.1 |
+| au07 | Auth. user | Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it. | v0.1 |
+| au08 | Auth. user | View Profile | High | As an authenticated user, I want to see my profile and others to check any information I want | v0.1 | 
+| au09 | Auth. user | Recover Password | High | As an authenticated user, I want to recover my password in case I can´t remember | v0.1 |
+| au10 | Auth. user | Notifications | Medium | As an autenticated user, I want to recieve notifications about an event that I joined, from a answer to my comment or about my status, so I can stay tuned and connected with the website. | v0.2 |
+| au11 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event | v0.2 |
+| au12 | Auth. user | Invite | Medium | As an authenticated user, I want to Invite a user to an event, so we can participate together. | v0.2 |
+
 #### 2.3. Event Moderator
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| em01 | Moderator |announcement|medium|As a moderator of an event, I want to create new announcements on the events page.|v0.2|
-| em02 | Moderator |block user|low|I want to be able to ban users in the particular event, if they improperly behave|v1.0|
-| em03 | Moderator |block content|low|I want to remove a comment, so that I can remove inappropriate content|v1.0|
-| em04 | Moderator |accept user|medium|If the event is private, I should be able to add new users.|v0.3|
-
+| em01 | Moderator | Announcement | Medium | As a moderator of an event, I want to create new announcements on the events page. | v0.2 |
+| em02 | Moderator | Add/Accept User | Medium | As a moderator, If the event is private, I should be able to add new users and accept them, so more people can join. | v0.3 |
+| em03 | Moderator | Create Polls | Medium | As a moderator, I want to create polls about diffrent subjects related to the event, so that out attendes and interact an communicate with the organization in an interactive way | v0.3 |
+| em04 | Moderator | Block User | Low |As a moderator, I want to be able to ban users in the particular event, if they improperly behave|v1.0|
+| em05 | Moderator | Block Content | Low |As a moderator, I want to remove a comment, so that I can remove inappropriate content|v1.0|
 
 #### 2.5. Event Organizer
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ee01 | Organizer | Event Changes| medium |As an organizer of an event, I want to be able to edit the description of the event or delete it.| v1.0|
+| ee01 | Organizer | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it.| v1.0 |
 
 
 #### 2.6. Administrator
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ad01 | Admin | message|low|As an admin, I want to be able to write to users via their home pages.|v1.1|
-| ad02 | Admin | ban |high|As an admin, I want to be able to ban users or events on the site, if they violated the rules of the service.|v1.0|
+| ad01 | Admin | Delete Event | High | As an administrator, I want to be able to delete events on the site, if they violate the rules of the service. | v1.0 |
+| ad02 | Admin | Block, Unblock, Delete | High | As an administrator, I have to be able to block, unblock or delete users accounts so I can manage the site properly | v1.0 |
+| ad03 | Admin | Message | Low | As an administrator, I want to be able to write to users via their home pages. | v1.1 |
 
 ### 3. Supplementary Requirements
 
@@ -105,7 +111,10 @@ All actors that are implemented in “UPorto Event” web service are represente
 | ------ | ------ | ----- |
 | BR01 | Date/Time Consistency | Account registration date should be before account deletion date |
 | BR02 | Deleted Account |Upon account deletion , shared user data(i.e. events, comments)is kept but made anonymous|
-| BR03 | Admin Account |Administrators can comment on events|
+| BR03 | Admin Account |Administrators can comment on events. They Can´t participate ou create events|
+| BR04 | Public&Private | Events can be public or private|
+| BR05 | Private Events | Private Events don´t appear on the search results|
+
 
 
 #### 3.2. Technical requirements
@@ -168,6 +177,12 @@ Other than that, each user can show his interest by clicking on the participate 
 ## Revision history
 
 Changes made to the first submission:
+
+9/10/2022 Add au07 au08 au09 to the A2 user stories 
+
+18/10/2022  Add us2, au09, au10, au12, em03, BR04 and B405. Edited au1, au2 and BR03. Organized all user stories by priority
+
+
 
 ***
 GROUP21122, 05/10/2021
