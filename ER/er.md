@@ -9,10 +9,10 @@ The main goal of the project is to provide assistance in event creation and mana
 Publishing events on our web service is a good way to invite, promote and inform students about the upcoming events.Additionally, the service helps organize non-academic inclusive events for everyone.
 
 Users are separated into groups with different permissions, including:
-- Visitors, who are allowed to browse and explore the events;
-- Authenticated Users, who are allowed to create events as well and add comments and create their personal profile;
-- Administrators who concern themselves with moderating the events and comment sections, detecting/blocking inappropriate behavior.
-- All users can browse, view, search and explore events not only by name, but also by venue, organizer or #tags.
+Visitors, who are allowed to browse and explore the events;
+Authenticated Users, who are allowed to create events as well and add comments and create their personal profile;
+Administrators who concern themselves with moderating the events and comment sections, detecting/blocking inappropriate behavior.
+All users can browse, view, search and explore events not only by name, but also by venue, organizer or #tags.
 
  The service is claimed to be portable and have responsive design, i.e. to be able to execute on multiple OS and different devices, properly (Android, IOS, Windows, Linux). It was announced that the developers are intending to add a chatbot to assist clients.
 
@@ -21,7 +21,7 @@ Join us!
 
 ## A2: Actors and User stories
 
-Artifact 2 engages in the relation between actors and their user stories.
+Artifact 2 presents the relation between actors and their user stories, which are going to help in the development.
 
 ### 1. Actors
 

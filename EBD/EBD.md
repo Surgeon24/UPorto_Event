@@ -69,8 +69,8 @@ SQL script in included. It cintains the creation statements, cleans up the curre
 The SQL creation script is expanded in the A6 to include indexes, triggers, and transactions.
 
 
-
-`DROP TABLE IF EXISTS registered_users;
+~~~~sql
+DROP TABLE IF EXISTS registered_users;
 create table registered_users(
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
@@ -85,8 +85,7 @@ create table registered_users(
 	status text,
 	is_admin BOOLEAN DEFAULT false NOT NULL	
 );
-`
-
+~~~~~
 
 
 I want to add the code like in A05 example, but \`\` looks shitty. How to insert code on black background?
