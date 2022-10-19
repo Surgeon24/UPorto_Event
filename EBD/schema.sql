@@ -11,6 +11,7 @@ CREATE EXTENSION IF NOT EXISTS citext;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 --!!! I should do the right order of dropping/creating
+drop table if exists poll_vote;
 drop table if exists poll;
 drop table if exists comment;
 drop table if exists notification;
@@ -18,16 +19,20 @@ drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
 DROP TABLE IF EXISTS event;
 DROP TABLE IF EXISTS registered_users;
+DROP TABLE IF EXISTS guests;
 
 -- Q - questions to the teacher
 
 -- Q - ask about the quize
 
 
+create table IF NOT EXISTS guests(
+	id_guest SERIAL,
+	ip text NOT NULL
+);
 
 
-
-create table registered_users(
+create table IF NOT EXISTS registered_users(
 	-- Q uuid - do we need it, is it ok?
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
@@ -45,8 +50,9 @@ create table registered_users(
 );
 
 
-DROP TABLE IF EXISTS event;
-create table event(
+
+
+create table IF NOT EXISTS event(
 	event_id SERIAL PRIMARY KEY,
 	event_name VARCHAR default 'default name' NOT NULL,
 	-- Q default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
@@ -73,18 +79,45 @@ create table event(
 );
 
 
+drop table if exists event_status;
+-- table where we store 'Going', 'Maybe', 'Can't answers from participants.
+-- Q is there a better way to do it?
+drop type if exists status;
+-- Q how to write can't?
+create type status as enum ('Going', 'Maybe', 'Cant');
 
-create table poll(
+create table IF NOT EXISTS event_status(
+	participant_id uuid,
+	s status default 'Maybe'
+);
+
+
+-- Q is it a rule to have id in every table?
+create table IF NOT EXISTS poll(
+	poll_id SERIAL,
+	event_id int,
 	title text default 'title' NOT NULL,
 	host_name text default 'host name?' NOT NULL,
 	question text DEFAULT 'questions?' NOT NULL,
-	starts_at TIMESTAMP default (CURRENT_TIMESTAMP) NOT NULL,
-	end_at TIMESTAMP default (CURRENT_TIMESTAMP + INTERVAL '1 DAY') NOT NULL
+	-- check that poll doesn't start in the past
+	starts_at TIMESTAMP default CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
+
+
+	-- Q How to do something like   default (starts_at + INTERVAL '1 DAY')?
+	end_at TIMESTAMP default (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
+
+
+	FOREIGN KEY (event_id) REFERENCES event (event_id)
+							ON DELETE CASCADE
+							ON UPDATE CASCADE
 );
 
 
 
-
+-- Q not sure what are we doing here
+create table IF NOT EXISTS poll_vote(
+	option text
+);
 
 
 
@@ -112,7 +145,7 @@ CREATE TABLE comment(
 DROP TYPE IF EXISTS notification_type;
 CREATE TYPE notification_type AS ENUM ('Reminder', 'Report', 'Comment');
 
-CREATE TABLE notification(
+CREATE TABLE IF NOT EXISTS notification(
 	notification_id SERIAL PRIMARY KEY,
 	user_id uuid,
 	description text,
@@ -134,7 +167,7 @@ CREATE TABLE notification(
 
 -- Q should I add automatic trigger that would add empty photo row when user is registered?  
 
-create table user_photo(
+create table IF NOT EXISTS user_photo(
 	user_photo_id SERIAL,
 	file bytea,
 	added_on timestamp default current_timestamp,
@@ -143,14 +176,14 @@ create table user_photo(
 	-- Q should we have 'image_path' UNIQUE row?
 	
 	FOREIGN KEY (added_by) REFERENCES registered_users (user_id)
-																		ON DELETE CASCADE
-																		ON UPDATE CASCADE
+											ON DELETE CASCADE
+											ON UPDATE CASCADE
 	);
 
 
 
 
-create table event_photo(
+create table IF NOT EXISTS event_photo(
 	event_photo_id SERIAL,
 	file bytea,
 	added_on timestamp default current_timestamp,
