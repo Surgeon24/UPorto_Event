@@ -27,7 +27,7 @@ Artifact 2 presents the relation between actors and their user stories, which ar
 
 All actors that are implemented in “UPorto Event” web service are represented in the diagram. All information is provided in the table below.
 
-![ACTORS](Images/ACTORS.png)
+![ACTORS](Images/ACTORS (1).png)
 
 ### 2. User Stories
 
@@ -45,11 +45,10 @@ All actors that are implemented in “UPorto Event” web service are represente
 #### 2.1. User
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| us01 | User | Search | High |As a user, I want to search for public events by name or organizer.| v0.1 |
+| us01 | User | Search | High |As a user, I want to search for public events by name, organizer or tags.| v0.1 |
 | us02 | User | View Event | High | As a User, I want to navigate through a specific public event so I can see more detailed information | v0.1 |
-| us03 | User | Preferences | High| As a user, I want to be able to change my password or customize my notifications.|v0.2|
-| us04 | User | About us | Medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
-| us05 | User | FAQ | Medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
+| us03 | User | About us | Medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
+| us04 | User | FAQ | Medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
 
 #### 2.2. Visistor
 
@@ -71,9 +70,10 @@ All actors that are implemented in “UPorto Event” web service are represente
 | au07 | Auth. user | Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it. | v0.1 |
 | au08 | Auth. user | View Profile | High | As an authenticated user, I want to see my profile and others to check any information I want | v0.1 | 
 | au09 | Auth. user | Recover Password | High | As an authenticated user, I want to recover my password in case I can´t remember | v0.1 |
-| au10 | Auth. user | Notifications | Medium | As an autenticated user, I want to recieve notifications about an event that I joined, from a answer to my comment or about my status, so I can stay tuned and connected with the website. | v0.2 |
-| au11 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event | v0.2 |
-| au12 | Auth. user | Invite | Medium | As an authenticated user, I want to Invite a user to an event, so we can participate together. | v0.2 |
+| au10 | Auth. user | Preferences | High| As an authenticated user, I want to be able to change my password or customize my notifications.|v0.2|
+| au11 | Auth. user | Notifications | Medium | As an autenticated user, I want to recieve notifications about an event that I joined, from a answer to my comment or about my status, so I can stay tuned and connected with the website. | v0.2 |
+| au12 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event | v0.2 |
+| au13 | Auth. user | Invite | Medium | As an authenticated user, I want to Invite a user to an event, so we can participate together. | v0.2 |
 
 #### 2.3. Event Moderator
 
@@ -91,8 +91,13 @@ All actors that are implemented in “UPorto Event” web service are represente
 | ------ | ------ | ------ | ----- | ----- | ----- |
 | ee01 | Organizer | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it.| v1.0 |
 
+#### 2.6. Event Participant
 
-#### 2.6. Administrator
+|ID | Actor | Name | Priority | Description | Plan Release|
+| ------ | ------ | ------ | ----- | ----- | ----- |
+| ep01 | event participant | vote in polls | Medium | As a participant of an event, I want to be able to vote in polls, that were created for the members of the event. | v1.0 |
+
+#### 2.7. Administrator
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
@@ -114,6 +119,8 @@ All actors that are implemented in “UPorto Event” web service are represente
 | BR03 | Admin Account |Administrators can comment on events. They Can´t participate ou create events|
 | BR04 | Public&Private | Events can be public or private|
 | BR05 | Private Events | Private Events don´t appear on the search results|
+| BR06 | Types of events |In this site only U.Porto Events can be published and nothing outside of academic related events is allowed.|
+| BR07 | Creation of the event |Only U.Porto members are allowed to create an event.|
 
 
 
@@ -121,20 +128,19 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 | ID | Name | Description |
 | ------ | ------ | ----- |
-| TR01 | Data Quality |The system must have excellent data quality, such as the events from the users, we must ensure that such events exist|
-| TR02 | User Privacy |The system must protect users sensitive data from internal data professionals and employees|
-| TR03 | Accessibility |The system must ensure that everyone can access the pages|
-| TR04 | Scalability |The system must be prepared to deal with the increasing number of users and respective actions|
-| TR05 | Robustness |The system must be prepared to handle and continue operating when runtime errors|
-| TR06 | Performance |The system should have response times shorter than 2s to ensure the user's attention|
+| TR01 | __User Privacy__ |The system must protect users sensitive data from internal data professionals and employees|
+| TR02 | __Accessibility__ |The system must ensure that everyone can access the pages|
+| TR03 | __Performance__ |The system should have response times shorter than 2s to ensure the user's attention|
+| TR04 | Robustness |The system must be prepared to handle and continue operating when runtime errors|
+| TR05 | Data Quality |The system must have excellent data quality, such as the events from the users, we must ensure that such events exist|
+| TR06 | Scalability |The system must be prepared to deal with the increasing number of users and respective actions|
 
 
 #### 3.3. Restrictions
 
 | ID | Name | Description |
 | ------ | ------ | ----- |
-| ER01 | EVENT TYPE |In this site only U.Porto Events can be published and nothing outside of academic related events is allowed.|
-| ER02 | EVENT CREATION |Only U.Porto members are allowed to create an event.|
+| ER01 | Deadline of the project | Deadline for project delivery is the end of the study semester - 15th of January|
 
 
 ---
