@@ -27,25 +27,25 @@ Artifact 2 presents the relation between actors and their user stories, which ar
 
 All actors that are implemented in “UPorto Event” web service are represented in the diagram. All information is provided in the table below.
 
-![ACTORS](Images/ACTORS (1).png)
+![ACTORS](Images/ACTORS1.png)
 
 ### 2. User Stories
 
 | Role | Description |
 | ------ | ------ |
-| User | Abstract type of user, that has access to public accounts and events |
-| Visitor | User that has access only to public information and can register to the system |
+| User | Abstract type of user, that has access to all public information on the service (like accounts and events) |
+| Visitor | User that has access only to public events and can register to the system to get more features |
 | Authenticated User | Users that can edit information about itself, join public events, create its own, or be invited to private ones. |
 | Administrator | Authenticated user, that has access to all accounts and events whose main goal is to keep the service up and help regular users  |
-| Event Participant | Authenticated user, that joined a particular event and can write comments or submit new content for moderator approval. |
+| Event Participant | Authenticated user, that joined a particular event and can vote in polls or submit new content for moderator approval. |
 | Event Moderator | Authenticated user, that has special status in a particular event, that gives to him ability to add and edit event’s content. |
-| Event Organizer | Has a simple, stylish interface. After the announcement, he can edit the event.  |
+| Event Organizer | Creator of the event. Has a simple, stylish interface. After the announcement, he can edit the event.  |
 
 
 #### 2.1. User
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| us01 | User | Search | High |As a user, I want to search for public events by name, organizer or tags.| v0.1 |
+| us01 | User | Search | High |As a user, I want to search for public events by name, organizer or tags to join them. | v0.1 |
 | us02 | User | View Event | High | As a User, I want to navigate through a specific public event so I can see more detailed information | v0.1 |
 | us03 | User | About us | Medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
 | us04 | User | FAQ | Medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
@@ -54,25 +54,25 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-|vi01| Visitor | Log In | High | As a visitor, I want to be able to log-in.| v0.1|
-|vi02| Visitor | Sign Up | High  |As a visitor, I want to be able to create my profile on the site. |v0.1|
+|vi01| Visitor | Log In | High | As a visitor, I want to be able to log-in, to get a status of authenticated user. | v0.1|
+|vi02| Visitor | Sign Up | High  |As a visitor, I want to be able to create my profile on the site to become an authenticated user. |v0.1|
 
 #### 2.3. Authenticated User
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| au01 | Auth. user | Home | High | As an authenticated user, I want to access my home page, where I can see all information about the website | v0.1 |
+| au01 | Auth. user | Home | High | As an authenticated user, I want to access my home page, where I can see all information about the website. | v0.1 |
 | au02 | Auth. user | Events | High | As an authenticated user, I want to see all the events that I participate in, so I can manage them. | v0.1 |
-| au03 | Auth. user | Create Event | High | As an authenticated user, I want to create new events by myself.| v0.1 |
-| au04 | Auth. user | Log Out | High | As an authenticated user, I want to be able to log out.| v0.1 |
+| au03 | Auth. user | Create Event | High | As an authenticated user, I want to create new events by myself to become an event organizer. | v0.1 |
+| au04 | Auth. user | Log Out | High | As an authenticated user, I want to be able to log out from service for privacy purposes. | v0.1 |
 | au05 | Auth. user | Participate | High | As an authenticated user, I want to show my interest in an event and be able to send a request for participating. | v1.0 |
-| au06 | Auth. user | Edit Profile | High | As an authenticated user, I want to edit my profile whenever I please.| v0.1 |
+| au06 | Auth. user | Edit Profile | High | As an authenticated user, I want to edit my profile whenever I please, to keep it up to date.| v0.1 |
 | au07 | Auth. user | Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it. | v0.1 |
-| au08 | Auth. user | View Profile | High | As an authenticated user, I want to see my profile and others to check any information I want | v0.1 | 
-| au09 | Auth. user | Recover Password | High | As an authenticated user, I want to recover my password in case I can´t remember | v0.1 |
-| au10 | Auth. user | Preferences | High| As an authenticated user, I want to be able to change my password or customize my notifications.|v0.2|
-| au11 | Auth. user | Notifications | Medium | As an autenticated user, I want to recieve notifications about an event that I joined, from a answer to my comment or about my status, so I can stay tuned and connected with the website. | v0.2 |
-| au12 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event | v0.2 |
+| au08 | Auth. user | View Profile | High | As an authenticated user, I want to see my profile and others to check information I want. | v0.1 | 
+| au09 | Auth. user | Recover Password | High | As an authenticated user, I want to recover my password in case I can´t remember it. | v0.1 |
+| au10 | Auth. user | Preferences | High| As an authenticated user, I want to be able to change my password or customize my notifications, to maintain a comfortable environment on the service for myself.|v0.2|
+| au11 | Auth. user | Notifications | Medium | As an autenticated user, I want to recieve notifications about an event that I joined, from an answer to my comment or about my status, so I can stay tuned and connected with the website. | v0.2 |
+| au12 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event, even if I'm not a member of this event yet. | v0.2 |
 | au13 | Auth. user | Invite | Medium | As an authenticated user, I want to Invite a user to an event, so we can participate together. | v0.2 |
 
 #### 2.3. Event Moderator
@@ -188,6 +188,7 @@ Changes made to the first submission:
 
 18/10/2022  Add us2, au09, au10, au12, em03, BR04 and B405. Edited au1, au2 and BR03. Organized all user stories by priority
 
+19/10/2022 Created participant table (2.6), changed Actors UML, some user stories were reorganized. Changed descriptions of user stories. Old data from table "restrictions" was shifted to business rules and new data was added (according to recommendations).
 
 
 ***
