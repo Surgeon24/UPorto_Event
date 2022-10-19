@@ -10,17 +10,23 @@ CREATE EXTENSION IF NOT EXISTS citext;
 -- https://www.geeksforgeeks.org/postgresql-uuid-data-type/
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Q - questions to the teacher
-
+--!!! I should do the right order of dropping/creating
+drop table if exists poll;
+drop table if exists comment;
 drop table if exists notification;
 drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
-
---!!! I should do the right order of dropping/creating
-
 DROP TABLE IF EXISTS event;
-
 DROP TABLE IF EXISTS registered_users;
+
+-- Q - questions to the teacher
+
+-- Q - ask about the quize
+
+
+
+
+
 create table registered_users(
 	-- Q uuid - do we need it, is it ok?
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -43,14 +49,19 @@ DROP TABLE IF EXISTS event;
 create table event(
 	event_id SERIAL PRIMARY KEY,
 	event_name VARCHAR default 'default name' NOT NULL,
-	-- default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
-	-- not sure about date format
+	-- Q default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
+	-- Q not sure about date format
 	event_date TIMESTAMP default (to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')) NOT NULL,
-	-- only registered users can go
-	participant_id uuid,  -- FOREIGN KEY? taken from registered_users table
-	creator_id uuid UNIQUE,  -- FOREIGN KEY? taken from registered_users table
+	participant_id uuid UNIQUE,  -- only registered users can go
+	creator_id uuid UNIQUE, 
+	location text default 'Adega Leonor' NOT NULL,
+
+	-- might delete undecided
+	tag text default '#',
+	-- might delete undecided
+
 	description text default('FEUP party') NOT NULL,
-	is_public BOOLEAN,	  -- not sure of what it does
+	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
 	
 	FOREIGN KEY (participant_id) REFERENCES registered_users (user_id)
 										ON DELETE CASCADE
@@ -62,7 +73,7 @@ create table event(
 );
 
 
-drop table if exists poll;
+
 create table poll(
 	title text default 'title' NOT NULL,
 	host_name text default 'host name?' NOT NULL,
@@ -72,24 +83,31 @@ create table poll(
 );
 
 
-drop table if exists location;
-
-create table location(
-	name text default 'Adega Leonor' NOT NULL
-);
 
 
 
-drop table if exists rating;
-CREATE TABLE rating(
+
+
+-- Q can I use the word `comment` if it's a special word in PostgreSQL?
+CREATE TABLE comment(
 	comment_id SERIAL,
+	event_id int,
+	author_id uuid NOT NULL,
+	-- unable to publish yesturday
 	publish_date TIMESTAMP default current_timestamp check(publish_date <= CURRENT_TIMESTAMP) NOT NULL,
-	-- rating from 1 to 5 stars
-	rate integer check(rate > 0 AND rate <= 5) NOT NULL,
-	description text DEFAULT null
+	description text DEFAULT 'your comment here' NOT NULL,
+
+	FOREIGN KEY (event_id) REFERENCES event (event_id)
+								ON DELETE CASCADE
+								ON UPDATE CASCADE,
+
+	FOREIGN KEY (author_id) REFERENCES event (participant_id)
+								ON DELETE CASCADE
+								ON UPDATE CASCADE
 );
 
 
+-- Q good idea for notigication type?
 
 DROP TYPE IF EXISTS notification_type;
 CREATE TYPE notification_type AS ENUM ('Reminder', 'Report', 'Comment');
@@ -112,7 +130,9 @@ CREATE TABLE notification(
 
 -- Q should we have two table for event and user photos each?
 
+-- Q maybe bytea for registered_user and talbe for event?
 
+-- Q should I add automatic trigger that would add empty photo row when user is registered?  
 
 create table user_photo(
 	user_photo_id SERIAL,
@@ -120,7 +140,7 @@ create table user_photo(
 	added_on timestamp default current_timestamp,
 	added_by uuid,
 
-	-- Q should we have 'image_path' row?
+	-- Q should we have 'image_path' UNIQUE row?
 	
 	FOREIGN KEY (added_by) REFERENCES registered_users (user_id)
 																		ON DELETE CASCADE
