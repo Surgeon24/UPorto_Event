@@ -11,17 +11,17 @@ Publishing events on our web service is a good way to invite, promote and inform
 Users are separated into groups with different permissions, including:
 Visitors, who are allowed to browse and explore the events;
 Authenticated Users, who are allowed to create events as well and add comments and create their personal profile;
-Administrators who concern themselves with moderating the events and comment sections, detecting/blocking inappropriate behavior.
-All users can browse, view, search and explore events not only by name, but also by venue, organizer or #tags.
+Administrators who concern themselves with moderating the events and comment sections, detecting/blocking inappropriate behavior. Authenticated Users can create polls in order to get feedback on their events;
+All users can browse, view, search and explore events not only by name, but also by venue, organizer or #tags. Users are receiving notifications/reminders of the upcoming event they were registered to.
 
- The service is claimed to be portable and have responsive design, i.e. to be able to execute on multiple OS and different devices, properly (Android, IOS, Windows, Linux). It was announced that the developers are intending to add a chatbot to assist clients.
+ The service is claimed to be portable and have responsive design, i.e. to be able to execute on multiple OS and different devices, properly (Android, IOS, Windows, Linux).
 
 Join us!
 
 
 ## A2: Actors and User stories
 
-Artifact 2 presents the relation between actors and their user stories, which are going to help in the development.
+The current artifact consists of the definition of the actors and their user stories, providing convenient documentation of the project’s requirements.
 
 ### 1. Actors
 
@@ -39,7 +39,7 @@ All actors that are implemented in “UPorto Event” web service are represente
 | Administrator | Authenticated user, that has access to all accounts and events whose main goal is to keep the service up and help regular users  |
 | Event Participant | Authenticated user, that joined a particular event and can vote in polls or submit new content for moderator approval. |
 | Event Moderator | Authenticated user, that has special status in a particular event, that gives to him ability to add and edit event’s content. |
-| Event Organizer | Creator of the event. Has a simple, stylish interface. After the announcement, he can edit the event.  |
+| Event Organizer | Creator of the event. Has a simple interface. After the announcement, he can edit the event.  |
 
 
 #### 2.1. User
@@ -190,6 +190,7 @@ Changes made to the first submission:
 
 19/10/2022 Created participant table (2.6), changed Actors UML, some user stories were reorganized. Changed descriptions of user stories. Old data from table "restrictions" was shifted to business rules and new data was added (according to recommendations).
 
+19/10/2022 ER, A1 components reviewed. David.
 
 ***
 GROUP21122, 05/10/2021
