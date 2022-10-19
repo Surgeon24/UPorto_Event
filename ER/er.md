@@ -79,31 +79,31 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| em01 | Moderator | Announcement | Medium | As a moderator of an event, I want to create new announcements on the events page. | v0.2 |
+| em01 | Moderator | Announcement | Medium | As a moderator of an event, I want to create new announcements on the events page, to inform members about changes in the event. | v0.2 |
 | em02 | Moderator | Add/Accept User | Medium | As a moderator, If the event is private, I should be able to add new users and accept them, so more people can join. | v0.3 |
 | em03 | Moderator | Create Polls | Medium | As a moderator, I want to create polls about diffrent subjects related to the event, so that out attendes and interact an communicate with the organization in an interactive way | v0.3 |
 | em04 | Moderator | Block User | Low |As a moderator, I want to be able to ban users in the particular event, if they improperly behave|v1.0|
-| em05 | Moderator | Block Content | Low |As a moderator, I want to remove a comment, so that I can remove inappropriate content|v1.0|
+| em05 | Moderator | Block Content | Low |As a moderator, I want to remove a comment, so that I can remove inappropriate content in comments. |v1.0|
 
 #### 2.5. Event Organizer
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ee01 | Organizer | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it.| v1.0 |
+| ee01 | Organizer | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it, to keep all information up to date. | v1.0 |
 
 #### 2.6. Event Participant
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ep01 | event participant | vote in polls | Medium | As a participant of an event, I want to be able to vote in polls, that were created for the members of the event. | v1.0 |
+| ep01 | event participant | vote in polls | Medium | As a participant of an event, I want to be able to participate in decisions about event and vote in polls, that were created for the members of the event. | v1.0 |
 
 #### 2.7. Administrator
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
 | ad01 | Admin | Delete Event | High | As an administrator, I want to be able to delete events on the site, if they violate the rules of the service. | v1.0 |
-| ad02 | Admin | Block, Unblock, Delete | High | As an administrator, I have to be able to block, unblock or delete users accounts so I can manage the site properly | v1.0 |
-| ad03 | Admin | Message | Low | As an administrator, I want to be able to write to users via their home pages. | v1.1 |
+| ad02 | Admin | Block, Unblock, Delete | High | As an administrator, I have to be able to block, unblock or delete users accounts so I can manage the site properly and resist potential user violations. | v1.0 |
+| ad03 | Admin | Message | Low | As an administrator, I want to be able to write to users via their home pages, to warn them about violation of the rules or answer their questions regarding the use of the service. | v1.1 |
 
 ### 3. Supplementary Requirements
 
