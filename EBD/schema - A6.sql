@@ -1,10 +1,6 @@
 -- in order to import the file, in Query Tool click the left-most icon 
 -- 'open file' (alt+O), choose the file and execute
 
-
--- create schema
-
-
 -- The citext module provides a case-insensitive character string type. 
 -- Essentially, it internally calls lower when comparing values.
 -- https://www.postgresql.org/docs/current/citext.html
@@ -18,7 +14,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 drop table if exists poll_vote;
 drop table if exists poll;
 drop table if exists comment;
-drop table IF EXISTS user_notification;
 drop table if exists notification;
 drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
@@ -26,11 +21,9 @@ DROP TABLE IF EXISTS event;
 DROP TABLE IF EXISTS registered_users;
 DROP TABLE IF EXISTS guests;
 
-
-
 -- Q - questions to the teacher
 
--- Q - ask about the quiz
+-- Q - ask about the quize
 
 
 create table IF NOT EXISTS guests(
@@ -41,21 +34,15 @@ create table IF NOT EXISTS guests(
 
 create table IF NOT EXISTS registered_users(
 	-- Q uuid - do we need it, is it ok?
-	-- GOOD but more complicated
-
-	-- Q VARCHAR vs. text? 
-	-- I should pick one and be consistent on it
-
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
 	surename VARCHAR default 'family name' NOT NULL,
 	nickname VARCHAR UNIQUE NOT NULL,
-
 	password text default sha256('default_password') NOT NULL,
 	email citext UNIQUE NOT NULL,
 	birth_date date default (current_date - INTERVAL '18 YEAR') CHECK (birth_date <= (current_date - INTERVAL '18 YEAR')),
 	date_registered TIMESTAMP default current_timestamp NOT NULL,
-
+	-- Q last log in. Good?
 	last_seen TIMESTAMP,
 	url text UNIQUE,
 	status text,
@@ -68,16 +55,19 @@ create table IF NOT EXISTS registered_users(
 create table IF NOT EXISTS event(
 	event_id SERIAL PRIMARY KEY,
 	event_name VARCHAR default 'default name' NOT NULL,
+	-- Q default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
+	-- Q not sure about date format
 	event_date TIMESTAMP default (to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')) NOT NULL,
 	participant_id uuid UNIQUE,  -- only registered users can go
 	creator_id uuid UNIQUE, 
 	location text default 'Adega Leonor' NOT NULL,
 
-	-- decided on creating a table with a finite pre-defined tags that creator will choose
-	tag text default '#', 
-	
+	-- might delete undecided
+	tag text default '#',
+	-- might delete undecided
+
 	description text default('FEUP party') NOT NULL,
-	is_public BOOLEAN DEFAULT True NOT NULL,	  -- in private event only the creator can invite people
+	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
 	
 	FOREIGN KEY (participant_id) REFERENCES registered_users (user_id)
 										ON DELETE CASCADE
@@ -132,7 +122,7 @@ create table IF NOT EXISTS poll_vote(
 
 
 -- Q can I use the word `comment` if it's a special word in PostgreSQL?
-CREATE TABLE comment( -- Change 
+CREATE TABLE comment(
 	comment_id SERIAL,
 	event_id int,
 	author_id uuid NOT NULL,
@@ -160,35 +150,39 @@ CREATE TABLE IF NOT EXISTS notification(
 	user_id uuid,
 	description text,
 	notification_date timestamp default current_timestamp,
-	type notification_type
-
-	
-);
-
-
-create table IF NOT EXISTS user_notification(
-	notification_id int,
-	user_id uuid,
-
-	FOREIGN KEY (notification_id) REFERENCES notification (notification_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE,
+	type notification_type,
 
 	FOREIGN KEY (user_id) REFERENCES registered_users (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
-
-
 );
 
 
 
 
 
+-- Q should we have two table for event and user photos each?
 
--- IDEA should I add automatic trigger that would add empty photo row when user is registered?  
--- decided on having a table of photos for events and row for registered users
--- not storing in blob
+-- Q maybe bytea for registered_user and talbe for event?
+
+-- Q should I add automatic trigger that would add empty photo row when user is registered?  
+
+create table IF NOT EXISTS user_photo(
+	user_photo_id SERIAL,
+	file bytea,
+	added_on timestamp default current_timestamp,
+	added_by uuid,
+
+	-- Q should we have 'image_path' UNIQUE row?
+	
+	FOREIGN KEY (added_by) REFERENCES registered_users (user_id)
+											ON DELETE CASCADE
+											ON UPDATE CASCADE
+	);
+
+
+
+
 create table IF NOT EXISTS event_photo(
 	event_photo_id SERIAL,
 	file bytea,
