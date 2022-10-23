@@ -424,15 +424,29 @@ create table IF NOT EXISTS event_photo(
 
 ### 1. Database Workload
  
-> A study of the predicted system load (database load).
-> Estimate of tuples at each relation.
+Understanding the potential load on databases and the speed of their growth will help creating well structured and dedicated database design for fast and stable work of the service. Database workload includes an estimate of the number of tuples for each relation and the estimated growth.\
+The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on.
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
-| R01                | Table1        | units|dozens|hundreds|etc | order per time |
-| R02                | Table2        | units|dozens|hundreds|etc | dozens per month |
-| R03                | Table3        | units|dozens|hundreds|etc | hundreds per day |
-| R04                | Table4        | units|dozens|hundreds|etc | no growth |
+| R01  | RegisteredUser 	| 10.000+   | 10+ |
+| R02  | Event          	| 1000+ 	| 1+ |
+| R03  | Notification   	| 	 	|  |
+| R04  | Photo          	| 	 	|  |
+| R05  | Poll		    	|  		|  |
+| R06  | PollOption     	|  		|  |
+| R07  | Comment        	|  		|  |
+| R08  | Tag        		|  		|  |
+| R09  | Vote        		|  		|  |
+| R10  | Report      		|  |  |
+| R11  | Guest       		|  |  |
+| R12  | Report_Notification|  |  |
+| R13  | Poll_Notification  |  |  |
+| R14  | Event_Notification |  |  |
+| R15  |Comment_Notification|  |  |
+| R16  |Event_RegisteredUser|  |  |
+| R17  | Invite       		|  |  |
+| R18  | Event_Member       |  |  |
 
 
 ### 2. Proposed Indices
@@ -509,9 +523,7 @@ create table IF NOT EXISTS event_photo(
 
 ## Revision history
 
-Changes made to the first submission:
-1. Item 1
-1. ..
+1. A6-1 was changed.
 
 
 ***
