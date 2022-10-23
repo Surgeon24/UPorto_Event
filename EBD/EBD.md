@@ -4,61 +4,202 @@
 
 ## A4: Conceptual Data Model
 
-In A4 we will take over our first database Topic. This will cover the **Class Diagram** which compiles all entities, attributes and relations of our Database.
+In A4 we will take over our first database topic. This will cover the **Class Diagram** which compiles all entities, attributes and relations of our database, in order to stre efficiently all website information.
 
 ### 1. Class diagram
 
-> UML class diagram containing the classes, associations, multiplicity and roles.  
-> For each class, the attributes, associations and constraints are included in the class diagram.
+![A4- UML_Diagram](images/A4-%20UPortoEventUML.jpg)
 
 ### 2. Additional Business Rules
  
-> Business rules can be included in the UML diagram as UML notes or in a table in this section.
-
-
+- BR01 : Only registred users who participate on the event can make comments and answer to polls.
+- BR02 : Only event creators can delete or cancel the event. So event moderators, can´t.
+- BR03 : Only Participants of an specific event can vote in polls
 ---
 
 
 ## A5: Relational Schema, validation and schema refinement
 
-> Brief presentation of the artefact goals.
+In A5 we are going to interpretate de UML diagram into the Relational Schema, so that SQL code turns out better. This more specific model represets out data base less abstract in a more concise way.
 
 ### 1. Relational Schema
 
-> The Relational Schema includes the relation schemas, attributes, domains, primary keys, foreign keys and other integrity rules: UNIQUE, DEFAULT, NOT NULL, CHECK.  
-> Relation schemas are specified in the compact notation:  
-
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | Table1(__id__, attribute NN)                     |
-| R02                | Table2(__id__, attribute → Table1 NN)            |
-| R03                | Table3(__id1__, id2 → Table2, attribute UK NN)   |
-| R04                | Table4((__id1__, __id2__) → Table3, id3, attribute CK attribute > 0) |
+| R01                | RegisteredUser(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
+| R02                | Event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN** ) |
+| R03                | Notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → RegisteredUser **NN** ) |
+| R04                | Photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
+| R05				 | Poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → RegisteredUser **NN**, #event_id → Event **NN** ) |
+| R06				 | PollOption(<ins>pOption_id</ins>, option **NN**, #poll_id → Poll **NN**) |
+| R07   			 | Comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → Comment **NN**, #event_id → Event **NN**, #user_id → RegisteredUser **NN** ) |
+| R08    			 | Tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → Event **NN** ) |
+| R09  			     | Vote(<ins>vote_id</ins>, date **NN**, #user_id → RegisteredUser **NN**, #poll_id → Poll **NN** ) |
+| R10 				 | Report(<ins>report_id</ins>, text **NN**, report_status **DF** 'Waiting' **CK** (Report_status **IN** ReportStatus), reported → RegisteredUser **NN**, reporter → RegisteredUser **NN**) |
+| R11  				 | Guest(<ins>guest_id</ins>, ip **NN** **UK**, time **NN**) |
+| R12                | Report_Notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
+| R13                | Poll_Notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
+| R14                | Event_Notification(<ins>#notification_id → Notification **NN**</ins>, #event → Event **NN**) |
+| R15                | Comment_Notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
+| R16                | Event_RegisteredUser(<ins>event_id → Event</ins>, <ins>user_id → RegisteredUser</ins>) |
+| R17                | Invite(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, accepted) |
+| R18                | Event_Member(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, role **DF** 'Participant' **CK** (role **IN** MemberRole)) |
 
 ### 2. Domains
 
-> The specification of additional domains can also be made in a compact form, using the notation:  
-
-| Domain Name | Domain Specification           |
-| ----------- | ------------------------------ |
-| Today	      | DATE DEFAULT CURRENT_DATE      |
-| Priority    | ENUM ('High', 'Medium', 'Low') |
+| Domain Name  | Domain Specification           |
+| -----------  | ------------------------------ |
+| MemberRole   | ENUM ('Owner', 'Moderator', 'Participant') |
+| ReportStatus | ENUM ('Waiting', 'Ignored', 'Sanctioned') |
 
 ### 3. Schema validation
 
-> To validate the Relational Schema obtained from the Conceptual Model, all functional dependencies are identified and the normalization of all relation schemas is accomplished. Should it be necessary, in case the scheme is not in the Boyce–Codd Normal Form (BCNF), the relational schema is refined using normalization.  
-
-| **TABLE R01**   | User               |
+| **TABLE R01**   | RegisteredUser     |
 | --------------  | ---                |
-| **Keys**        | { id }, { email }  |
+| **Keys**        | { user_id }, { email }, {url}  |
 | **Functional Dependencies:** |       |
-| FD0101          | id → {email, name} |
-| FD0102          | email → {id, name} |
-| ...             | ...                |
+| FD0101          | user_id → {name, surname, nickname, password, email, date_registered, last_seen, birth_date, url, status, is_admin, photo_path} |
+| FD0102          | email → {user_id, name, surname, nickname, password, date_registered, last_seen, birth_date, url, status, is_admin, photo_path} |
+| FD0103          | url → {user_id, name, surname, nickname, password, email, date_registered, last_seen, birth_date, status, is_admin, photo_path}  |         |
 | **NORMAL FORM** | BCNF               |
 
-> If necessary, description of the changes necessary to convert the schema to BCNF.  
-> Justification of the BCNF.  
+
+| **TABLE R02**   | Event              |
+| --------------  | ---                |
+| **Keys**        | {event_id}         |
+| **Functional Dependencies:** |       |
+| FD0201          | event_id → {name, descriprion, start_date, location, schedule} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R03**   | Notification       |
+| --------------  | ---                |
+| **Keys**        | {notification_id}  |
+| **Functional Dependencies:** |       |
+| FD0301          | notification_id → {text, date, user_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R04**   | Photo              |
+| --------------  | ---                |
+| **Keys**        | { photo_id}        |
+| **Functional Dependencies:** |       |
+| FD0401          | photo_id → {upload_date, image_path, event_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R05**   | Poll               |
+| --------------  | ---                |
+| **Keys**        | { poll_id }        |
+| **Functional Dependencies:** |       |
+| FD0501          | poll_id → {title, content, start_date, end_date, user_id, event_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R06**   | PollOption         |
+| --------------  | ---                |
+| **Keys**        | { pOption_id }     |
+| **Functional Dependencies:** |       |
+| FD0601          | pOption_id → {option, poll_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R07**   | Comment            |
+| --------------  | ---                |
+| **Keys**        | { comment_id } |
+| **Functional Dependencies:** |       |
+| FD0701          | comment_id → {publish_date, description, comment_id, event_id, user_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R08**   | Tag                |
+| --------------  | ---                |
+| **Keys**        | { tag_id } |
+| **Functional Dependencies:** |       |
+| FD0801          | tag_id → {name, color, event_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R09**   | Vote               |
+| --------------  | ---                |
+| **Keys**        | { vote_id } |
+| **Functional Dependencies:** |       |
+| FD0901          | vote_id → {date, user_id, poll_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R10**   | Report             |
+| --------------  | ---                |
+| **Keys**        | { report_id }|
+| **Functional Dependencies:** |       |
+| FD1001          | report_id → {text, report_status, reported, reporter} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R11**   | Guest              |
+| --------------  | ---                |
+| **Keys**        | { guest_id }  |
+| **Functional Dependencies:** |       |
+| FD1101          | guest_id → {ip, time} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R12**   | Report_Notification|
+| --------------  | ---                |
+| **Keys**        | { notification_id }  |
+| **Functional Dependencies:** |       |
+| FD1201          | notification_id → {report_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R13**   | Poll_Notification  |
+| --------------  | ---                |
+| **Keys**        | { notification_id }  |
+| **Functional Dependencies:** |       |
+| FD1301          | notification_id → {poll_id}  |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R14**   | Event_Notification |
+| --------------  | ---                |
+| **Keys**        | { notification_id } |
+| **Functional Dependencies:** |       |
+| FD1401          | notification_id → {event_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R15**   |Comment_Notification|
+| --------------  | ---                |
+| **Keys**        | { notification_id } |
+| **Functional Dependencies:** |       |
+| FD1501          | notification_id → {comment_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R16**   |Event_RegisteredUser|
+| --------------  | ---                |
+| **Keys**        | { event_id }, { user_id }  |
+| **Functional Dependencies:** |       |
+| FD1601          | none               |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R17**   | Invite             |
+| --------------  | ---                |
+| **Keys**        | { user_id }, { event_id }  |
+| **Functional Dependencies:** |       |
+| FD1701          | user_id, event_id → {accepted} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R18**   | Event_Member       |
+| --------------  | ---                |
+| **Keys**        | { user_id }, { event_id }  |
+| **Functional Dependencies:** |       |
+| FD1801          | user_id, event_id → {role} |
+| **NORMAL FORM** | BCNF               |
+
+The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form).
 
 
 ### Annex A. SQL Code
@@ -90,12 +231,13 @@ drop table if exists notification;
 drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
 DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS registered_users;
+DROP TABLE IF EXISTS RegisteredUsers;
 DROP TABLE IF EXISTS guests;
 
 -- Q - questions to the teacher
 
 -- Q - ask about the quize
+-- 25 November
 
 
 create table IF NOT EXISTS guests(
@@ -104,8 +246,8 @@ create table IF NOT EXISTS guests(
 );
 
 
-create table IF NOT EXISTS registered_users(
-	-- Q uuid - do we need it, is it ok?
+create table IF NOT EXISTS RegisteredUsers(
+	-- Q uuid - do we need it, is it ok? Professor liked it
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
 	surename VARCHAR default 'family name' NOT NULL,
@@ -115,6 +257,7 @@ create table IF NOT EXISTS registered_users(
 	birth_date date default (current_date - INTERVAL '18 YEAR') CHECK (birth_date <= (current_date - INTERVAL '18 YEAR')),
 	date_registered TIMESTAMP default current_timestamp NOT NULL,
 	-- Q last log in. Good?
+	-- Yes
 	last_seen TIMESTAMP,
 	url text UNIQUE,
 	status text,
@@ -141,10 +284,10 @@ create table IF NOT EXISTS event(
 	description text default('FEUP party') NOT NULL,
 	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
 	
-	FOREIGN KEY (participant_id) REFERENCES registered_users (user_id)
+	FOREIGN KEY (participant_id) REFERENCES RegisteredUsers (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE,
-	FOREIGN KEY (creator_id) REFERENCES registered_users (user_id)
+	FOREIGN KEY (creator_id) REFERENCES RegisteredUsers (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 	
@@ -224,7 +367,7 @@ CREATE TABLE IF NOT EXISTS notification(
 	notification_date timestamp default current_timestamp,
 	type notification_type,
 
-	FOREIGN KEY (user_id) REFERENCES registered_users (user_id)
+	FOREIGN KEY (user_id) REFERENCES RegisteredUsers (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 );
@@ -235,7 +378,7 @@ CREATE TABLE IF NOT EXISTS notification(
 
 -- Q should we have two table for event and user photos each?
 
--- Q maybe bytea for registered_user and talbe for event?
+-- Q maybe bytea for RegisteredUser and talbe for event?
 
 -- Q should I add automatic trigger that would add empty photo row when user is registered?  
 
@@ -247,7 +390,7 @@ create table IF NOT EXISTS user_photo(
 
 	-- Q should we have 'image_path' UNIQUE row?
 	
-	FOREIGN KEY (added_by) REFERENCES registered_users (user_id)
+	FOREIGN KEY (added_by) REFERENCES RegisteredUsers (user_id)
 											ON DELETE CASCADE
 											ON UPDATE CASCADE
 	);
@@ -351,7 +494,7 @@ create table IF NOT EXISTS event_photo(
 > The creation script includes the code necessary to build (and rebuild) the database.
 > The population script includes an amount of tuples suitable for testing and with plausible values for the fields of the database.
 >
-> The complete code of each script must be included in the group's git repository and links added here.
+> The complete code of each script must be included in the groups git repository and links added here.
 
 ### A.1. Database schema
 
