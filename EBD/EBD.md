@@ -34,8 +34,8 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R06				 | PollOption(<ins>pOption_id</ins>, option **NN**, #poll_id → Poll **NN**) |
 | R07   			 | Comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → Comment **NN**, #event_id → Event **NN**, #user_id → RegisteredUser **NN** ) |
 | R08    			 | Tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → Event **NN** ) |
-| R09  			     | Vote(<ins>vote_id</ins>, date **NN**, #user_id → RegisteredUser **NN**, #poll_id → Poll **NN** ) |
-| R10 				 | Report(<ins>report_id</ins>, text **NN**, report_status **DF** 'Waiting' **CK** (Report_status **IN** ReportStatus), reported → RegisteredUser **NN**, reporter → RegisteredUser **NN**) |
+| R09  			     | PollVote(<ins>vote_id</ins>, date **NN**, #user_id → RegisteredUser **NN**, #pOption_id → PollOption **NN** ) |
+| R10 				 | Report(<ins>report_id</ins>, text **NN**, report_status **DF** 'Waiting' **CK** (Report_status **IN** ReportStatus), reported → RegisteredUser **NN**, reporter → RegisteredUser **NN**, manages → Administrator **NN**) |
 | R11  				 | Guest(<ins>guest_id</ins>, ip **NN** **UK**, time **NN**) |
 | R12                | Report_Notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
 | R13                | Poll_Notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
@@ -44,6 +44,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R16                | Event_RegisteredUser(<ins>event_id → Event</ins>, <ins>user_id → RegisteredUser</ins>) |
 | R17                | Invite(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, accepted) |
 | R18                | Event_Member(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, role **DF** 'Participant' **CK** (role **IN** MemberRole)) |
+|R19                 | Administrator(<ins>#user_id → RegisteredUser</ins>) |
 
 ### 2. Domains
 
@@ -120,11 +121,11 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R09**   | Vote               |
+| **TABLE R09**   | PollVote               |
 | --------------  | ---                |
 | **Keys**        | { vote_id } |
 | **Functional Dependencies:** |       |
-| FD0901          | vote_id → {date, user_id, poll_id} |
+| FD0901          | vote_id → {date, user_id, pOption_id} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -132,7 +133,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | { report_id }|
 | **Functional Dependencies:** |       |
-| FD1001          | report_id → {text, report_status, reported, reporter} |
+| FD1001          | report_id → {text, report_status, reported, reporter, manages} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -197,6 +198,13 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **Keys**        | { user_id }, { event_id }  |
 | **Functional Dependencies:** |       |
 | FD1801          | user_id, event_id → {role} |
+| **NORMAL FORM** | BCNF               |
+
+| **TABLE R19**   | Administrator      |
+| --------------  | ---                |
+| **Keys**        | { user_id }        |
+| **Functional Dependencies:** |       |
+| FD1801          | none               |
 | **NORMAL FORM** | BCNF               |
 
 The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form).
