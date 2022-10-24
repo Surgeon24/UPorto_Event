@@ -429,24 +429,24 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
-| R01  | RegisteredUser 	| 10.000+   | 10+ |
-| R02  | Event          	| 1000+ 	| 1+ |
-| R03  | Notification   	| 	 	|  |
-| R04  | Photo          	| 	 	|  |
-| R05  | Poll		    	|  		|  |
-| R06  | PollOption     	|  		|  |
-| R07  | Comment        	|  		|  |
-| R08  | Tag        		|  		|  |
-| R09  | Vote        		|  		|  |
-| R10  | Report      		|  |  |
-| R11  | Guest       		|  |  |
-| R12  | Report_Notification|  |  |
-| R13  | Poll_Notification  |  |  |
-| R14  | Event_Notification |  |  |
-| R15  |Comment_Notification|  |  |
-| R16  |Event_RegisteredUser|  |  |
-| R17  | Invite       		|  |  |
-| R18  | Event_Member       |  |  |
+| R01  | RegisteredUser 	| 10.000+   | 10+  |
+| R02  | Event          	| 1.000+ 	| 1+   |
+| R03  | Notification   	| 10.000+	| 10+  |
+| R04  | Photo          	| 10.000+	| 10+  |
+| R05  | Poll		    	| 1.000+ 	| 1+   |
+| R06  | PollOption     	| 1.000+ 	| 1+   |
+| R07  | Comment        	| 100.000+ 	| 100+ |
+| R08  | Tag        		| 1000+		| 1+   |
+| R09  | Vote        		| 1.000+ 	| 1+   |
+| R10  | Report      		| 100+		| 1+   |
+| R11  | Guest       		| 1 | - |
+| R12  | Report_Notification| 100+ 		| 1+   |
+| R13  | Poll_Notification  | 1.000+ 	| 1+   |
+| R14  | Event_Notification | 1.000+ 	| 1+   |
+| R15  |Comment_Notification| 10.000+ 	| 10+  |
+| R16  |Event_RegisteredUser| 100.000+  | 100+ |
+| R17  | Invite       		| 10.000+   | 10+ |
+| R18  | Event_Member       | 100.000+  | 100+ |
 
 
 ### 2. Proposed Indices
