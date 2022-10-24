@@ -210,6 +210,88 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form).
 
 
+
+## A6: Indexes, triggers, transactions and database population
+
+> Brief presentation of the artefact goals.
+
+### 1. Database Workload
+ 
+Understanding the potential load on databases and the speed of their growth will help creating well structured and dedicated database design for fast and stable work of the service. Database workload includes an estimate of the number of tuples for each relation and the estimated growth.\
+The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on.
+
+| **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
+| ------------------ | ------------- | ------------------------- | -------- |
+| R01  | RegisteredUser 	| 10.000+   | 10+  |
+| R02  | Event          	| 1.000+ 	| 1+   |
+| R03  | Notification   	| 10.000+	| 10+  |
+| R04  | Photo          	| 10.000+	| 10+  |
+| R05  | Poll		    	| 1.000+ 	| 1+   |
+| R06  | PollOption     	| 1.000+ 	| 1+   |
+| R07  | Comment        	| 100.000+ 	| 100+ |
+| R08  | Tag        		| 1000+		| 1+   |
+| R09  | Vote        		| 1.000+ 	| 1+   |
+| R10  | Report      		| 100+		| 1+   |
+| R11  | Guest       		| 1 | - |
+| R12  | Report_Notification| 100+ 		| 1+   |
+| R13  | Poll_Notification  | 1.000+ 	| 1+   |
+| R14  | Event_Notification | 1.000+ 	| 1+   |
+| R15  |Comment_Notification| 10.000+ 	| 10+  |
+| R16  |Event_RegisteredUser| 100.000+  | 100+ |
+| R17  | Invite       		| 10.000+   | 10+ |
+| R18  | Event_Member       | 100.000+  | 100+ |
+
+
+### 2. Proposed Indices
+
+#### 2.1. Performance Indices
+ 
+> Indices proposed to improve performance of the identified queries.
+
+| **Index**           | IDX01                                  |
+| ---                 | ---                                    |
+| **Relation**        | Relation where the index is applied    |
+| **Attribute**       | Attribute where the index is applied   |
+| **Type**            | B-tree, Hash, GiST or GIN              |
+| **Cardinality**     | Attribute cardinality: low/medium/high |
+| **Clustering**      | Clustering of the index                |
+| **Justification**   | Justification for the proposed index   |
+| `SQL code`                                                  ||
+
+
+#### 2.2. Full-text Search Indices 
+
+> The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
+
+| **Index**           | IDX01                                  |
+| ---                 | ---                                    |
+| **Relation**        | Relation where the index is applied    |
+| **Attribute**       | Attribute where the index is applied   |
+| **Type**            | B-tree, Hash, GiST or GIN              |
+| **Clustering**      | Clustering of the index                |
+| **Justification**   | Justification for the proposed index   |
+| `SQL code`                                                  ||
+
+
+### 3. Triggers
+ 
+> User-defined functions and trigger procedures that add control structures to the SQL language or perform complex computations, are identified and described to be trusted by the database server. Every kind of function (SQL functions, Stored procedures, Trigger procedures) can take base types, composite types, or combinations of these as arguments (parameters). In addition, every kind of function can return a base type or a composite type. Functions can also be defined to return sets of base or composite values.  
+
+| **Trigger**      | TRIGGER01                              |
+| ---              | ---                                    |
+| **Description**  | Trigger description, including reference to the business rules involved |
+| `SQL code`                                             ||
+
+### 4. Transactions
+ 
+> Transactions needed to assure the integrity of the data.  
+
+| SQL Reference   | Transaction Name                    |
+| --------------- | ----------------------------------- |
+| Justification   | Justification for the transaction.  |
+| Isolation level | Isolation level of the transaction. |
+| `Complete SQL Code`                                   ||
+
 ### Annex A. SQL Code
 SQL script in included. It cintains the creation statements, cleans up the current database state 'The SQL script is cleaned (e.g. excluded from export comments)' - don't understand what does it mean. Indexes, triggers, transactions and database population - to be provided at A6.
 
@@ -424,88 +506,6 @@ create table IF NOT EXISTS event_photo(
 
 
 ---
-
-
-## A6: Indexes, triggers, transactions and database population
-
-> Brief presentation of the artefact goals.
-
-### 1. Database Workload
- 
-Understanding the potential load on databases and the speed of their growth will help creating well structured and dedicated database design for fast and stable work of the service. Database workload includes an estimate of the number of tuples for each relation and the estimated growth.\
-The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on.
-
-| **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
-| ------------------ | ------------- | ------------------------- | -------- |
-| R01  | RegisteredUser 	| 10.000+   | 10+  |
-| R02  | Event          	| 1.000+ 	| 1+   |
-| R03  | Notification   	| 10.000+	| 10+  |
-| R04  | Photo          	| 10.000+	| 10+  |
-| R05  | Poll		    	| 1.000+ 	| 1+   |
-| R06  | PollOption     	| 1.000+ 	| 1+   |
-| R07  | Comment        	| 100.000+ 	| 100+ |
-| R08  | Tag        		| 1000+		| 1+   |
-| R09  | Vote        		| 1.000+ 	| 1+   |
-| R10  | Report      		| 100+		| 1+   |
-| R11  | Guest       		| 1 | - |
-| R12  | Report_Notification| 100+ 		| 1+   |
-| R13  | Poll_Notification  | 1.000+ 	| 1+   |
-| R14  | Event_Notification | 1.000+ 	| 1+   |
-| R15  |Comment_Notification| 10.000+ 	| 10+  |
-| R16  |Event_RegisteredUser| 100.000+  | 100+ |
-| R17  | Invite       		| 10.000+   | 10+ |
-| R18  | Event_Member       | 100.000+  | 100+ |
-
-
-### 2. Proposed Indices
-
-#### 2.1. Performance Indices
- 
-> Indices proposed to improve performance of the identified queries.
-
-| **Index**           | IDX01                                  |
-| ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Cardinality**     | Attribute cardinality: low/medium/high |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
-
-
-#### 2.2. Full-text Search Indices 
-
-> The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
-
-| **Index**           | IDX01                                  |
-| ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
-
-
-### 3. Triggers
- 
-> User-defined functions and trigger procedures that add control structures to the SQL language or perform complex computations, are identified and described to be trusted by the database server. Every kind of function (SQL functions, Stored procedures, Trigger procedures) can take base types, composite types, or combinations of these as arguments (parameters). In addition, every kind of function can return a base type or a composite type. Functions can also be defined to return sets of base or composite values.  
-
-| **Trigger**      | TRIGGER01                              |
-| ---              | ---                                    |
-| **Description**  | Trigger description, including reference to the business rules involved |
-| `SQL code`                                             ||
-
-### 4. Transactions
- 
-> Transactions needed to assure the integrity of the data.  
-
-| SQL Reference   | Transaction Name                    |
-| --------------- | ----------------------------------- |
-| Justification   | Justification for the transaction.  |
-| Isolation level | Isolation level of the transaction. |
-| `Complete SQL Code`                                   ||
 
 
 ## Annex A. SQL Code
