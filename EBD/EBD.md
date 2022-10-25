@@ -321,7 +321,7 @@ drop table if exists notification;
 drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
 DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS RegisteredUsers;
+DROP TABLE IF EXISTS registered_user;
 DROP TABLE IF EXISTS guests;
 
 -- Q - questions to the teacher
@@ -336,7 +336,7 @@ create table IF NOT EXISTS guests(
 );
 
 
-create table IF NOT EXISTS RegisteredUsers(
+create table IF NOT EXISTS registered_user(
 	-- Q uuid - do we need it, is it ok? Professor liked it
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
@@ -374,10 +374,10 @@ create table IF NOT EXISTS event(
 	description text default('FEUP party') NOT NULL,
 	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
 	
-	FOREIGN KEY (participant_id) REFERENCES RegisteredUsers (user_id)
+	FOREIGN KEY (participant_id) REFERENCES registered_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE,
-	FOREIGN KEY (creator_id) REFERENCES RegisteredUsers (user_id)
+	FOREIGN KEY (creator_id) REFERENCES registered_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 	
@@ -457,7 +457,7 @@ CREATE TABLE IF NOT EXISTS notification(
 	notification_date timestamp default current_timestamp,
 	type notification_type,
 
-	FOREIGN KEY (user_id) REFERENCES RegisteredUsers (user_id)
+	FOREIGN KEY (user_id) REFERENCES registered_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 );
@@ -480,7 +480,7 @@ create table IF NOT EXISTS user_photo(
 
 	-- Q should we have 'image_path' UNIQUE row?
 	
-	FOREIGN KEY (added_by) REFERENCES RegisteredUsers (user_id)
+	FOREIGN KEY (added_by) REFERENCES registered_user (user_id)
 											ON DELETE CASCADE
 											ON UPDATE CASCADE
 	);
@@ -511,11 +511,9 @@ create table IF NOT EXISTS event_photo(
 ## Annex A. SQL Code
 
 > The database scripts are included in this annex to the EBD component.
-> 
 > The database creation script and the population script should be presented as separate elements.
 > The creation script includes the code necessary to build (and rebuild) the database.
 > The population script includes an amount of tuples suitable for testing and with plausible values for the fields of the database.
->
 > The complete code of each script must be included in the groups git repository and links added here.
 
 ### A.1. Database schema
