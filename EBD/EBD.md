@@ -27,7 +27,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
 | R01                | RegisteredUser(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
-| R02                | Event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN** ) |
+| R02                | Event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN**, role **DF** 'Participant' **CK** (role **IN** MemberRole)) ) |
 | R03                | Notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → RegisteredUser **NN** ) |
 | R04                | Photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
 | R05				 | Poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → RegisteredUser **NN**, #event_id → Event **NN** ) |
@@ -43,8 +43,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R15                | Comment_Notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
 | R16                | Event_RegisteredUser(<ins>event_id → Event</ins>, <ins>user_id → RegisteredUser</ins>) |
 | R17                | Invite(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, accepted) |
-| R18                | Event_Member(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, role **DF** 'Participant' **CK** (role **IN** MemberRole)) |
-|R19                 | Administrator(<ins>#user_id → RegisteredUser</ins>) |
+| R18                | Administrator(<ins>#user_id → RegisteredUser</ins>) |
 
 ### 2. Domains
 
@@ -69,7 +68,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | {event_id}         |
 | **Functional Dependencies:** |       |
-| FD0201          | event_id → {name, descriprion, start_date, location, schedule} |
+| FD0201          | event_id → {name, descriprion, start_date, location, schedule, role} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -193,14 +192,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R18**   | Event_Member       |
-| --------------  | ---                |
-| **Keys**        | { user_id }, { event_id }  |
-| **Functional Dependencies:** |       |
-| FD1801          | user_id, event_id → {role} |
-| **NORMAL FORM** | BCNF               |
-
-| **TABLE R19**   | Administrator      |
+| **TABLE R18**   | Administrator      |
 | --------------  | ---                |
 | **Keys**        | { user_id }        |
 | **Functional Dependencies:** |       |
@@ -238,8 +230,8 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 | R14  | Event_Notification | 1.000+ 	| 1+   |
 | R15  |Comment_Notification| 10.000+ 	| 10+  |
 | R16  |Event_RegisteredUser| 100.000+  | 100+ |
-| R17  | Invite       		| 10.000+   | 10+ |
-| R18  | Event_Member       | 100.000+  | 100+ |
+| R17  | Invite       		| 10.000+   | 10+  |
+| R18  | Administrator      | 10+       | 1+   |
 
 
 ### 2. Proposed Indices
