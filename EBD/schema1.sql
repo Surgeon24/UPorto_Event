@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS Invite(
     accepted BOOLEAN,
     FOREIGN KEY (userID) REFERENCES RegisteredUser(ID),
     FOREIGN KEY (eventID) REFERENCES Event(ID)
+);
 CREATE TABLE IF NOT EXISTS Comment(
     ID SERIAL PRIMARY KEY,
     publish_date DATE DEFAULT (current_date) CHECK LowerOrEqualThanCurrentDate (publish_date <= current_date),
