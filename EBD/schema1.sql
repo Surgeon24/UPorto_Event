@@ -1,7 +1,9 @@
 CREATE EXTENSION IF NOT EXISTS citext;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-DROP TABLE IF EXISTS RegisteredUser;
-DROP TABLE IF EXISTS Administrator;
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+DROP TABLE IF EXISTS RegisteredUser CASCADE;
+DROP TABLE IF EXISTS Administrator CASCADE;
 DROP TABLE IF EXISTS Event CASCADE;
 DROP TABLE IF EXISTS Report;
 DROP TABLE IF EXISTS Invite;
@@ -13,11 +15,22 @@ DROP TABLE IF EXISTS EventNotification;
 DROP TABLE IF EXISTS CommentNotification;
 DROP TABLE IF EXISTS Tag;
 DROP TABLE IF EXISTS Photo;
-DROP TABLE IF EXISTS Poll;
-DROP TABLE IF EXISTS PollOption;
+DROP TABLE IF EXISTS Poll CASCADE;
+DROP TABLE IF EXISTS PollOption CASCADE;
 DROP TABLE IF EXISTS PollVote;
-CREATE TYPE REPORT_STATUS AS enum ('Going', 'Maybe', 'Cant');
-CREATE TYPE MEMBERROLE AS enum ('Owner', 'Moderator', 'Participant');
+
+DO $$ BEGIN
+    CREATE TYPE REPORT_STATUS AS ENUM('Going', 'Maybe', 'Cant');
+EXCEPTION
+    WHEN DUPLICATE_OBJECT THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
+EXCEPTION
+    WHEN DUPLICATE_OBJECT THEN NULL;
+END $$;
+
 CREATE TABLE IF NOT EXISTS RegisteredUser(
     ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     name TEXT DEFAULT 'name' NOT NULL,
@@ -50,7 +63,7 @@ CREATE TABLE IF NOT EXISTS Event(
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL,
     schedule TEXT,
-    role MEMBERROLE
+    role MEMBER_ROLE
 );
 CREATE TABLE IF NOT EXISTS Report(
     ID SERIAL PRIMARY KEY,
@@ -58,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Report(
     reporterID uuid DEFAULT uuid_generate_v4 (),
     adminID SERIAL,
     text TEXT NOT NULL,
-    report_status STATUS,
+    report_status REPORT_STATUS,
     FOREIGN KEY (reportedID) REFERENCES RegisteredUser(ID),
     FOREIGN KEY (reporterID) REFERENCES RegisteredUser(ID),
     FOREIGN KEY (adminID) REFERENCES Administrator(ID)

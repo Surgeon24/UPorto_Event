@@ -3,7 +3,7 @@
 
 CREATE INDEX idx_event_name ON Event USING HASH (name);
 CREATE INDEX idx_event_startDate ON Event USING BTREE (start_date);
-CREATE INDEX idx_poll_startAt ON Event USING BTREE (starts_at);
+CREATE INDEX idx_poll_startAt ON Poll USING BTREE (starts_at);
 
 --FULL TEXT SEARCH INDEXES
 
