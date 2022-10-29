@@ -242,12 +242,12 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Cardinality**     | Attribute cardinality: low/medium/high |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
+| **Relation**        | Event    							   |
+| **Attribute**       | name								   |
+| **Type**            | Hash             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | This Index will    |
 | `SQL code`                                                  ||
 
 
