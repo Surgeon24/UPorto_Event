@@ -26,24 +26,24 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | authorised user(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
+| R01                | authorised_user(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
 | R02                | event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN**, role **DF** 'participant' **CK** (role **IN** member_role)) ) |
-| R03                | notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → authorised user **NN** ) |
+| R03                | notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → authorised_user **NN** ) |
 | R04                | photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
-| R05				 | poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorised user **NN**, #event_id → event **NN** ) |
+| R05				 | poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorised_user **NN**, #event_id → event **NN** ) |
 | R06				 | poll_option(<ins>poll_option_id</ins>, option **NN**, #poll_id → poll **NN**) |
-| R07   			 | comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → comment **NN**, #event_id → event **NN**, #user_id → authorised user **NN** ) |
+| R07   			 | comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → comment **NN**, #event_id → event **NN**, #user_id → authorised_user **NN** ) |
 | R08    			 | tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → event **NN** ) |
-| R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorised user **NN**, #poll_option_id → poll_option **NN** ) |
-| R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), reported → authorised user **NN**, reporter → authorised user **NN**, manages → administrator **NN**) |
+| R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorised_user **NN**, #poll_option_id → poll_option **NN** ) |
+| R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), reported → authorised_user **NN**, reporter → authorised_user **NN**, manages → administrator **NN**) |
 | R11  				 | guest(<ins>guest_id</ins>, ip **NN** **UK**, time **NN**) |
 | R12                | report_notification(<ins>#notification_id → notification **NN**</ins>, #report → report **NN**) |
 | R13                | poll_notification(<ins>#notification_id → notification **NN**</ins>, #poll → Poll **NN**) |
 | R14                | event_notification(<ins>#notification_id → notification **NN**</ins>, #event → Event **NN**) |
 | R15                | comment_notification(<ins>#notification_id → notification **NN**</ins>, #comment → comment **NN**) |
-| R16                | event_authorised user(<ins>event_id → event</ins>, <ins>user_id → authorised user</ins>) |
-| R17                | invite(<ins>user_id → authorised user</ins>,<ins>event_id → event</ins>, accepted) |
-| R18                | administrator(<ins>#user_id → authorised user</ins>) |
+| R16                | event_authorised_user(<ins>event_id → event</ins>, <ins>user_id → authorised_user</ins>) |
+| R17                | invite(<ins>user_id → authorised_user</ins>,<ins>event_id → event</ins>, accepted) |
+| R18                | administrator(<ins>#user_id → authorised_user</ins>) |
 
 ### 2. Domains
 
@@ -54,7 +54,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 
 ### 3. Schema validation
 
-| **TABLE R01**   | authorised user     |
+| **TABLE R01**   | authorised_user     |
 | --------------  | ---                |
 | **Keys**        | { user_id }, { email }, {url}  |
 | **Functional Dependencies:** |       |
@@ -176,7 +176,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R16**   |event_authorised user|
+| **TABLE R16**   |event_authorised_user|
 | --------------  | ---                |
 | **Keys**        | { event_id }, { user_id }  |
 | **Functional Dependencies:** |       |
@@ -214,7 +214,7 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
-| R01  | authorised user 	| 10.000+   | 10+  |
+| R01  | authorised_user 	| 10.000+   | 10+  |
 | R02  | event          	| 1.000+ 	| 1+   |
 | R03  | notification   	| 10.000+	| 10+  |
 | R04  | photo          	| 10.000+	| 10+  |
@@ -229,7 +229,7 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 | R13  | poll_notification  | 1.000+ 	| 1+   |
 | R14  | event_notification | 1.000+ 	| 1+   |
 | R15  | comment_notification| 10.000+ 	| 10+  |
-| R16  |event_authorised user| 100.000+  | 100+ |
+| R16  |event_authorised_user| 100.000+  | 100+ |
 | R17  | invite       		| 10.000+   | 10+  |
 | R18  | administrator      | 10+       | 1+   |
 
@@ -313,7 +313,7 @@ drop table if exists notification;
 drop table IF EXISTS event_photo;
 drop table IF EXISTS user_photo;
 DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS authorised user;
+DROP TABLE IF EXISTS authorised_user;
 DROP TABLE IF EXISTS guests;
 
 -- Q - questions to the teacher
@@ -328,7 +328,7 @@ create table IF NOT EXISTS guests(
 );
 
 
-create table IF NOT EXISTS authorised user(
+create table IF NOT EXISTS authorised_user(
 	-- Q uuid - do we need it, is it ok? Professor liked it
 	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	name VARCHAR default 'name' NOT NULL,
@@ -366,10 +366,10 @@ create table IF NOT EXISTS event(
 	description text default('FEUP party') NOT NULL,
 	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
 	
-	FOREIGN KEY (participant_id) REFERENCES authorised user (user_id)
+	FOREIGN KEY (participant_id) REFERENCES authorised_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE,
-	FOREIGN KEY (creator_id) REFERENCES authorised user (user_id)
+	FOREIGN KEY (creator_id) REFERENCES authorised_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 	
@@ -449,7 +449,7 @@ CREATE TABLE IF NOT EXISTS notification(
 	notification_date timestamp default current_timestamp,
 	type notification_type,
 
-	FOREIGN KEY (user_id) REFERENCES authorised user (user_id)
+	FOREIGN KEY (user_id) REFERENCES authorised_user (user_id)
 										ON DELETE CASCADE
 										ON UPDATE CASCADE
 );
@@ -460,7 +460,7 @@ CREATE TABLE IF NOT EXISTS notification(
 
 -- Q should we have two table for event and user photos each?
 
--- Q maybe bytea for authorised user and talbe for event?
+-- Q maybe bytea for authorised_user and talbe for event?
 
 -- Q should I add automatic trigger that would add empty photo row when user is registered?  
 
@@ -472,7 +472,7 @@ create table IF NOT EXISTS user_photo(
 
 	-- Q should we have 'image_path' UNIQUE row?
 	
-	FOREIGN KEY (added_by) REFERENCES authorised user (user_id)
+	FOREIGN KEY (added_by) REFERENCES authorised_user (user_id)
 											ON DELETE CASCADE
 											ON UPDATE CASCADE
 	);
@@ -522,7 +522,7 @@ create table IF NOT EXISTS event_photo(
 ## Revision history
 
 1. A6-1 was changed.
-
+2. All names were changed according to the underscore notation (name, long_name). registered_user was chaged to authorised_user
 
 ***
 GROUP21122, 12/10/2022
