@@ -1,7 +1,18 @@
+-----------------------------------------
+-- EXTENSIONS
+-----------------------------------------
+
+-- The citext module provides a case-insensitive character string type. 
+-- Essentially, it internally calls lower when comparing values.
+-- https://www.postgresql.org/docs/current/citext.html
 CREATE EXTENSION IF NOT EXISTS citext;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
+
+-----------------------------------------
+-- DROPPING TABLES
+-----------------------------------------
 DROP TABLE IF EXISTS registered_user CASCADE;
 DROP TABLE IF EXISTS administrator CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
@@ -19,12 +30,20 @@ DROP TABLE IF EXISTS poll CASCADE;
 DROP TABLE IF EXISTS poll_option CASCADE;
 DROP TABLE IF EXISTS poll_vote;
 
+
+-----------------------------------------
+-- TYPES
+-----------------------------------------
 drop type if exists REPORT_STATUS;
 CREATE TYPE REPORT_STATUS AS ENUM('Going', 'Maybe', 'Cant');
 
 drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
 
+
+-----------------------------------------
+-- TABLES
+-----------------------------------------
 
 CREATE TABLE IF NOT EXISTS registered_user(
     ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -66,8 +85,6 @@ CREATE TABLE IF NOT EXISTS event(
 );
 
 
-
-
 CREATE TABLE IF NOT EXISTS report(
     id SERIAL PRIMARY KEY,
     reported_id uuid,
@@ -87,49 +104,26 @@ CREATE TABLE IF NOT EXISTS user_event(
     user_id uuid,
     event_id SERIAL,  
     role MEMBER_ROLE,
-    accepted BOOLEAN,   -- Needed only in Private events
-    -- constraint: user can be registered at the event only once
-    UNIQUE (user_id, event_id),  -- combination if user_id and event_id is UNIQUE
+    accepted BOOLEAN,   -- used only in private events
+    UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
     FOREIGN KEY (user_id) REFERENCES registered_user(id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
 
-
--- "comment" is a reserved word in PostgreSQL so I changed it to "comments"
+-- word "comments" was used because "comment" is a reserved word in PostgreSQL 
+-- inspirations: https://stackoverflow.com/questions/55074867/posts-comments-replies-and-likes-database-schema
 CREATE TABLE IF NOT EXISTS comments(
     id SERIAL PRIMARY KEY,
     comment_text TEXT,
     user_id uuid,
     event_id INT,
-    parent_comment_id INT DEFAULT NULL, -- null or -1 if a new comment and comment_id of the parent if a reply
+    parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     publish_date DATE DEFAULT (current_date) CHECK (publish_date <= current_date),
     FOREIGN KEY (user_id) REFERENCES registered_user(id),
     FOREIGN KEY (event_id) REFERENCES event(id),
     FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
 );
-
-
-
-
--- CREATE TRIGGER login1 BEFORE INSERT ON
--- Persons FOR EACH ROW trigger1:
--- begin
--- if (OLD.Address = NEW.Address) THEN
---     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Login istnieje';
--- else    
---     set NEW.Address = concat(LEFT(NEW.Firstname,1), NEW.Lastname);
--- LEAVE trigger1;
--- end if;
-
--- end;
-
-
-
-
-
-
-
 
 
 CREATE TABLE IF NOT EXISTS notification(
@@ -141,12 +135,6 @@ CREATE TABLE IF NOT EXISTS notification(
 );
 
 
-
-
-
-
-
-
 CREATE TABLE IF NOT EXISTS tag(
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -154,6 +142,8 @@ CREATE TABLE IF NOT EXISTS tag(
     event_id SERIAL,
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
+
+
 CREATE TABLE IF NOT EXISTS photo(
     id SERIAL PRIMARY KEY,
     upload_date DATE DEFAULT (current_date),
@@ -161,6 +151,8 @@ CREATE TABLE IF NOT EXISTS photo(
     event_id SERIAL,
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
+
+
 CREATE TABLE IF NOT EXISTS poll(
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -172,12 +164,16 @@ CREATE TABLE IF NOT EXISTS poll(
     FOREIGN KEY (event_id) REFERENCES event(id),
     FOREIGN KEY (user_id) REFERENCES registered_user(id)
 );
+
+
 CREATE TABLE IF NOT EXISTS poll_option(
     id SERIAL PRIMARY KEY,
     option TEXT NOT NULL,
     poll_id SERIAL,
     FOREIGN KEY (poll_id) REFERENCES poll(id)
 );
+
+
 CREATE TABLE IF NOT EXISTS poll_vote(
     vote_id SERIAL PRIMARY KEY,
     user_id uuid,
