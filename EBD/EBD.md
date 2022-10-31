@@ -184,7 +184,7 @@ Indexes are used to improve database performance by allowing the database server
 Performance indexes are used to improve the performance of individual queries. We should not overuse them, so for the purposes of our project, we will use only three indexes, in areas where they can have the greatest impact. These, in turn, are frequently used tables with a large amount of information.
 
 
-| **Index**           | IDX04                                  |
+| **Index**           | IDX01                                  |
 | ---                 | ---                                    |
 | **Relation**        | authorised_user    							   |
 | **Attribute**       | id								   |
@@ -195,7 +195,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **SQL code**		 | CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);|
 
 
-| **Index**           | IDX05                                  |
+| **Index**           | IDX02                                  |
 | ---                 | ---                                    |
 | **Relation**        | user_event    						   |
 | **Attribute**       | event_id							   |
@@ -205,7 +205,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Justification**   | 'user_event' table is accessed very often.       | 
 |**SQL code** | CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);|
 
-| **Index**           | IDX02                                            |
+| **Index**           | IDX03                                            |
 | ---                 | ---                                              |
 | **Relation**        | user_event    							         |
 | **Attribute**       | event_id								         |
