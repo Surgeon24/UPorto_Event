@@ -240,7 +240,7 @@ CREATE TABLE IF NOT EXISTS report(
     reporter_id uuid,
     admin_id INT,
     report_text TEXT NOT NULL,
-		report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
+	report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
     report_status REPORT_STATUS,
     FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
     FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
@@ -275,8 +275,8 @@ CREATE TABLE IF NOT EXISTS comments(
 
 CREATE TABLE IF NOT EXISTS notification(
     id SERIAL PRIMARY KEY,
-		user_id uuid,
-		notification_type type_notification NOT NULL,
+	user_id uuid,
+	notification_type type_notification NOT NULL,
     notification_text TEXT NOT NULL DEFAULT ('text'),
     notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
     FOREIGN KEY (user_id) REFERENCES authorized_user(id)
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS poll_option(
 CREATE TABLE IF NOT EXISTS poll_vote(
     vote_id SERIAL PRIMARY KEY,
     user_id uuid,
-		event_id INT,
+	event_id INT,
     option_id INT,
     date DATE NOT NULL,
     FOREIGN KEY (vote_id) REFERENCES poll(id),
