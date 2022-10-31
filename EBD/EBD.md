@@ -225,10 +225,10 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Index**           | IDX11                                  |
 | ---                 | ---                                    |
 | **Relation**        | event    |
-| **Attribute**       | name   |
+| **Attribute**       | name, description, location   |
 | **Type**            | GIN              |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Indexing this table would allow users searching for events based on name fast.   |
+| **Clustering**      | NO                |
+| **Justification**   | To provide full-text search features search for events based on name, description and location. The index type is GIN because the indexed fields are not expected to change often.   |
 
 ~~~~
 ALTER TABLE event
