@@ -29,15 +29,11 @@ DROP TABLE IF EXISTS poll_vote CASCADE;
 -----------------------------------------
 -- TYPES
 -----------------------------------------
-drop type if exists REPORT_TYPE;
-CREATE TYPE REPORT_TYPE AS ENUM('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information');
-
 drop type if exists REPORT_STATUS;
-CREATE TYPE REPORT_STATUS AS ENUM('Waiting', 'Ignored', 'Sanctioned');
+CREATE TYPE REPORT_STATUS AS ENUM('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information');
 
 drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
-
 
 drop type if exists TYPE_NOTIFICATION;
 CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
@@ -94,7 +90,6 @@ CREATE TABLE IF NOT EXISTS report(
     admin_id INT,
     report_text TEXT NOT NULL,
 		report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
-		report_type REPORT_TYPE,
     report_status REPORT_STATUS,
     FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
     FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
