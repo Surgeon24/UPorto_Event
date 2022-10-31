@@ -377,11 +377,10 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Cardinality**     | high                                   |
 | **Clustering**      | No                                     |
 | **Justification**   | 'authorised_user' table has a huge wokrload. Index ensures fast counting of the number of users by surename.     |
-| **SQL code**		 | |
+| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surename);` |
 
-~~~~sql
-CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surename);
-~~~~
+
+
 
 
 | **Index**           | IDX02                                  |
@@ -392,27 +391,20 @@ CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surename);
 | **Cardinality**     | medium                                 |
 | **Clustering**      | No                                     |
 | **Justification**   | we will use it to search for people from a specific event, during search equality (=) will be used. `select user_id from user_event where event_id = 1;`       | 
-**SQL code** 
+| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);` |
 
-~~~~~sql
 
-CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);
-
-~~~~~
 
 | **Index**           | IDX03                                            |
 | ---                 | ---                                              |
 | **Relation**        | poll_vote    							         |
-| **Attribute**       | id								         |
+| **Attribute**       | id								                 |
 | **Type**            | hash             					             |
 | **Cardinality**     | medium                                           |
 | **Clustering**      | No                                               |
 | **Justification**   | lets us count all the votes for a specifit poll. `select select count(*) from poll_vote where poll_id = 1;` equality operator is used, hence the hash index type is suggested.       |
-|**SQL code** || 
+| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);` |
 
-~~~~sql
-CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);
-~~~~
 
 
 #### 2.2. Full-text Search Indices 
