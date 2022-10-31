@@ -270,14 +270,14 @@ CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 ~~~~
 
 
-| **Index**           | IDX15                                  |
+| **Index**           | IDX12                                  |
 | ---                 | ---                                    |
-| **Relation**        | comments    |
-| **Attribute**       | comment_text   |
-| **Type**            | GIN              |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | allows users to fastly search comments   |
-| `SQL code`                                                  ||
+| **Relation**        | tag    |
+| **Attribute**       | name   |
+| **Type**            | GIST              |
+| **Clustering**      | NO                |
+| **Justification**   | To improve overall performance of full-text searches while searching for events by tags; GiST better for dynamic data   |
+| `CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);`                                                  ||
 
 
 ### 3. Triggers
