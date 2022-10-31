@@ -85,28 +85,6 @@ insert into poll (id, title, content, starts_at, end_at, event_id) values (20, '
 
 
 
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (1, 1, 1, 1, 1, '8/7/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (2, 2, 2, 2, 2, '5/24/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (3, 3, 3, 3, 3, '8/13/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (4, 4, 4, 4, 4, '10/4/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (5, 5, 5, 5, 5, '8/5/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (6, 6, 6, 6, 6, '10/16/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (7, 7, 7, 7, 7, '9/14/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (8, 8, 8, 8, 8, '4/23/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (9, 9, 9, 9, 9, '3/21/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (10, 10, 10, 10, 10, '8/21/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (11, 11, 11, 11, 11, '8/26/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (12, 12, 12, 12, 12, '8/26/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (13, 13, 13, 13, 13, '10/5/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (14, 14, 14, 14, 14, '4/20/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (15, 15, 15, 15, 15, '8/30/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (16, 16, 16, 16, 16, '7/16/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (17, 17, 17, 17, 17, '8/7/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (18, 18, 18, 18, 18, '11/30/2021');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (19, 19, 19, 19, 19, '6/24/2022');
-insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (20, 20, 20, 20, 20, '3/17/2022');
-
-
 
 insert into photo (id, upload_date, image_path, event_id) values (1, '5/2/2022', 'SodalesScelerisqueMauris.jpeg', 1);
 insert into photo (id, upload_date, image_path, event_id) values (2, '9/7/2022', 'ViverraDapibusNulla.png', 2);
@@ -179,3 +157,47 @@ insert into notification (notifications_id, text, date, user_id) values (17, 'Po
 insert into notification (notifications_id, text, date, user_id) values (18, 'Report Notification', '8/8/2022', 6);
 insert into notification (notifications_id, text, date, user_id) values (19, 'Event Notification', '4/14/2022', 5);
 insert into notification (notifications_id, text, date, user_id) values (20, 'Poll Notification', '7/18/2022', 19);
+
+
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (1, 1, 1, 1, 1, '11/23/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (2, 2, 2, 2, 2, '6/13/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (3, 3, 3, 3, 3, '9/23/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (4, 4, 4, 4, 4, '4/20/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (5, 5, 5, 5, 5, '5/31/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (6, 6, 6, 6, 6, '11/15/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (7, 7, 7, 7, 7, '2/7/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (8, 8, 8, 8, 8, '5/3/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (9, 9, 9, 9, 9, '5/21/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (10, 10, 10, 10, 10, '3/17/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (11, 11, 11, 11, 11, '10/5/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (12, 12, 12, 12, 12, '9/17/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (13, 13, 13, 13, 13, '12/29/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (14, 14, 14, 14, 14, '11/6/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (15, 15, 15, 15, 15, '1/19/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (16, 16, 16, 16, 16, '11/17/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (17, 17, 17, 17, 17, '11/30/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (18, 18, 18, 18, 18, '12/18/2021');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (19, 19, 19, 19, 19, '6/28/2022');
+insert into poll_vote (id, poll_id, user_id, event_id, option_id, date) values (20, 20, 20, 20, 20, '1/6/2022');
+
+
+insert into poll_option (id, option, poll_id) values (1, 'Bamity', 1);
+insert into poll_option (id, option, poll_id) values (2, 'Asoka', 2);
+insert into poll_option (id, option, poll_id) values (3, 'Y-find', 3);
+insert into poll_option (id, option, poll_id) values (4, 'Namfix', 4);
+insert into poll_option (id, option, poll_id) values (5, 'Toughjoyfax', 5);
+insert into poll_option (id, option, poll_id) values (6, 'Zontrax', 6);
+insert into poll_option (id, option, poll_id) values (7, 'Bigtax', 7);
+insert into poll_option (id, option, poll_id) values (8, 'Hatity', 8);
+insert into poll_option (id, option, poll_id) values (9, 'Tin', 9);
+insert into poll_option (id, option, poll_id) values (10, 'Transcof', 10);
+insert into poll_option (id, option, poll_id) values (11, 'Zaam-Dox', 11);
+insert into poll_option (id, option, poll_id) values (12, 'Sub-Ex', 12);
+insert into poll_option (id, option, poll_id) values (13, 'Kanlam', 13);
+insert into poll_option (id, option, poll_id) values (14, 'Duobam', 14);
+insert into poll_option (id, option, poll_id) values (15, 'Bitchip', 15);
+insert into poll_option (id, option, poll_id) values (16, 'Alphazap', 16);
+insert into poll_option (id, option, poll_id) values (17, 'Tresom', 17);
+insert into poll_option (id, option, poll_id) values (18, 'Zamit', 18);
+insert into poll_option (id, option, poll_id) values (19, 'Fintone', 19);
+insert into poll_option (id, option, poll_id) values (20, 'Solarbreeze', 20);
