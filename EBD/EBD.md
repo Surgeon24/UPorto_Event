@@ -50,7 +50,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | Domain Name  | Domain Specification           |
 | -----------  | ------------------------------ |
 | member_role   | ENUM ('owner', 'moderator', 'participant') |
-| report_status | ENUM ('waiting', 'ignored', 'sanctioned') |
+| report_status | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information') |
 
 ### 3. Schema validation
 
@@ -68,7 +68,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | {event_id}         |
 | **Functional Dependencies:** |       |
-| FD0201          | event_id → {name, descriprion, start_date, location, schedule, role} |
+| FD0201          | event_id → {name, descriprion, start_date, location, schedule} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -104,7 +104,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R07**   | comment            |
+| **TABLE R07**   | comments            |
 | --------------  | ---                |
 | **Keys**        | { comment_id } |
 | **Functional Dependencies:** |       |
@@ -136,15 +136,8 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R11**   | guest              |
-| --------------  | ---                |
-| **Keys**        | { guest_id }  |
-| **Functional Dependencies:** |       |
-| FD1101          | guest_id → {ip, time} |
-| **NORMAL FORM** | BCNF               |
 
-
-| **TABLE R12**   | report_notification|
+| **TABLE R11**   | report_notification|
 | --------------  | ---                |
 | **Keys**        | { notification_id }  |
 | **Functional Dependencies:** |       |
@@ -152,7 +145,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R13**   | poll_notification  |
+| **TABLE R12**   | poll_notification  |
 | --------------  | ---                |
 | **Keys**        | { notification_id }  |
 | **Functional Dependencies:** |       |
@@ -160,7 +153,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R14**   | event_notification |
+| **TABLE R13**   | event_notification |
 | --------------  | ---                |
 | **Keys**        | { notification_id } |
 | **Functional Dependencies:** |       |
@@ -168,7 +161,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R15**   |comment_notification|
+| **TABLE R14**   |comment_notification|
 | --------------  | ---                |
 | **Keys**        | { notification_id } |
 | **Functional Dependencies:** |       |
@@ -176,7 +169,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R16**   |event_authorised_user|
+| **TABLE R15**   |event_authorised_user|
 | --------------  | ---                |
 | **Keys**        | { event_id }, { user_id }  |
 | **Functional Dependencies:** |       |
@@ -184,15 +177,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R17**   | invite             |
+| **TABLE R16**   | user_event         |
 | --------------  | ---                |
 | **Keys**        | { user_id }, { event_id }  |
 | **Functional Dependencies:** |       |
-| FD1701          | user_id, event_id → {accepted} |
+| FD1701          | user_id, member_role, event_id → {accepted} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R18**   | administrator      |
+| **TABLE R17**   | administrator      |
 | --------------  | ---                |
 | **Keys**        | { user_id }        |
 | **Functional Dependencies:** |       |
@@ -205,7 +198,7 @@ The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form
 
 ## A6: Indexes, triggers, transactions and database population
 
-> Brief presentation of the artefact goals.
+> This artifact ................ 
 
 ### 1. Database Workload
  
@@ -271,8 +264,98 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
-| **Description**  | Trigger description, including reference to the business rules involved |
-| `SQL code`                                             ||
+| **Description**  | Sends a notification after user submits a report to assure him it's delivered. |
+~~~~ 
+CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$ 
+BEGIN 
+	INSERT INTO 
+	notification(user_id, notification_type, notification_date, notification_text) 
+	select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. 
+	We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report; 
+RETURN new; 
+END; 
+$report_notification$ 
+language plpgsql; 
+				
+DROP TRIGGER IF EXISTS trig_report ON public.report; 
+											
+CREATE TRIGGER trig_report					
+AFTER INSERT ON report						
+FOR EACH ROW								
+EXECUTE PROCEDURE report_notification();` 
+~~~~
+
+| **Trigger**      | TRIGGER02                              |
+| ---              | ---                                    |
+| **Description**  | sends a notification after a new poll is created
+
+~~~~
+CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
+BEGIN
+	INSERT INTO 
+	notification(notification_date, notification_type, user_id, notification_text)
+	select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.title || ' You can vote!' from poll;
+RETURN new;
+END;
+$poll_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_poll ON public.poll;
+
+CREATE TRIGGER trig_poll
+     AFTER INSERT ON poll
+     FOR EACH ROW
+     EXECUTE PROCEDURE poll_notification();
+~~~~
+
+
+| **Trigger**      | TRIGGER03                              |
+| ---              | ---                                    |
+| **Description**  | Sends a notification when a user joins an event. |
+~~~~ 
+CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
+BEGIN
+	INSERT INTO 
+	notification(notification_text,notification_date, notification_type, user_id)
+	VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
+RETURN new;
+END;
+$event_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_event ON public.user_event;
+
+CREATE TRIGGER trig_event
+     AFTER INSERT OR UPDATE ON user_event
+     FOR EACH ROW
+     EXECUTE PROCEDURE event_notification();
+~~~~
+
+| **Trigger**      | TRIGGER04                              |
+| ---              | ---                                    |
+| **Description**  | Sends a notification to the creator of a comment when a comment is replied by another user. |
+~~~~ 
+CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS $comment_notification$
+BEGIN
+	IF (NEW.parent_comment_id IS NOT NULL)
+THEN
+	INSERT INTO 
+	notification(notification_text,notification_date, notification_type, user_id)
+	select NEW.comment_text, NEW.comment_date, 'comment' ,user_id from comments where NEW.parent_comment_id = id;
+END IF;
+RETURN new;
+END;
+$comment_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_comment ON public.comments;
+
+CREATE TRIGGER trig_comment
+     AFTER INSERT OR UPDATE ON comments
+     FOR EACH ROW
+     EXECUTE PROCEDURE comment_notification();
+~~~~
+
 
 ### 4. Transactions
  
@@ -293,204 +376,6 @@ The SQL creation script is expanded in the A6 to include indexes, triggers, and 
 
 
 ~~~~sql
--- in order to import the file, in Query Tool click the left-most icon 
--- 'open file' (alt+O), choose the file and execute
-
--- The citext module provides a case-insensitive character string type. 
--- Essentially, it internally calls lower when comparing values.
--- https://www.postgresql.org/docs/current/citext.html
-CREATE EXTENSION IF NOT EXISTS citext;
-
--- Lets us create UUIDs, instead of SERIAL ids
--- https://www.geeksforgeeks.org/postgresql-uuid-data-type/
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
---!!! I should do the right order of dropping/creating
-drop table if exists poll_vote;
-drop table if exists poll;
-drop table if exists comment;
-drop table if exists notification;
-drop table IF EXISTS event_photo;
-drop table IF EXISTS user_photo;
-DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS authorised_user;
-DROP TABLE IF EXISTS guests;
-
--- Q - questions to the teacher
-
--- Q - ask about the quize
--- 25 November
-
-
-create table IF NOT EXISTS guests(
-	id_guest SERIAL,
-	ip text NOT NULL
-);
-
-
-create table IF NOT EXISTS authorised_user(
-	-- Q uuid - do we need it, is it ok? Professor liked it
-	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-	name VARCHAR default 'name' NOT NULL,
-	surename VARCHAR default 'family name' NOT NULL,
-	nickname VARCHAR UNIQUE NOT NULL,
-	password text default sha256('default_password') NOT NULL,
-	email citext UNIQUE NOT NULL,
-	birth_date date default (current_date - INTERVAL '18 YEAR') CHECK (birth_date <= (current_date - INTERVAL '18 YEAR')),
-	date_registered TIMESTAMP default current_timestamp NOT NULL,
-	-- Q last log in. Good?
-	-- Yes
-	last_seen TIMESTAMP,
-	url text UNIQUE,
-	status text,
-	is_admin BOOLEAN DEFAULT false NOT NULL	
-);
-
-
-
-
-create table IF NOT EXISTS event(
-	event_id SERIAL PRIMARY KEY,
-	event_name VARCHAR default 'default name' NOT NULL,
-	-- Q default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
-	-- Q not sure about date format
-	event_date TIMESTAMP default (to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')) NOT NULL,
-	participant_id uuid UNIQUE,  -- only registered users can go
-	creator_id uuid UNIQUE, 
-	location text default 'Adega Leonor' NOT NULL,
-
-	-- might delete undecided
-	tag text default '#',
-	-- might delete undecided
-
-	description text default('FEUP party') NOT NULL,
-	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
-	
-	FOREIGN KEY (participant_id) REFERENCES authorised_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE,
-	FOREIGN KEY (creator_id) REFERENCES authorised_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE
-	
-);
-
-
-drop table if exists event_status;
--- table where we store 'Going', 'Maybe', 'Can't answers from participants.
--- Q is there a better way to do it?
-drop type if exists status;
--- Q how to write can't?
-create type status as enum ('Going', 'Maybe', 'Cant');
-
-create table IF NOT EXISTS event_status(
-	participant_id uuid,
-	s status default 'Maybe'
-);
-
-
--- Q is it a rule to have id in every table?
-create table IF NOT EXISTS poll(
-	poll_id SERIAL,
-	event_id int,
-	title text default 'title' NOT NULL,
-	host_name text default 'host name?' NOT NULL,
-	question text DEFAULT 'questions?' NOT NULL,
-	-- check that poll doesn't start in the past
-	starts_at TIMESTAMP default CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
-
-
-	-- Q How to do something like   default (starts_at + INTERVAL '1 DAY')?
-	end_at TIMESTAMP default (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
-
-
-	FOREIGN KEY (event_id) REFERENCES event (event_id)
-							ON DELETE CASCADE
-							ON UPDATE CASCADE
-);
-
-
-
--- Q not sure what are we doing here
-create table IF NOT EXISTS poll_vote(
-	option text
-);
-
-
-
--- Q can I use the word `comment` if it's a special word in PostgreSQL?
-CREATE TABLE comment(
-	comment_id SERIAL,
-	event_id int,
-	author_id uuid NOT NULL,
-	-- unable to publish yesturday
-	publish_date TIMESTAMP default current_timestamp check(publish_date <= CURRENT_TIMESTAMP) NOT NULL,
-	description text DEFAULT 'your comment here' NOT NULL,
-
-	FOREIGN KEY (event_id) REFERENCES event (event_id)
-								ON DELETE CASCADE
-								ON UPDATE CASCADE,
-
-	FOREIGN KEY (author_id) REFERENCES event (participant_id)
-								ON DELETE CASCADE
-								ON UPDATE CASCADE
-);
-
-
--- Q good idea for notigication type?
-
-DROP TYPE IF EXISTS notification_type;
-CREATE TYPE notification_type AS ENUM ('Reminder', 'report', 'Comment');
-
-CREATE TABLE IF NOT EXISTS notification(
-	notification_id SERIAL PRIMARY KEY,
-	user_id uuid,
-	description text,
-	notification_date timestamp default current_timestamp,
-	type notification_type,
-
-	FOREIGN KEY (user_id) REFERENCES authorised_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE
-);
-
-
-
-
-
--- Q should we have two table for event and user photos each?
-
--- Q maybe bytea for authorised_user and talbe for event?
-
--- Q should I add automatic trigger that would add empty photo row when user is registered?  
-
-create table IF NOT EXISTS user_photo(
-	user_photo_id SERIAL,
-	file bytea,
-	added_on timestamp default current_timestamp,
-	added_by uuid,
-
-	-- Q should we have 'image_path' UNIQUE row?
-	
-	FOREIGN KEY (added_by) REFERENCES authorised_user (user_id)
-											ON DELETE CASCADE
-											ON UPDATE CASCADE
-	);
-
-
-
-
-create table IF NOT EXISTS event_photo(
-	event_photo_id SERIAL,
-	file bytea,
-	added_on timestamp default current_timestamp,
-	-- creator
-	added_by uuid,
-
-	FOREIGN KEY (added_by) REFERENCES event (creator_id)
-									ON DELETE CASCADE
-									ON UPDATE CASCADE
-);
 
 ~~~~~
 
