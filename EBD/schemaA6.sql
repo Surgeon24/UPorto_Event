@@ -6,6 +6,8 @@
 -- Essentially, it internally calls lower when comparing values.
 -- https://www.postgresql.org/docs/current/citext.html
 CREATE EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS btree_gist;
 
 
 -----------------------------------------
