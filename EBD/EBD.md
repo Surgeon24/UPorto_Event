@@ -152,7 +152,7 @@ The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form
 
 ## A6: Indexes, triggers, transactions and database population
 
-> This artifact ................ 
+> This artifact contains information about workload of the  database, the identification and characterisation of the indexes, triggers and transaction to support the data integrity rules and the physical schema of the complete database.
 
 ### 1. Database Workload
  
