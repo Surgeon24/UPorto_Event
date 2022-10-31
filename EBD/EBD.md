@@ -192,7 +192,11 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Cardinality**     | high                                   |
 | **Clustering**      | No                                     |
 | **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which mightslow down the searching process. For example, ensures fast counting of the number of all users in the database.     |
-| **SQL code**		 | `CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);`|
+| **SQL code**		 | |
+
+~~~~sql
+CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);
+~~~~
 
 
 | **Index**           | IDX02                                  |
@@ -204,7 +208,13 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Clustering**      | No                                     |
 | **Justification**   | we will use it to search for people from a specific event, during search equality (=) will be used.
 -- select user_id from user_event where event_id = 1;       | 
-|**SQL code** | `CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);`|
+|**SQL code** | |
+
+~~~~~sql
+
+CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);
+
+~~~~~
 
 | **Index**           | IDX03                                            |
 | ---                 | ---                                              |
@@ -214,11 +224,13 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Cardinality**     | medium                                           |
 | **Clustering**      | No                                               |
 | **Justification**   | lets us count all the votes for a specifit poll. `select select count(*) from poll_vote where poll_id = 1;` equality operator is used, hence the hash index type is suggested.       |
-|**SQL code** | `CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);`|
+|**SQL code** || 
 
 ~~~~sql
-
+CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);
 ~~~~
+
+
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
@@ -232,7 +244,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Clustering**      | NO                |
 | **Justification**   | To provide full-text search features search for events based on name, description and location. The index type is GIN because the indexed fields are not expected to change often.   |
 
-~~~~
+~~~~sql
 ALTER TABLE event
 ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
 
@@ -289,7 +301,8 @@ CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
 | **Description**  | Sends a notification after user submits a report to assure him it's delivered. |
-~~~~ 
+
+~~~~sql
 CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$ 
 BEGIN 
 	INSERT INTO 
@@ -313,7 +326,7 @@ EXECUTE PROCEDURE report_notification();`
 | ---              | ---                                    |
 | **Description**  | sends a notification after a new poll is created
 
-~~~~
+~~~~sql
 CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
 BEGIN
 	INSERT INTO 
@@ -336,7 +349,8 @@ CREATE TRIGGER trig_poll
 | **Trigger**      | TRIGGER03                              |
 | ---              | ---                                    |
 | **Description**  | Sends a notification when a user joins an event. |
-~~~~ 
+
+~~~~sql 
 CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
 BEGIN
 	INSERT INTO 
@@ -358,7 +372,8 @@ CREATE TRIGGER trig_event
 | **Trigger**      | TRIGGER04                              |
 | ---              | ---                                    |
 | **Description**  | Sends a notification to the creator of a comment when a comment is replied by another user. |
-~~~~ 
+
+~~~~sql 
 CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS $comment_notification$
 BEGIN
 	IF (NEW.parent_comment_id IS NOT NULL)
@@ -389,7 +404,8 @@ CREATE TRIGGER trig_comment
 | --------------- | ----------------------------------- |
 | Justification   | When user tries to create a new event it's important to use a transaction to ensure that all the code executes without errors. If an error occurs, a ROLLBACK is issued (when the insertion of new event fails or creation of new line in the user_event). The isolation level is Repeatable Read, because, otherwise, there is a chance that event_update table can be changed by other function and as a result, inconsistent data would be stored.  |
 | Isolation level | REPEATABLE READ |
-~~~~
+
+~~~~sql
 BEGIN TRANSACTION;
 
 SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
