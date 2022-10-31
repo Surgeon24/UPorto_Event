@@ -8,7 +8,7 @@ In A4 we will take over our first database topic. This will cover the **Class Di
 
 ### 1. Class diagram
 
-![A4- UML_Diagram](images/A4- UPortoEvent.jpg)
+![A4- UML_Diagram](images/A4- UPortoEventUML.png)
 
 ### 2. Additional Business Rules
  
@@ -35,7 +35,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R07   			 | comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → comment **NN**, #event_id → event **NN**, #user_id → authorised_user **NN** ) |
 | R08    			 | tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → event **NN** ) |
 | R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorised_user **NN**, #poll_option_id → poll_option **NN** ) |
-| R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), reported → authorised_user **NN**, reporter → authorised_user **NN**, manages → administrator **NN**) |
+| R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), report_type **DF** 'Spam' **CK** (report_type **IN** report_type), reported → authorised_user **NN**, reporter → authorised_user **NN**, manages → administrator **NN**) |
 | R11                | user_event(<ins>user_id → authorised_user</ins>,<ins>event_id → event</ins>, accepted) |
 | R12                | administrator(<ins>#user_id → authorised_user</ins>) |
 
@@ -44,7 +44,8 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | Domain Name  | Domain Specification           |
 | -----------  | ------------------------------ |
 | member_role   | ENUM ('owner', 'moderator', 'participant') |
-| report_status | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information') |
+| report_type | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information') |
+| report_status | ENUM('waiting', 'ignored', 'sanctioned')|
 
 ### 3. Schema validation
 
@@ -126,7 +127,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | { report_id }|
 | **Functional Dependencies:** |       |
-| FD1001          | report_id → {text, report_status, reported, reporter, manages} |
+| FD1001          | report_id → {text, report_status, report_type, reported, reporter, manages} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -220,7 +221,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Relation**        | authorised_user    							   |
 | **Attribute**       | id								   |
 | **Type**            | b-tree             					   |
-| **Cardinality**     | high                                 |
+| **Cardinality**     | high                                   |
 | **Clustering**      | No                                     |
 | **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which might slow down the searching process.      |
 | **SQL code**		 | CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);|
@@ -228,14 +229,26 @@ Performance indexes are used to improve the performance of individual queries. W
 
 | **Index**           | IDX05                                  |
 | ---                 | ---                                    |
-| **Relation**        | user_event    							   |
-| **Attribute**       | event_id								   |
+| **Relation**        | user_event    						   |
+| **Attribute**       | event_id							   |
 | **Type**            | b-tree             					   |
 | **Cardinality**     | medium                                 |
 | **Clustering**      | No                                     |
 | **Justification**   | 'user_event' table is accessed very often.       | 
 |**SQL code** | CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);|
 
+| **Index**           | IDX02                                            |
+| ---                 | ---                                              |
+| **Relation**        | user_event    							         |
+| **Attribute**       | event_id								         |
+| **Type**            | b-tree             					             |
+| **Cardinality**     | medium                                           |
+| **Clustering**      | No                                               |
+| **Justification**   | 'user_event' table is accessed very often.       |
+
+~~~~sql
+
+~~~~
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
