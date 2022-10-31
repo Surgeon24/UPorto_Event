@@ -50,7 +50,7 @@ CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 CREATE TABLE IF NOT EXISTS authorized_user(
     ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     name TEXT DEFAULT 'name' NOT NULL,
-    surename TEXT DEFAULT 'family name' NOT NULL,
+    surname TEXT DEFAULT 'family name' NOT NULL,
     nickname TEXT UNIQUE NOT NULL,
     password TEXT DEFAULT sha256('DEFAULT_password') NOT NULL,
     email citext UNIQUE NOT NULL,
@@ -278,7 +278,7 @@ CREATE TRIGGER trig_report
 
 -- e.g to count number of users
 DROP INDEX IF EXISTS idx_id_user CASCADE;
-CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surename);
+CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surname);
 
 -- we will use it to search for people from a specific event, during search equality (=) will be used.
 -- select user_id from user_event where event_id = 1;
