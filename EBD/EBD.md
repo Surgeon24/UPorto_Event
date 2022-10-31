@@ -191,28 +191,30 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Type**            | b-tree             					   |
 | **Cardinality**     | high                                   |
 | **Clustering**      | No                                     |
-| **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which might slow down the searching process.      |
-| **SQL code**		 | CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);|
+| **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which mightslow down the searching process. For example, ensures fast counting of the number of all users in the database.     |
+| **SQL code**		 | `CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);`|
 
 
 | **Index**           | IDX02                                  |
 | ---                 | ---                                    |
 | **Relation**        | user_event    						   |
 | **Attribute**       | event_id							   |
-| **Type**            | b-tree             					   |
+| **Type**            | hash             					   |
 | **Cardinality**     | medium                                 |
 | **Clustering**      | No                                     |
-| **Justification**   | 'user_event' table is accessed very often.       | 
-|**SQL code** | CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);|
+| **Justification**   | we will use it to search for people from a specific event, during search equality (=) will be used.
+-- select user_id from user_event where event_id = 1;       | 
+|**SQL code** | `CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);`|
 
 | **Index**           | IDX03                                            |
 | ---                 | ---                                              |
-| **Relation**        | user_event    							         |
-| **Attribute**       | event_id								         |
-| **Type**            | b-tree             					             |
+| **Relation**        | poll_vote    							         |
+| **Attribute**       | id								         |
+| **Type**            | hash             					             |
 | **Cardinality**     | medium                                           |
 | **Clustering**      | No                                               |
-| **Justification**   | 'user_event' table is accessed very often.       |
+| **Justification**   | lets us count all the votes for a specifit poll. `select select count(*) from poll_vote where poll_id = 1;` equality operator is used, hence the hash index type is suggested.       |
+|**SQL code** | `CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);`|
 
 ~~~~sql
 
