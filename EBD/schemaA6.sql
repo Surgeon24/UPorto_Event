@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS poll_vote CASCADE;
 -- TYPES
 -----------------------------------------
 drop type if exists REPORT_STATUS;
-CREATE TYPE REPORT_STATUS AS ENUM('Going', 'Maybe', 'Cant');
+CREATE TYPE REPORT_STATUS AS ENUM('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information');
 
 drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
@@ -90,7 +90,8 @@ CREATE TABLE IF NOT EXISTS report(
     reported_id uuid,
     reporter_id uuid,
     admin_id INT,
-    text TEXT NOT NULL,
+    report_text TEXT NOT NULL,
+		report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
     report_status REPORT_STATUS,
     FOREIGN KEY (reported_id) REFERENCES registered_user(id),
     FOREIGN KEY (reporter_id) REFERENCES registered_user(id),
@@ -214,7 +215,7 @@ CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notifi
 		BEGIN
 				INSERT INTO 
 							notification(notification_text,notification_date, notification_type, user_id)
-							VALUES('Welcome new participant!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
+							VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
 							RETURN new;
 END;
 $event_notification$
@@ -246,6 +247,23 @@ CREATE TRIGGER trig_poll
      FOR EACH ROW
      EXECUTE PROCEDURE poll_notification();
 
+
+CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$
+		BEGIN
+				INSERT INTO 
+							notification(user_id, notification_type, notification_date, notification_text)
+							select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report;
+							RETURN new;
+END;
+$report_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_report ON public.report;
+
+CREATE TRIGGER trig_report
+     AFTER INSERT ON report
+     FOR EACH ROW
+     EXECUTE PROCEDURE report_notification();
 
 
 
