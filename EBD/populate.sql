@@ -204,3 +204,29 @@ insert into poll_option (id, option, poll_id) values (20, 'Solarbreeze', 20);
 
 insert into administrator(user_id) values(19)
 insert into administrator(user_id) values(20)
+
+insert into report (id, reported_id, reporter_id, admin_id, report_text, report_date, report_type, report_status) values (1, 1, 1, 1, 'visualize rich convergence', '5/31/2022', 'Hate speech or symbols', 'Waiting');
+insert into report (id, reported_id, reporter_id, admin_id, report_text, report_date, report_type, report_status) values (2, 2, 2, 2, 'cultivate real-time synergies', '4/6/2022', 'Nudity or sexual activity', 'Ignored');
+insert into report (id, reported_id, reporter_id, admin_id, report_text, report_date, report_type, report_status) values (3, 3, 3, 3, 'streamline plug-and-play applications', '3/10/2022', 'Nudity or sexual activity', 'Ignored');
+
+
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (1, '15KkGGtTei9TvmpYYZEZgQ9ADEDapEA9pj', 1, 1, 1, '8/30/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (2, '1Ejp62ojhnxWKUsRanrrM6FBw7GvsMNLc4', 2, 2, 2, '9/4/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (3, '1LPP7ngej9oWsyzMp7ye5XPDukfMbBN3Ko', 3, 3, 3, '11/18/2021');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (4, '1DvfCLHPDQ7dhzCM4CMY9ezaWSxkusJbRa', 4, 4, 4, '7/27/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (5, '1LbQRHbzS8oWqanZE8RqQBoxoKdR5atcES', 5, 5, 5, '9/8/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (6, '1GUBeYYTFZ2CKqUYTBqAaUpSn3TnZPBDqe', 6, 6, 6, '7/23/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (7, '17LP9NrAAfqkGfULKCN6nhWube6JR5ieeN', 7, 7, 7, '11/2/2021');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (8, '1LLECuRdX4Yvpi7NKNtRcZNcjE5MxzxZJS', 8, 8, 8, '5/6/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (9, '1BtnkPJxSPLioEPg95ZBQacZBLsXtuhkK2', 9, 9, 9, '5/15/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (10, '174ygiz4GNTW918QRGAGjhN3YurZtz8nev', 10, 10, 10, '8/8/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (11, '1LaCAJjt43A6hNdZN4TEc7f7UCJw31qB4X', 11, 11, 11, '12/10/2021');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (12, '1u2hkcmhEkFgskwcNKcAsEDCwTr56GKGJ', 12, 12, 12, '11/3/2021');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (13, '1KrU19d9m4j2dL4fsKo4CW9Nafh8uVNt7g', 13, 13, 13, '2/14/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (14, '1EWEaYqg1QdbpdcggCYV3aBFtTvePCNkFQ', 14, 14, 14, '12/17/2021');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (15, '1PCRP7uMvuYBCgHnzqnqCDzShMpSLmRPqx', 15, 15, 15, '9/27/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (16, '1aK3eUWnzUwyfjQogRjU5BtaR1v5EWz5D', 16, 16, 16, '1/1/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (17, '1PeXAPSEWbKB4gUqh79hnmKfQCcH4XRXmH', 17, 17, 17, '8/2/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (18, '1FVsGjzrrcNpttfLjhc46kuLPfFdGN29Zd', 18, 18, 18, '1/29/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (19, '15u1Xbvv9APP3VewxBWVdya8yykqE5AmHU', 19, 19, 19, '7/18/2022');
+insert into comments (id, comment_text, user_id, event_id, parent_comment_id, comment_date) values (20, '1mZpjVBMQ4T7LTADoEY9PbEUGLcSFeEih', 20, 20, 20, '4/14/2022');
