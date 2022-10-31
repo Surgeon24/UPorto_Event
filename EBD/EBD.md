@@ -183,8 +183,40 @@ Indexes are used to improve database performance by allowing the database server
 
 Performance indexes are used to improve the performance of individual queries. We should not overuse them, so for the purposes of our project, we will use only three indexes, in areas where they can have the greatest impact. These, in turn, are frequently used tables with a large amount of information.
 
-
 | **Index**           | IDX01                                  |
+| ---                 | ---                                    |
+| **Relation**        | event    							   |
+| **Attribute**       | name								   |
+| **Type**            | hash             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | 'event' table has a huge wokrload. The name field is often used to search for events.      |
+| **SQL code** | CREATE INDEX IF NOT EXISTS idx_event_name ON event USING HASH (name); |
+
+
+| **Index**           | IDX02                                  |
+| ---                 | ---                                    |
+| **Relation**        | event    							   |
+| **Attribute**       | start_date								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | -   |
+| **SQL code** 		  | CREATE INDEX IF NOT EXISTS idx_event_start_date ON event USING BTREE (start_date); |
+
+
+| **Index**           | IDX03                                  |
+| ---                 | ---                                    |
+| **Relation**        | poll    							   |
+| **Attribute**       | starts_at								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | -   |
+| **SQL code**		  | CREATE INDEX IF NOT EXISTS idx_poll_start_at ON poll USING BTREE (starts_at); |
+
+
+| **Index**           | IDX04                                  |
 | ---                 | ---                                    |
 | **Relation**        | authorised_user    							   |
 | **Attribute**       | id								   |
@@ -195,7 +227,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **SQL code**		 | CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);|
 
 
-| **Index**           | IDX02                                  |
+| **Index**           | IDX05                                  |
 | ---                 | ---                                    |
 | **Relation**        | user_event    						   |
 | **Attribute**       | event_id							   |
@@ -205,7 +237,7 @@ Performance indexes are used to improve the performance of individual queries. W
 | **Justification**   | 'user_event' table is accessed very often.       | 
 |**SQL code** | CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);|
 
-| **Index**           | IDX03                                            |
+| **Index**           | IDX02                                            |
 | ---                 | ---                                              |
 | **Relation**        | user_event    							         |
 | **Attribute**       | event_id								         |
@@ -220,6 +252,37 @@ Performance indexes are used to improve the performance of individual queries. W
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
+
+| **Index**           | IDX11                                  |
+| ---                 | ---                                    |
+| **Relation**        | tag    		|
+| **Attribute**       | name   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow users to quickly search for events by tags.   |
+| **SQL code**		  |CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);|
+
+
+| **Index**           | IDX12                                  |
+| ---                 | ---                                    |
+| **Relation**        | authorized_user    		|
+| **Attribute**       | name   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow to quickly search for users by names.   |
+| **SQL code**		  |CREATE INDEX IF NOT EXISTS idx_user_name ON authorized_user USING GIST (name);|
+
+
+| **Index**           | IDX13                                  |
+| ---                 | ---                                    |
+| **Relation**        | event    		|
+| **Attribute**       | location   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow users to quickly search for events by location.   |
+| **SQL code**	| CREATE INDEX IF NOT EXISTS idx_event_location ON event USING GIST (location); |
+
+
 
 | **Index**           | IDX14                                  |
 | ---                 | ---                                    |
