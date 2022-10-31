@@ -1,2 +1,2 @@
-SELECT Event.name 
+SELECT Event.ID, Event.name 
 FROM Event
