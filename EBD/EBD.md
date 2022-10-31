@@ -384,6 +384,7 @@ The SQL creation script is expanded in the A6 to include indexes, triggers, and 
 1. A6-1 was changed.
 2. All names were changed according to the underscore notation (name, long_name). registered_user was chaged to authorised_user
 3. report/comment/poll/event notification-tables were removed - added triggers instead. Guests-table removed.  David. 
+4. UML simplified, indexes started.
 
 ***
 GROUP21122, 12/10/2022
