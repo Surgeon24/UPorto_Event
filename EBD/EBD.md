@@ -345,11 +345,11 @@ CREATE TRIGGER trig_comment
  
 > Transactions needed to assure the integrity of the data.  
 
-| SQL Reference   | Transaction Name                    |
+| SQL Reference   | TRAN01                    |
 | --------------- | ----------------------------------- |
-| Justification   | Justification for the transaction.  |
-| Isolation level | Isolation level of the transaction. |
-| `Complete SQL Code`                                   ||
+| Justification   | When user tries to create a new event it's important to use a transaction to ensure that all the code executes without errors. If an error occurs, a ROLLBACK is issued (when the insertion of new event fails or creation of new line in the user_event). The isolation level is Repeatable Read, because, otherwise, there is a chance that event_update table can be changed by other function and as a result, inconsistent data would be stored.  |
+| Isolation level | REPEATABLE READ |
+| 'in progress'                                   ||
 
 
 ### Annex A. SQL Code
