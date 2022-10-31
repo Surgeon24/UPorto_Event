@@ -245,3 +245,24 @@ insert into photo (id, upload_date, image_path, event_id) values (47, '5/5/2022'
 insert into photo (id, upload_date, image_path, event_id) values (48, '10/29/2022', 'Vestibulum.tiff', 48);
 insert into photo (id, upload_date, image_path, event_id) values (49, '10/16/2022', 'Orci.tiff', 49);
 insert into photo (id, upload_date, image_path, event_id) values (50, '7/3/2022', 'PhasellusId.avi', 50);
+
+insert into notification (notifications_id, text, date, user_id) values (1, 'Poll Notification', '1/18/2022', 14);
+insert into notification (notifications_id, text, date, user_id) values (2, 'Report Notification', '5/21/2022', 20);
+insert into notification (notifications_id, text, date, user_id) values (3, 'Comment Notification', '1/29/2022', 2);
+insert into notification (notifications_id, text, date, user_id) values (4, 'Event Notification', '2/10/2022', 14);
+insert into notification (notifications_id, text, date, user_id) values (5, 'Comment Notification', '3/17/2022', 20);
+insert into notification (notifications_id, text, date, user_id) values (6, 'Event Notification', '2/19/2022', 8);
+insert into notification (notifications_id, text, date, user_id) values (7, 'Report Notification', '9/15/2022', 11);
+insert into notification (notifications_id, text, date, user_id) values (8, 'Report Notification', '8/5/2022', 10);
+insert into notification (notifications_id, text, date, user_id) values (9, 'Comment Notification', '2/10/2022', 8);
+insert into notification (notifications_id, text, date, user_id) values (10, 'Report Notification', '4/28/2022', 4);
+insert into notification (notifications_id, text, date, user_id) values (11, 'Report Notification', '9/12/2022', 8);
+insert into notification (notifications_id, text, date, user_id) values (12, 'Event Notification', '3/27/2022', 8);
+insert into notification (notifications_id, text, date, user_id) values (13, 'Comment Notification', '7/21/2022', 1);
+insert into notification (notifications_id, text, date, user_id) values (14, 'Report Notification', '12/22/2021', 20);
+insert into notification (notifications_id, text, date, user_id) values (15, 'Poll Notification', '2/28/2022', 8);
+insert into notification (notifications_id, text, date, user_id) values (16, 'Comment Notification', '9/30/2022', 12);
+insert into notification (notifications_id, text, date, user_id) values (17, 'Poll Notification', '3/31/2022', 10);
+insert into notification (notifications_id, text, date, user_id) values (18, 'Report Notification', '8/8/2022', 6);
+insert into notification (notifications_id, text, date, user_id) values (19, 'Event Notification', '4/14/2022', 5);
+insert into notification (notifications_id, text, date, user_id) values (20, 'Poll Notification', '7/18/2022', 19);
