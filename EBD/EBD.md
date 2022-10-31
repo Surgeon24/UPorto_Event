@@ -177,38 +177,65 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 ### 2. Proposed Indices
 
+Indexes are used to improve database performance by allowing the database server to work with certain rows much faster. Once an index is created, the system must keep it in sync with the table, which increases the load on data processing operations. Because indexes add to the load on the database system, we should try not to overuse them.
+
 #### 2.1. Performance Indices
- 
-> Indices proposed to improve performance of the identified queries.
+
+Performance indexes are used to improve the performance of individual queries. We should not overuse them, so for the purposes of our project, we will use only three indexes, in areas where they can have the greatest impact. These, in turn, are frequently used tables with a large amount of information.
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | authorised_user    					   |
-| **Attribute**       | id								       |
+| **Relation**        | event    							   |
+| **Attribute**       | name								   |
+| **Type**            | hash             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | 'event' table has a huge wokrload. The name field is often used to search for events.      |
+| **SQL code** | CREATE INDEX IF NOT EXISTS idx_event_name ON event USING HASH (name); |
+
+
+| **Index**           | IDX02                                  |
+| ---                 | ---                                    |
+| **Relation**        | event    							   |
+| **Attribute**       | start_date								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | -   |
+| **SQL code** 		  | CREATE INDEX IF NOT EXISTS idx_event_start_date ON event USING BTREE (start_date); |
+
+
+| **Index**           | IDX03                                  |
+| ---                 | ---                                    |
+| **Relation**        | poll    							   |
+| **Attribute**       | starts_at								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | -   |
+| **SQL code**		  | CREATE INDEX IF NOT EXISTS idx_poll_start_at ON poll USING BTREE (starts_at); |
+
+
+| **Index**           | IDX04                                  |
+| ---                 | ---                                    |
+| **Relation**        | authorised_user    							   |
+| **Attribute**       | id								   |
 | **Type**            | b-tree             					   |
 | **Cardinality**     | high                                   |
 | **Clustering**      | No                                     |
 | **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which might slow down the searching process.      |
- 
-**SQL code**
-~~~~sql
-CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);
-~~~~
+| **SQL code**		 | CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);|
 
 
-| **Index**           | IDX02                                  |
+| **Index**           | IDX05                                  |
 | ---                 | ---                                    |
 | **Relation**        | user_event    						   |
 | **Attribute**       | event_id							   |
 | **Type**            | b-tree             					   |
 | **Cardinality**     | medium                                 |
 | **Clustering**      | No                                     |
-| **Justification**   | 'user_event' table is accessed very often.       |
- 
-**SQL code**
-~~~~sql
-CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
-~~~~
+| **Justification**   | 'user_event' table is accessed very often.       | 
+|**SQL code** | CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);|
 
 | **Index**           | IDX02                                            |
 | ---                 | ---                                              |
@@ -228,6 +255,37 @@ CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notifica
 
 | **Index**           | IDX11                                  |
 | ---                 | ---                                    |
+| **Relation**        | tag    		|
+| **Attribute**       | name   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow users to quickly search for events by tags.   |
+| **SQL code**		  |CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);|
+
+
+| **Index**           | IDX12                                  |
+| ---                 | ---                                    |
+| **Relation**        | authorized_user    		|
+| **Attribute**       | name   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow to quickly search for users by names.   |
+| **SQL code**		  |CREATE INDEX IF NOT EXISTS idx_user_name ON authorized_user USING GIST (name);|
+
+
+| **Index**           | IDX13                                  |
+| ---                 | ---                                    |
+| **Relation**        | event    		|
+| **Attribute**       | location   		|
+| **Type**            | GIST   		|
+| **Clustering**      | -      		|
+| **Justification**   | Indexing this table will allow users to quickly search for events by location.   |
+| **SQL code**	| CREATE INDEX IF NOT EXISTS idx_event_location ON event USING GIST (location); |
+
+
+
+| **Index**           | IDX14                                  |
+| ---                 | ---                                    |
 | **Relation**        | event    |
 | **Attribute**       | name   |
 | **Type**            | GIN              |
@@ -236,7 +294,7 @@ CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notifica
 | `SQL code`                                                  ||
 
 
-| **Index**           | IDX12                                  |
+| **Index**           | IDX15                                  |
 | ---                 | ---                                    |
 | **Relation**        | comments    |
 | **Attribute**       | comment_text   |
@@ -355,6 +413,7 @@ CREATE TRIGGER trig_comment
 | Isolation level | Isolation level of the transaction. |
 | `Complete SQL Code`                                   ||
 
+
 ### Annex A. SQL Code
 SQL script in included. It cintains the creation statements, cleans up the current database state 'The SQL script is cleaned (e.g. excluded from export comments)' - don't understand what does it mean. Indexes, triggers, transactions and database population - to be provided at A6.
 
@@ -362,32 +421,300 @@ SQL script in included. It cintains the creation statements, cleans up the curre
 
 The SQL creation script is expanded in the A6 to include indexes, triggers, and transactions.
 
-
 ~~~~sql
+-----------------------------------------
+-- EXTENSIONS
+-----------------------------------------
 
+-- The citext module provides a case-insensitive character string type. 
+-- Essentially, it internally calls lower when comparing values.
+-- https://www.postgresql.org/docs/current/citext.html
+CREATE EXTENSION IF NOT EXISTS citext;
+
+
+-----------------------------------------
+-- DROPPING TABLES
+-----------------------------------------
+-- CASCADE Automatically drop objects that depend on the table
+DROP TABLE IF EXISTS authorized_user CASCADE;
+DROP TABLE IF EXISTS administrator CASCADE;
+DROP TABLE IF EXISTS event CASCADE;
+DROP TABLE IF EXISTS report CASCADE;
+DROP TABLE IF EXISTS user_event CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS tag CASCADE;
+DROP TABLE IF EXISTS photo CASCADE;
+DROP TABLE IF EXISTS poll CASCADE;
+DROP TABLE IF EXISTS poll_option CASCADE;
+DROP TABLE IF EXISTS poll_vote CASCADE;
+
+
+-----------------------------------------
+-- TYPES
+-----------------------------------------
+drop type if exists REPORT_STATUS;
+CREATE TYPE REPORT_STATUS AS ENUM('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information');
+
+drop type if exists MEMBER_ROLE;
+CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
+
+drop type if exists TYPE_NOTIFICATION;
+CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
+
+
+-----------------------------------------
+-- TABLES
+-----------------------------------------
+
+CREATE TABLE IF NOT EXISTS authorized_user(
+    ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    name TEXT DEFAULT 'name' NOT NULL,
+    surename TEXT DEFAULT 'family name' NOT NULL,
+    nickname TEXT UNIQUE NOT NULL,
+    password TEXT DEFAULT sha256('DEFAULT_password') NOT NULL,
+    email citext UNIQUE NOT NULL,
+    date_registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    last_seen TIMESTAMP,
+    birth_date DATE DEFAULT (current_date - INTERVAL '18 YEAR') CHECK (
+        birth_date <= (current_date - INTERVAL '18 YEAR')
+    ),
+    url TEXT UNIQUE,
+    status TEXT,
+    is_admin BOOLEAN DEFAULT false NOT NULL,
+    photo_path TEXT
+);
+
+
+
+CREATE TABLE IF NOT EXISTS administrator(
+    id SERIAL PRIMARY KEY,
+    admin_id uuid,
+    FOREIGN KEY (admin_id) REFERENCES authorized_user(id)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS event(
+    id SERIAL PRIMARY KEY,
+    name TEXT DEFAULT 'DEFAULT name' NOT NULL,
+    description TEXT DEFAULT('FEUP party') NOT NULL,
+    start_date TIMESTAMP DEFAULT (
+        to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
+    ) NOT NULL,
+    is_public BOOLEAN DEFAULT TRUE NOT NULL,
+    location TEXT DEFAULT 'Adega Leonor' NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS report(
+    id SERIAL PRIMARY KEY,
+    reported_id uuid,
+    reporter_id uuid,
+    admin_id INT,
+    report_text TEXT NOT NULL,
+		report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
+    report_status REPORT_STATUS,
+    FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (admin_id) REFERENCES administrator(id)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS user_event(
+    id SERIAL PRIMARY KEY,
+    user_id uuid,
+    event_id INT,  
+    role MEMBER_ROLE,
+    accepted BOOLEAN,   -- used only in private events
+    UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
+    FOREIGN KEY (user_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+
+-- word "comments" was used because "comment" is a reserved word in PostgreSQL 
+-- inspirations: https://stackoverflow.com/questions/55074867/posts-comments-replies-and-likes-database-schema
+CREATE TABLE IF NOT EXISTS comments(
+    id SERIAL PRIMARY KEY,
+    comment_text TEXT DEFAULT ('Great event!'),
+    user_id uuid,
+    event_id INT,
+    parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
+    comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
+		FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+		FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS notification(
+    id SERIAL PRIMARY KEY,
+		user_id uuid,
+		notification_type type_notification NOT NULL,
+    notification_text TEXT NOT NULL DEFAULT ('text'),
+    notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
+    FOREIGN KEY (user_id) REFERENCES authorized_user(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS tag(
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    color TEXT NOT NULL,
+    event_id INT,
+    FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS photo(
+    id SERIAL PRIMARY KEY,
+    upload_date DATE DEFAULT (current_date),
+    image_path TEXT UNIQUE,
+    event_id INT,
+    FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS poll(
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    starts_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
+    end_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
+    event_id INT,
+    FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS poll_option(
+    id SERIAL PRIMARY KEY,
+    option TEXT NOT NULL,
+    poll_id INT,
+    FOREIGN KEY (poll_id) REFERENCES poll(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS poll_vote(
+    vote_id SERIAL PRIMARY KEY,
+    user_id uuid,
+		event_id INT,
+    option_id INT,
+    date DATE NOT NULL,
+    FOREIGN KEY (vote_id) REFERENCES poll(id),
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+    FOREIGN KEY (option_id) REFERENCES poll_option(id)
+);
+
+-----------------------------------------
+-- TRIGGERS
+-----------------------------------------
+
+CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS $comment_notification$
+		BEGIN
+		IF (NEW.parent_comment_id IS NOT NULL)
+			THEN
+				INSERT INTO 
+							notification(notification_text,notification_date, notification_type, user_id)
+							select NEW.comment_text, NEW.comment_date, 'comment' ,user_id from comments where NEW.parent_comment_id = id;
+			 END IF;
+							RETURN new;
+END;
+$comment_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_comment ON public.comments;
+
+CREATE TRIGGER trig_comment
+     AFTER INSERT OR UPDATE ON comments
+     FOR EACH ROW
+     EXECUTE PROCEDURE comment_notification();
+		 
+		 
+		 
+		 
+CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
+		BEGIN
+				INSERT INTO 
+							notification(notification_text,notification_date, notification_type, user_id)
+							VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
+							RETURN new;
+END;
+$event_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_event ON public.user_event;
+
+CREATE TRIGGER trig_event
+     AFTER INSERT OR UPDATE ON user_event
+     FOR EACH ROW
+     EXECUTE PROCEDURE event_notification();
+		 
+		 
+		 
+CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
+		BEGIN
+				INSERT INTO 
+							notification(notification_date, notification_type, user_id, notification_text)
+							select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.title || ' You can vote!' from poll;
+							RETURN new;
+END;
+$poll_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_poll ON public.poll;
+
+CREATE TRIGGER trig_poll
+     AFTER INSERT ON poll
+     FOR EACH ROW
+     EXECUTE PROCEDURE poll_notification();
+
+
+
+
+CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$
+		BEGIN
+				INSERT INTO 
+							notification(user_id, notification_type, notification_date, notification_text)
+							select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report;
+							RETURN new;
+END;
+$report_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_report ON public.report;
+
+CREATE TRIGGER trig_report
+     AFTER INSERT ON report
+     FOR EACH ROW
+     EXECUTE PROCEDURE report_notification();
+
+-----------------------------------------
+-- Indeces
+-----------------------------------------
+DROP INDEX IF EXISTS idx_id_user CASCADE;
+CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);
+
+
+DROP INDEX IF EXISTS idx_event
+
+DROP INDEX IF EXISTS idx_notification CASCADE;
+CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
+		 
 ~~~~~
-
-
-
-
----
-
-
-## Annex A. SQL Code
-
-> The database scripts are included in this annex to the EBD component.
-> The database creation script and the population script should be presented as separate elements.
-> The creation script includes the code necessary to build (and rebuild) the database.
-> The population script includes an amount of tuples suitable for testing and with plausible values for the fields of the database.
-> The complete code of each script must be included in the groups git repository and links added here.
-
-### A.1. Database schema
-
-> The complete database creation must be included here and also as a script in the repository.
 
 ### A.2. Database population
 
 > Only a sample of the database population script may be included here, e.g. the first 10 lines. The full script must be available in the repository.
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -398,7 +725,7 @@ The SQL creation script is expanded in the A6 to include indexes, triggers, and 
 2. All names were changed according to the underscore notation (name, long_name). registered_user was chaged to authorised_user
 3. report/comment/poll/event notification-tables were removed - added triggers instead. Guests-table removed.  David. 
 4. UML simplified, indexes started.
-
+5. Added description to many items. Added 6 new indexes (the description of some indexes needs improvement). Existing indexes are also left.
 ***
 GROUP21122, 12/10/2022
 
