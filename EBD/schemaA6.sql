@@ -197,10 +197,10 @@ CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS $comment_no
         IF (NEW.parent_comment_id IS NOT NULL)
             THEN
                 INSERT INTO 
-                            notification(notification_text,notification_date, notification_type, user_id)
-                            select NEW.comment_text, NEW.comment_date, 'comment' ,user_id from comments where NEW.parent_comment_id = id;
-             END IF;
-                            RETURN new;
+                    notification(notification_text,notification_date, notification_type, user_id)
+                    select NEW.comment_text, NEW.comment_date, 'comment' ,user_id from comments where NEW.parent_comment_id = id;
+        END IF;
+        RETURN new;
 END;
 $comment_notification$
 language plpgsql;
@@ -217,12 +217,19 @@ CREATE TRIGGER trig_comment
          
 CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
         BEGIN
+<<<<<<< HEAD
+               INSERT INTO 
+                notification(notification_text,notification_date, notification_type, user_id)
+                VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
+        RETURN new;
+=======
         
                 INSERT INTO 
                             notification(notification_text,notification_date, notification_type, user_id)
                             VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
                             RETURN new;
 
+>>>>>>> 9cef2dbe5556f8181282bbe6d7c52b05046ed8d5
 END;
 $event_notification$
 language plpgsql;
@@ -238,10 +245,10 @@ CREATE TRIGGER trig_event
          
 CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
         BEGIN
-                INSERT INTO 
-                            notification(notification_date, notification_type, user_id, notification_text)
-                            select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.title || ' You can vote!' from poll;
-                            RETURN new;
+            INSERT INTO 
+                notification(notification_date, notification_type, user_id, notification_text)
+                select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.title || ' You can vote!' from poll;
+    RETURN new;
 END;
 $poll_notification$
 language plpgsql;
@@ -258,10 +265,10 @@ CREATE TRIGGER trig_poll
 
 CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$
         BEGIN
-                INSERT INTO 
-                            notification(user_id, notification_type, notification_date, notification_text)
-                            select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report;
-                            RETURN new;
+            INSERT INTO 
+                notification(user_id, notification_type, notification_date, notification_text)
+                select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report;
+        RETURN new;
 END;
 $report_notification$
 language plpgsql;
@@ -274,7 +281,7 @@ CREATE TRIGGER trig_report
      EXECUTE PROCEDURE report_notification();
 
 -----------------------------------------
--- Indeces
+-- Performance indexes
 -----------------------------------------
 
 -- e.g to count number of users
@@ -287,14 +294,14 @@ DROP INDEX IF EXISTS idx_event_user CASCADE;
 CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);
 
 
--- let's us count all the votes for a specifit poll.
+-- lets us count all the votes for a specifit poll.
 -- select select count(*) from poll_vote where poll_id = 1;
 -- equality operator is used, hence the hash index type is suggested.
 DROP INDEX IF EXISTS idx_poll_vote CASCADE;
 CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);
 
 -----------------------------------------
--- FULL TEXT
+-- FULL TEXT indexes
 ----------------------------------------- 
 ALTER TABLE event
 ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
@@ -305,17 +312,17 @@ BEGIN
         NEW.tsvectors = (
          setweight(to_tsvector('english', NEW.name), 'A') ||
          setweight(to_tsvector('english', NEW.description), 'B') ||
-                 setweight(to_tsvector('english', NEW.location), 'C')
+             setweight(to_tsvector('english', NEW.location), 'C')
         );
  END IF;
  IF TG_OP = 'UPDATE' THEN
          IF (NEW.name <> OLD.name OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
            NEW.tsvectors = (
              setweight(to_tsvector('english', NEW.name), 'A') ||
-         setweight(to_tsvector('english', NEW.description), 'B') ||
+             setweight(to_tsvector('english', NEW.description), 'B') ||
                  setweight(to_tsvector('english', NEW.location), 'C')
            );
-         END IF;
+    END IF;
  END IF;
  RETURN NEW;
 END $$
@@ -331,7 +338,6 @@ CREATE TRIGGER event_search_update
 
 DROP INDEX IF EXISTS search_idx_event CASCADE;
 CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
-
 
 
 --To improve overall performance of full-text searches while searching for tags by name; GiST better for dynamic data
