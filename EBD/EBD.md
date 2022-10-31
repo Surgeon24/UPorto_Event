@@ -277,7 +277,7 @@ CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 | **Type**            | GIST              |
 | **Clustering**      | NO                |
 | **Justification**   | To improve overall performance of full-text searches while searching for events by tags; GiST better for dynamic data   |
-| `CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);`                                                  ||
+| **SQL code**        |`CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);`   ||
 
 
 ### 3. Triggers
