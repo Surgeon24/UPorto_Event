@@ -389,7 +389,20 @@ CREATE TRIGGER trig_comment
 | --------------- | ----------------------------------- |
 | Justification   | When user tries to create a new event it's important to use a transaction to ensure that all the code executes without errors. If an error occurs, a ROLLBACK is issued (when the insertion of new event fails or creation of new line in the user_event). The isolation level is Repeatable Read, because, otherwise, there is a chance that event_update table can be changed by other function and as a result, inconsistent data would be stored.  |
 | Isolation level | REPEATABLE READ |
-| 'in progress'                                   ||
+~~~~
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+-- event
+INSERT INTO event (name, description, start_date, is_public, location)
+ VALUES ($name, $description, GETDATE(), $is_public, $location);
+
+-- user_event
+INSERT INTO user_event (role, accepted)
+ VALUES ('Owner', TRUE);
+
+END TRANSACTION; 
+~~~~
 
 
 ### Annex A. SQL Code
