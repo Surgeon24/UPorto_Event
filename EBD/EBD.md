@@ -166,11 +166,11 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 | R04  | photo          	| 10.000+	| 10+  |
 | R05  | poll		    	| 1.000+ 	| 1+   |
 | R06  | poll_option     	| 1.000+ 	| 1+   |
-| R07  | comment        	| 100.000+ 	| 100+ |
+| R07  | comment        	| 10.000+ 	| 10+ |
 | R08  | tag        		| 1000+		| 1+   |
 | R09  | vote        		| 1.000+ 	| 1+   |
 | R10  | report      		| 100+		| 1+   |
-| R11  | invite       		| 10.000+   | 10+  |
+| R11  | user_event    		| 10.000+   | 10+  |
 | R12  | administrator      | 10+       | 1+   |
 
 
@@ -182,26 +182,54 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | event    							   |
-| **Attribute**       | name								   |
-| **Type**            | Hash             					   |
+| **Relation**        | authorised_user    							   |
+| **Attribute**       | id								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | high                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which might slow down the searching process.      |
+ 
+**SQL code**
+~~~~
+CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);
+~~~~
+
+
+| **Index**           | IDX02                                  |
+| ---                 | ---                                    |
+| **Relation**        | user_event    							   |
+| **Attribute**       | event_id								   |
+| **Type**            | b-tree             					   |
 | **Cardinality**     | medium                                 |
 | **Clustering**      | No                                     |
-| **Justification**   | This Index will    |
-| `SQL code`                                                  ||
-
+| **Justification**   | 'user_event' table is accessed very often.       |
+ 
+**SQL code**
+~~~~
+CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
+~~~~
 
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
-| **Index**           | IDX01                                  |
+| **Index**           | IDX11                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
+| **Relation**        | event    |
+| **Attribute**       | name   |
+| **Type**            | GIN              |
 | **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
+| **Justification**   | Indexing this table would allow users searching for events based on name fast.   |
+| `SQL code`                                                  ||
+
+
+| **Index**           | IDX12                                  |
+| ---                 | ---                                    |
+| **Relation**        | comments    |
+| **Attribute**       | comment_text   |
+| **Type**            | GIN              |
+| **Clustering**      | Clustering of the index                |
+| **Justification**   | allows users to fastly search comments   |
 | `SQL code`                                                  ||
 
 
