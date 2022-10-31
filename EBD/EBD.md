@@ -8,7 +8,7 @@ In A4 we will take over our first database topic. This will cover the **Class Di
 
 ### 1. Class diagram
 
-![A4- UML_Diagram](images/A4-%20UPortoEventUML.jpg)
+![A4- UML_Diagram](images/A4- UPortoEvent.jpg)
 
 ### 2. Additional Business Rules
  
@@ -26,35 +26,29 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | RegisteredUser(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
-| R02                | Event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN**, role **DF** 'Participant' **CK** (role **IN** MemberRole)) ) |
-| R03                | Notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → RegisteredUser **NN** ) |
-| R04                | Photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
-| R05				 | Poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → RegisteredUser **NN**, #event_id → Event **NN** ) |
-| R06				 | PollOption(<ins>pOption_id</ins>, option **NN**, #poll_id → Poll **NN**) |
-| R07   			 | Comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → Comment **NN**, #event_id → Event **NN**, #user_id → RegisteredUser **NN** ) |
-| R08    			 | Tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → Event **NN** ) |
-| R09  			     | PollVote(<ins>vote_id</ins>, date **NN**, #user_id → RegisteredUser **NN**, #pOption_id → PollOption **NN** ) |
-| R10 				 | Report(<ins>report_id</ins>, text **NN**, report_status **DF** 'Waiting' **CK** (Report_status **IN** ReportStatus), reported → RegisteredUser **NN**, reporter → RegisteredUser **NN**, manages → Administrator **NN**) |
-| R11  				 | Guest(<ins>guest_id</ins>, ip **NN** **UK**, time **NN**) |
-| R12                | Report_Notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
-| R13                | Poll_Notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
-| R14                | Event_Notification(<ins>#notification_id → Notification **NN**</ins>, #event → Event **NN**) |
-| R15                | Comment_Notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
-| R16                | Event_RegisteredUser(<ins>event_id → Event</ins>, <ins>user_id → RegisteredUser</ins>) |
-| R17                | Invite(<ins>user_id → Registered_User</ins>,<ins>event_id → Event</ins>, accepted) |
-| R18                | Administrator(<ins>#user_id → RegisteredUser</ins>) |
+| R01                | authorised_user(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
+| R02                | event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN**, role **DF** 'participant' **CK** (role **IN** member_role)) ) |
+| R03                | notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → authorised_user **NN** ) |
+| R04                | photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
+| R05				 | poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorised_user **NN**, #event_id → event **NN** ) |
+| R06				 | poll_option(<ins>poll_option_id</ins>, option **NN**, #poll_id → poll **NN**) |
+| R07   			 | comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → comment **NN**, #event_id → event **NN**, #user_id → authorised_user **NN** ) |
+| R08    			 | tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → event **NN** ) |
+| R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorised_user **NN**, #poll_option_id → poll_option **NN** ) |
+| R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), reported → authorised_user **NN**, reporter → authorised_user **NN**, manages → administrator **NN**) |
+| R11                | user_event(<ins>user_id → authorised_user</ins>,<ins>event_id → event</ins>, accepted) |
+| R12                | administrator(<ins>#user_id → authorised_user</ins>) |
 
 ### 2. Domains
 
 | Domain Name  | Domain Specification           |
 | -----------  | ------------------------------ |
-| MemberRole   | ENUM ('Owner', 'Moderator', 'Participant') |
-| ReportStatus | ENUM ('Waiting', 'Ignored', 'Sanctioned') |
+| member_role   | ENUM ('owner', 'moderator', 'participant') |
+| report_status | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information') |
 
 ### 3. Schema validation
 
-| **TABLE R01**   | RegisteredUser     |
+| **TABLE R01**   | authorised_user     |
 | --------------  | ---                |
 | **Keys**        | { user_id }, { email }, {url}  |
 | **Functional Dependencies:** |       |
@@ -64,15 +58,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R02**   | Event              |
+| **TABLE R02**   | event              |
 | --------------  | ---                |
 | **Keys**        | {event_id}         |
 | **Functional Dependencies:** |       |
-| FD0201          | event_id → {name, descriprion, start_date, location, schedule, role} |
+| FD0201          | event_id → {name, descriprion, start_date, location, schedule} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R03**   | Notification       |
+| **TABLE R03**   | notification       |
 | --------------  | ---                |
 | **Keys**        | {notification_id}  |
 | **Functional Dependencies:** |       |
@@ -80,7 +74,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R04**   | Photo              |
+| **TABLE R04**   | photo              |
 | --------------  | ---                |
 | **Keys**        | { photo_id}        |
 | **Functional Dependencies:** |       |
@@ -88,7 +82,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R05**   | Poll               |
+| **TABLE R05**   | poll               |
 | --------------  | ---                |
 | **Keys**        | { poll_id }        |
 | **Functional Dependencies:** |       |
@@ -96,15 +90,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R06**   | PollOption         |
+| **TABLE R06**   | poll_option         |
 | --------------  | ---                |
-| **Keys**        | { pOption_id }     |
+| **Keys**        | { poll_option_id }     |
 | **Functional Dependencies:** |       |
-| FD0601          | pOption_id → {option, poll_id} |
+| FD0601          | poll_option_id → {option, poll_id} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R07**   | Comment            |
+| **TABLE R07**   | comments            |
 | --------------  | ---                |
 | **Keys**        | { comment_id } |
 | **Functional Dependencies:** |       |
@@ -112,7 +106,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R08**   | Tag                |
+| **TABLE R08**   | tag                |
 | --------------  | ---                |
 | **Keys**        | { tag_id } |
 | **Functional Dependencies:** |       |
@@ -120,15 +114,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R09**   | PollVote               |
+| **TABLE R09**   | poll_vote               |
 | --------------  | ---                |
 | **Keys**        | { vote_id } |
 | **Functional Dependencies:** |       |
-| FD0901          | vote_id → {date, user_id, pOption_id} |
+| FD0901          | vote_id → {date, user_id, poll_option_id} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R10**   | Report             |
+| **TABLE R10**   | report             |
 | --------------  | ---                |
 | **Keys**        | { report_id }|
 | **Functional Dependencies:** |       |
@@ -136,63 +130,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R11**   | Guest              |
-| --------------  | ---                |
-| **Keys**        | { guest_id }  |
-| **Functional Dependencies:** |       |
-| FD1101          | guest_id → {ip, time} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R12**   | Report_Notification|
-| --------------  | ---                |
-| **Keys**        | { notification_id }  |
-| **Functional Dependencies:** |       |
-| FD1201          | notification_id → {report_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R13**   | Poll_Notification  |
-| --------------  | ---                |
-| **Keys**        | { notification_id }  |
-| **Functional Dependencies:** |       |
-| FD1301          | notification_id → {poll_id}  |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R14**   | Event_Notification |
-| --------------  | ---                |
-| **Keys**        | { notification_id } |
-| **Functional Dependencies:** |       |
-| FD1401          | notification_id → {event_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R15**   |Comment_Notification|
-| --------------  | ---                |
-| **Keys**        | { notification_id } |
-| **Functional Dependencies:** |       |
-| FD1501          | notification_id → {comment_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R16**   |Event_RegisteredUser|
-| --------------  | ---                |
-| **Keys**        | { event_id }, { user_id }  |
-| **Functional Dependencies:** |       |
-| FD1601          | none               |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R17**   | Invite             |
+| **TABLE R11**   | user_event         |
 | --------------  | ---                |
 | **Keys**        | { user_id }, { event_id }  |
 | **Functional Dependencies:** |       |
-| FD1701          | user_id, event_id → {accepted} |
+| FD1701          | user_id, member_role, event_id → {accepted} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R18**   | Administrator      |
+| **TABLE R12**   | administrator      |
 | --------------  | ---                |
 | **Keys**        | { user_id }        |
 | **Functional Dependencies:** |       |
@@ -205,7 +151,7 @@ The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form
 
 ## A6: Indexes, triggers, transactions and database population
 
-> Brief presentation of the artefact goals.
+> This artifact ................ 
 
 ### 1. Database Workload
  
@@ -214,24 +160,18 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Relation reference** | **Relation Name** | **Order of magnitude**        | **Estimated growth** |
 | ------------------ | ------------- | ------------------------- | -------- |
-| R01  | RegisteredUser 	| 10.000+   | 10+  |
-| R02  | Event          	| 1.000+ 	| 1+   |
-| R03  | Notification   	| 10.000+	| 10+  |
-| R04  | Photo          	| 10.000+	| 10+  |
-| R05  | Poll		    	| 1.000+ 	| 1+   |
-| R06  | PollOption     	| 1.000+ 	| 1+   |
-| R07  | Comment        	| 100.000+ 	| 100+ |
-| R08  | Tag        		| 1000+		| 1+   |
-| R09  | Vote        		| 1.000+ 	| 1+   |
-| R10  | Report      		| 100+		| 1+   |
-| R11  | Guest       		| 1 | - |
-| R12  | Report_Notification| 100+ 		| 1+   |
-| R13  | Poll_Notification  | 1.000+ 	| 1+   |
-| R14  | Event_Notification | 1.000+ 	| 1+   |
-| R15  |Comment_Notification| 10.000+ 	| 10+  |
-| R16  |Event_RegisteredUser| 100.000+  | 100+ |
-| R17  | Invite       		| 10.000+   | 10+  |
-| R18  | Administrator      | 10+       | 1+   |
+| R01  | authorised_user 	| 10.000+   | 10+  |
+| R02  | event          	| 1.000+ 	| 1+   |
+| R03  | notification   	| 10.000+	| 10+  |
+| R04  | photo          	| 10.000+	| 10+  |
+| R05  | poll		    	| 1.000+ 	| 1+   |
+| R06  | poll_option     	| 1.000+ 	| 1+   |
+| R07  | comment        	| 10.000+ 	| 10+ |
+| R08  | tag        		| 1000+		| 1+   |
+| R09  | vote        		| 1.000+ 	| 1+   |
+| R10  | report      		| 100+		| 1+   |
+| R11  | user_event    		| 10.000+   | 10+  |
+| R12  | administrator      | 10+       | 1+   |
 
 
 ### 2. Proposed Indices
@@ -242,26 +182,54 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
-| **Cardinality**     | Attribute cardinality: low/medium/high |
-| **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
-| `SQL code`                                                  ||
+| **Relation**        | authorised_user    							   |
+| **Attribute**       | id								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | high                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | 'authorised_user' table has a huge wokrload. The id field is accessed frequently and has a uuid representation, which might slow down the searching process.      |
+ 
+**SQL code**
+~~~~
+CREATE INDEX IF NOT EXISTS idx_id_user ON registered_user USING BTREE(id);
+~~~~
 
+
+| **Index**           | IDX02                                  |
+| ---                 | ---                                    |
+| **Relation**        | user_event    							   |
+| **Attribute**       | event_id								   |
+| **Type**            | b-tree             					   |
+| **Cardinality**     | medium                                 |
+| **Clustering**      | No                                     |
+| **Justification**   | 'user_event' table is accessed very often.       |
+ 
+**SQL code**
+~~~~
+CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
+~~~~
 
 #### 2.2. Full-text Search Indices 
 
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
-| **Index**           | IDX01                                  |
+| **Index**           | IDX11                                  |
 | ---                 | ---                                    |
-| **Relation**        | Relation where the index is applied    |
-| **Attribute**       | Attribute where the index is applied   |
-| **Type**            | B-tree, Hash, GiST or GIN              |
+| **Relation**        | event    |
+| **Attribute**       | name   |
+| **Type**            | GIN              |
 | **Clustering**      | Clustering of the index                |
-| **Justification**   | Justification for the proposed index   |
+| **Justification**   | Indexing this table would allow users searching for events based on name fast.   |
+| `SQL code`                                                  ||
+
+
+| **Index**           | IDX12                                  |
+| ---                 | ---                                    |
+| **Relation**        | comments    |
+| **Attribute**       | comment_text   |
+| **Type**            | GIN              |
+| **Clustering**      | Clustering of the index                |
+| **Justification**   | allows users to fastly search comments   |
 | `SQL code`                                                  ||
 
 
@@ -271,8 +239,98 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 
 | **Trigger**      | TRIGGER01                              |
 | ---              | ---                                    |
-| **Description**  | Trigger description, including reference to the business rules involved |
-| `SQL code`                                             ||
+| **Description**  | Sends a notification after user submits a report to assure him it's delivered. |
+~~~~ 
+CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$ 
+BEGIN 
+	INSERT INTO 
+	notification(user_id, notification_type, notification_date, notification_text) 
+	select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. 
+	We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report; 
+RETURN new; 
+END; 
+$report_notification$ 
+language plpgsql; 
+				
+DROP TRIGGER IF EXISTS trig_report ON public.report; 
+											
+CREATE TRIGGER trig_report					
+AFTER INSERT ON report						
+FOR EACH ROW								
+EXECUTE PROCEDURE report_notification();` 
+~~~~
+
+| **Trigger**      | TRIGGER02                              |
+| ---              | ---                                    |
+| **Description**  | sends a notification after a new poll is created
+
+~~~~
+CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
+BEGIN
+	INSERT INTO 
+	notification(notification_date, notification_type, user_id, notification_text)
+	select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.title || ' You can vote!' from poll;
+RETURN new;
+END;
+$poll_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_poll ON public.poll;
+
+CREATE TRIGGER trig_poll
+     AFTER INSERT ON poll
+     FOR EACH ROW
+     EXECUTE PROCEDURE poll_notification();
+~~~~
+
+
+| **Trigger**      | TRIGGER03                              |
+| ---              | ---                                    |
+| **Description**  | Sends a notification when a user joins an event. |
+~~~~ 
+CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
+BEGIN
+	INSERT INTO 
+	notification(notification_text,notification_date, notification_type, user_id)
+	VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
+RETURN new;
+END;
+$event_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_event ON public.user_event;
+
+CREATE TRIGGER trig_event
+     AFTER INSERT OR UPDATE ON user_event
+     FOR EACH ROW
+     EXECUTE PROCEDURE event_notification();
+~~~~
+
+| **Trigger**      | TRIGGER04                              |
+| ---              | ---                                    |
+| **Description**  | Sends a notification to the creator of a comment when a comment is replied by another user. |
+~~~~ 
+CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS $comment_notification$
+BEGIN
+	IF (NEW.parent_comment_id IS NOT NULL)
+THEN
+	INSERT INTO 
+	notification(notification_text,notification_date, notification_type, user_id)
+	select NEW.comment_text, NEW.comment_date, 'comment' ,user_id from comments where NEW.parent_comment_id = id;
+END IF;
+RETURN new;
+END;
+$comment_notification$
+language plpgsql;
+				
+DROP TRIGGER IF EXISTS trig_comment ON public.comments;
+
+CREATE TRIGGER trig_comment
+     AFTER INSERT OR UPDATE ON comments
+     FOR EACH ROW
+     EXECUTE PROCEDURE comment_notification();
+~~~~
+
 
 ### 4. Transactions
  
@@ -293,204 +351,6 @@ The SQL creation script is expanded in the A6 to include indexes, triggers, and 
 
 
 ~~~~sql
--- in order to import the file, in Query Tool click the left-most icon 
--- 'open file' (alt+O), choose the file and execute
-
--- The citext module provides a case-insensitive character string type. 
--- Essentially, it internally calls lower when comparing values.
--- https://www.postgresql.org/docs/current/citext.html
-CREATE EXTENSION IF NOT EXISTS citext;
-
--- Lets us create UUIDs, instead of SERIAL ids
--- https://www.geeksforgeeks.org/postgresql-uuid-data-type/
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
---!!! I should do the right order of dropping/creating
-drop table if exists poll_vote;
-drop table if exists poll;
-drop table if exists comment;
-drop table if exists notification;
-drop table IF EXISTS event_photo;
-drop table IF EXISTS user_photo;
-DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS registered_user;
-DROP TABLE IF EXISTS guests;
-
--- Q - questions to the teacher
-
--- Q - ask about the quize
--- 25 November
-
-
-create table IF NOT EXISTS guests(
-	id_guest SERIAL,
-	ip text NOT NULL
-);
-
-
-create table IF NOT EXISTS registered_user(
-	-- Q uuid - do we need it, is it ok? Professor liked it
-	user_id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-	name VARCHAR default 'name' NOT NULL,
-	surename VARCHAR default 'family name' NOT NULL,
-	nickname VARCHAR UNIQUE NOT NULL,
-	password text default sha256('default_password') NOT NULL,
-	email citext UNIQUE NOT NULL,
-	birth_date date default (current_date - INTERVAL '18 YEAR') CHECK (birth_date <= (current_date - INTERVAL '18 YEAR')),
-	date_registered TIMESTAMP default current_timestamp NOT NULL,
-	-- Q last log in. Good?
-	-- Yes
-	last_seen TIMESTAMP,
-	url text UNIQUE,
-	status text,
-	is_admin BOOLEAN DEFAULT false NOT NULL	
-);
-
-
-
-
-create table IF NOT EXISTS event(
-	event_id SERIAL PRIMARY KEY,
-	event_name VARCHAR default 'default name' NOT NULL,
-	-- Q default (to_char(CURRENT_TIMESTAMP, 'DD Mon YYYY HH24:MI')) NEED TO CHOOSE - CONSULT WITH TEACHER
-	-- Q not sure about date format
-	event_date TIMESTAMP default (to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')) NOT NULL,
-	participant_id uuid UNIQUE,  -- only registered users can go
-	creator_id uuid UNIQUE, 
-	location text default 'Adega Leonor' NOT NULL,
-
-	-- might delete undecided
-	tag text default '#',
-	-- might delete undecided
-
-	description text default('FEUP party') NOT NULL,
-	is_public BOOLEAN DEFAULT True NOT NULL,	  -- not sure of what it does
-	
-	FOREIGN KEY (participant_id) REFERENCES registered_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE,
-	FOREIGN KEY (creator_id) REFERENCES registered_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE
-	
-);
-
-
-drop table if exists event_status;
--- table where we store 'Going', 'Maybe', 'Can't answers from participants.
--- Q is there a better way to do it?
-drop type if exists status;
--- Q how to write can't?
-create type status as enum ('Going', 'Maybe', 'Cant');
-
-create table IF NOT EXISTS event_status(
-	participant_id uuid,
-	s status default 'Maybe'
-);
-
-
--- Q is it a rule to have id in every table?
-create table IF NOT EXISTS poll(
-	poll_id SERIAL,
-	event_id int,
-	title text default 'title' NOT NULL,
-	host_name text default 'host name?' NOT NULL,
-	question text DEFAULT 'questions?' NOT NULL,
-	-- check that poll doesn't start in the past
-	starts_at TIMESTAMP default CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
-
-
-	-- Q How to do something like   default (starts_at + INTERVAL '1 DAY')?
-	end_at TIMESTAMP default (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
-
-
-	FOREIGN KEY (event_id) REFERENCES event (event_id)
-							ON DELETE CASCADE
-							ON UPDATE CASCADE
-);
-
-
-
--- Q not sure what are we doing here
-create table IF NOT EXISTS poll_vote(
-	option text
-);
-
-
-
--- Q can I use the word `comment` if it's a special word in PostgreSQL?
-CREATE TABLE comment(
-	comment_id SERIAL,
-	event_id int,
-	author_id uuid NOT NULL,
-	-- unable to publish yesturday
-	publish_date TIMESTAMP default current_timestamp check(publish_date <= CURRENT_TIMESTAMP) NOT NULL,
-	description text DEFAULT 'your comment here' NOT NULL,
-
-	FOREIGN KEY (event_id) REFERENCES event (event_id)
-								ON DELETE CASCADE
-								ON UPDATE CASCADE,
-
-	FOREIGN KEY (author_id) REFERENCES event (participant_id)
-								ON DELETE CASCADE
-								ON UPDATE CASCADE
-);
-
-
--- Q good idea for notigication type?
-
-DROP TYPE IF EXISTS notification_type;
-CREATE TYPE notification_type AS ENUM ('Reminder', 'Report', 'Comment');
-
-CREATE TABLE IF NOT EXISTS notification(
-	notification_id SERIAL PRIMARY KEY,
-	user_id uuid,
-	description text,
-	notification_date timestamp default current_timestamp,
-	type notification_type,
-
-	FOREIGN KEY (user_id) REFERENCES registered_user (user_id)
-										ON DELETE CASCADE
-										ON UPDATE CASCADE
-);
-
-
-
-
-
--- Q should we have two table for event and user photos each?
-
--- Q maybe bytea for RegisteredUser and talbe for event?
-
--- Q should I add automatic trigger that would add empty photo row when user is registered?  
-
-create table IF NOT EXISTS user_photo(
-	user_photo_id SERIAL,
-	file bytea,
-	added_on timestamp default current_timestamp,
-	added_by uuid,
-
-	-- Q should we have 'image_path' UNIQUE row?
-	
-	FOREIGN KEY (added_by) REFERENCES registered_user (user_id)
-											ON DELETE CASCADE
-											ON UPDATE CASCADE
-	);
-
-
-
-
-create table IF NOT EXISTS event_photo(
-	event_photo_id SERIAL,
-	file bytea,
-	added_on timestamp default current_timestamp,
-	-- creator
-	added_by uuid,
-
-	FOREIGN KEY (added_by) REFERENCES event (creator_id)
-									ON DELETE CASCADE
-									ON UPDATE CASCADE
-);
 
 ~~~~~
 
@@ -522,7 +382,9 @@ create table IF NOT EXISTS event_photo(
 ## Revision history
 
 1. A6-1 was changed.
-
+2. All names were changed according to the underscore notation (name, long_name). registered_user was chaged to authorised_user
+3. report/comment/poll/event notification-tables were removed - added triggers instead. Guests-table removed.  David. 
+4. UML simplified, indexes started.
 
 ***
 GROUP21122, 12/10/2022
