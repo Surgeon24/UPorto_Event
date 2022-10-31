@@ -274,8 +274,5 @@ DROP INDEX IF EXISTS idx_id_user CASCADE;
 CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);
 
 
-DROP INDEX IF EXISTS idx_event
-
 DROP INDEX IF EXISTS idx_notification CASCADE;
 CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
-		 
