@@ -396,6 +396,12 @@ CREATE TRIGGER trig_comment
 ~~~~
 
 
+| **Trigger**      | TRIGGER05                              |
+| ---              | ---                                    |
+| **Description**  | when name/surename inserted into authorised_user table, the trigger capitalizes the fisrt letter. |
+| **Priority US**     | Medium                                 |
+
+
 ### 4. Transactions
  
 > Transactions needed to assure the integrity of the data.  
