@@ -85,26 +85,26 @@ insert into poll (id, title, content, starts_at, end_at, event_id) values (20, '
 
 
 
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (1, 1, 1, 1, 1, '8/7/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (2, 2, 2, 2, 2, '5/24/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (3, 3, 3, 3, 3, '8/13/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (4, 4, 4, 4, 4, '10/4/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (5, 5, 5, 5, 5, '8/5/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (6, 6, 6, 6, 6, '10/16/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (7, 7, 7, 7, 7, '9/14/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (8, 8, 8, 8, 8, '4/23/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (9, 9, 9, 9, 9, '3/21/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (10, 10, 10, 10, 10, '8/21/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (11, 11, 11, 11, 11, '8/26/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (12, 12, 12, 12, 12, '8/26/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (13, 13, 13, 13, 13, '10/5/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (14, 14, 14, 14, 14, '4/20/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (15, 15, 15, 15, 15, '8/30/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (16, 16, 16, 16, 16, '7/16/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (17, 17, 17, 17, 17, '8/7/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (18, 18, 18, 18, 18, '11/30/2021');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (19, 19, 19, 19, 19, '6/24/2022');
-insert into poll_option (id, poll_id, user_id, event_id, option_id, date) values (20, 20, 20, 20, 20, '3/17/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (1, 1, 1, 1, 1, '8/7/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (2, 2, 2, 2, 2, '5/24/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (3, 3, 3, 3, 3, '8/13/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (4, 4, 4, 4, 4, '10/4/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (5, 5, 5, 5, 5, '8/5/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (6, 6, 6, 6, 6, '10/16/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (7, 7, 7, 7, 7, '9/14/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (8, 8, 8, 8, 8, '4/23/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (9, 9, 9, 9, 9, '3/21/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (10, 10, 10, 10, 10, '8/21/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (11, 11, 11, 11, 11, '8/26/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (12, 12, 12, 12, 12, '8/26/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (13, 13, 13, 13, 13, '10/5/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (14, 14, 14, 14, 14, '4/20/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (15, 15, 15, 15, 15, '8/30/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (16, 16, 16, 16, 16, '7/16/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (17, 17, 17, 17, 17, '8/7/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (18, 18, 18, 18, 18, '11/30/2021');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (19, 19, 19, 19, 19, '6/24/2022');
+insert into poll_vote(id, poll_id, user_id, event_id, option_id, date) values (20, 20, 20, 20, 20, '3/17/2022');
 
 
 
