@@ -278,7 +278,7 @@ CREATE TRIGGER trig_report
 
 -- e.g to count number of users
 DROP INDEX IF EXISTS idx_id_user CASCADE;
-CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);
+CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(nickname);
 
 -- we will use it to search for people from a specific event, during search equality (=) will be used.
 -- select user_id from user_event where event_id = 1;
