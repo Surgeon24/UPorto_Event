@@ -36,14 +36,8 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R08    			 | tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → event **NN** ) |
 | R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorised_user **NN**, #poll_option_id → poll_option **NN** ) |
 | R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), reported → authorised_user **NN**, reporter → authorised_user **NN**, manages → administrator **NN**) |
-| R11  				 | guest(<ins>guest_id</ins>, ip **NN** **UK**, time **NN**) |
-| R12                | report_notification(<ins>#notification_id → notification **NN**</ins>, #report → report **NN**) |
-| R13                | poll_notification(<ins>#notification_id → notification **NN**</ins>, #poll → Poll **NN**) |
-| R14                | event_notification(<ins>#notification_id → notification **NN**</ins>, #event → Event **NN**) |
-| R15                | comment_notification(<ins>#notification_id → notification **NN**</ins>, #comment → comment **NN**) |
-| R16                | event_authorised_user(<ins>event_id → event</ins>, <ins>user_id → authorised_user</ins>) |
-| R17                | invite(<ins>user_id → authorised_user</ins>,<ins>event_id → event</ins>, accepted) |
-| R18                | administrator(<ins>#user_id → authorised_user</ins>) |
+| R11                | user_event(<ins>user_id → authorised_user</ins>,<ins>event_id → event</ins>, accepted) |
+| R12                | administrator(<ins>#user_id → authorised_user</ins>) |
 
 ### 2. Domains
 
@@ -136,48 +130,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-
-| **TABLE R11**   | report_notification|
-| --------------  | ---                |
-| **Keys**        | { notification_id }  |
-| **Functional Dependencies:** |       |
-| FD1201          | notification_id → {report_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R12**   | poll_notification  |
-| --------------  | ---                |
-| **Keys**        | { notification_id }  |
-| **Functional Dependencies:** |       |
-| FD1301          | notification_id → {poll_id}  |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R13**   | event_notification |
-| --------------  | ---                |
-| **Keys**        | { notification_id } |
-| **Functional Dependencies:** |       |
-| FD1401          | notification_id → {event_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R14**   |comment_notification|
-| --------------  | ---                |
-| **Keys**        | { notification_id } |
-| **Functional Dependencies:** |       |
-| FD1501          | notification_id → {comment_id} |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R15**   |event_authorised_user|
-| --------------  | ---                |
-| **Keys**        | { event_id }, { user_id }  |
-| **Functional Dependencies:** |       |
-| FD1601          | none               |
-| **NORMAL FORM** | BCNF               |
-
-
-| **TABLE R16**   | user_event         |
+| **TABLE R11**   | user_event         |
 | --------------  | ---                |
 | **Keys**        | { user_id }, { event_id }  |
 | **Functional Dependencies:** |       |
@@ -185,7 +138,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R17**   | administrator      |
+| **TABLE R12**   | administrator      |
 | --------------  | ---                |
 | **Keys**        | { user_id }        |
 | **Functional Dependencies:** |       |
@@ -217,14 +170,8 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 | R08  | tag        		| 1000+		| 1+   |
 | R09  | vote        		| 1.000+ 	| 1+   |
 | R10  | report      		| 100+		| 1+   |
-| R11  | guest       		| 1 | - |
-| R12  | report_notification| 100+ 		| 1+   |
-| R13  | poll_notification  | 1.000+ 	| 1+   |
-| R14  | event_notification | 1.000+ 	| 1+   |
-| R15  | comment_notification| 10.000+ 	| 10+  |
-| R16  |event_authorised_user| 100.000+  | 100+ |
-| R17  | invite       		| 10.000+   | 10+  |
-| R18  | administrator      | 10+       | 1+   |
+| R11  | invite       		| 10.000+   | 10+  |
+| R12  | administrator      | 10+       | 1+   |
 
 
 ### 2. Proposed Indices
@@ -408,6 +355,7 @@ The SQL creation script is expanded in the A6 to include indexes, triggers, and 
 
 1. A6-1 was changed.
 2. All names were changed according to the underscore notation (name, long_name). registered_user was chaged to authorised_user
+3. report/comment/poll/event notification-tables were removed - added triggers instead. Guests-table removed.  David. 
 
 ***
 GROUP21122, 12/10/2022
