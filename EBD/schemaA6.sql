@@ -6,15 +6,13 @@
 -- Essentially, it internally calls lower when comparing values.
 -- https://www.postgresql.org/docs/current/citext.html
 CREATE EXTENSION IF NOT EXISTS citext;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS btree_gist;
 
 
 -----------------------------------------
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
-DROP TABLE IF EXISTS registered_user CASCADE;
+DROP TABLE IF EXISTS authorized_user CASCADE;
 DROP TABLE IF EXISTS administrator CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
@@ -45,7 +43,7 @@ CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 -- TABLES
 -----------------------------------------
 
-CREATE TABLE IF NOT EXISTS registered_user(
+CREATE TABLE IF NOT EXISTS authorized_user(
     ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
     name TEXT DEFAULT 'name' NOT NULL,
     surename TEXT DEFAULT 'family name' NOT NULL,
@@ -68,7 +66,7 @@ CREATE TABLE IF NOT EXISTS registered_user(
 CREATE TABLE IF NOT EXISTS administrator(
     id SERIAL PRIMARY KEY,
     admin_id uuid,
-    FOREIGN KEY (admin_id) REFERENCES registered_user(id)
+    FOREIGN KEY (admin_id) REFERENCES authorized_user(id)
 );
 
 
@@ -93,8 +91,8 @@ CREATE TABLE IF NOT EXISTS report(
     report_text TEXT NOT NULL,
 		report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
     report_status REPORT_STATUS,
-    FOREIGN KEY (reported_id) REFERENCES registered_user(id),
-    FOREIGN KEY (reporter_id) REFERENCES registered_user(id),
+    FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
     FOREIGN KEY (admin_id) REFERENCES administrator(id)
 );
 
@@ -107,7 +105,7 @@ CREATE TABLE IF NOT EXISTS user_event(
     role MEMBER_ROLE,
     accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
-    FOREIGN KEY (user_id) REFERENCES registered_user(id),
+    FOREIGN KEY (user_id) REFERENCES authorized_user(id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
@@ -116,14 +114,13 @@ CREATE TABLE IF NOT EXISTS user_event(
 -- inspirations: https://stackoverflow.com/questions/55074867/posts-comments-replies-and-likes-database-schema
 CREATE TABLE IF NOT EXISTS comments(
     id SERIAL PRIMARY KEY,
-    comment_text TEXT DEFAULT ('I like it so much, your event is so good!'),
+    comment_text TEXT DEFAULT ('Great event!'),
     user_id uuid,
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES registered_user(id),
-    FOREIGN KEY (event_id) REFERENCES event(id),
-    FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+		FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+		FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
 );
 
 
@@ -133,7 +130,7 @@ CREATE TABLE IF NOT EXISTS notification(
 		notification_type type_notification NOT NULL,
     notification_text TEXT NOT NULL DEFAULT ('text'),
     notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES registered_user(id)
+    FOREIGN KEY (user_id) REFERENCES authorized_user(id)
 );
 
 
@@ -177,10 +174,11 @@ CREATE TABLE IF NOT EXISTS poll_option(
 CREATE TABLE IF NOT EXISTS poll_vote(
     vote_id SERIAL PRIMARY KEY,
     user_id uuid,
+		event_id INT,
     option_id INT,
     date DATE NOT NULL,
     FOREIGN KEY (vote_id) REFERENCES poll(id),
-    FOREIGN KEY (user_id) REFERENCES registered_user(id),
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
     FOREIGN KEY (option_id) REFERENCES poll_option(id)
 );
 
@@ -248,6 +246,8 @@ CREATE TRIGGER trig_poll
      EXECUTE PROCEDURE poll_notification();
 
 
+
+
 CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$
 		BEGIN
 				INSERT INTO 
@@ -265,8 +265,15 @@ CREATE TRIGGER trig_report
      FOR EACH ROW
      EXECUTE PROCEDURE report_notification();
 
+-----------------------------------------
+-- Indeces
+-----------------------------------------
+DROP INDEX IF EXISTS idx_id_user CASCADE;
+CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(id);
 
 
+DROP INDEX IF EXISTS idx_event
 
-		 
+DROP INDEX IF EXISTS idx_notification CASCADE;
+CREATE INDEX IF NOT EXISTS idx_notification ON notification USING BTREE(notification_date);
 		 
