@@ -222,14 +222,52 @@ Performance indexes are used to improve the performance of individual queries. W
 > The system being developed must provide full-text search features supported by PostgreSQL. Thus, it is necessary to specify the fields where full-text search will be available and the associated setup, namely all necessary configurations, indexes definitions and other relevant details.  
 
 
-| **Index**           | IDX14                                  |
+| **Index**           | IDX11                                  |
 | ---                 | ---                                    |
 | **Relation**        | event    |
 | **Attribute**       | name   |
 | **Type**            | GIN              |
 | **Clustering**      | Clustering of the index                |
 | **Justification**   | Indexing this table would allow users searching for events based on name fast.   |
-| `SQL code`                                                  ||
+
+~~~~
+ALTER TABLE event
+ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
+
+CREATE OR REPLACE FUNCTION event_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors = (
+         setweight(to_tsvector('english', NEW.name), 'A') ||
+         setweight(to_tsvector('english', NEW.description), 'B') ||
+                 setweight(to_tsvector('english', NEW.location), 'C')
+        );
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
+           NEW.tsvectors = (
+             setweight(to_tsvector('english', NEW.name), 'A') ||
+         setweight(to_tsvector('english', NEW.description), 'B') ||
+                 setweight(to_tsvector('english', NEW.location), 'C')
+           );
+         END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+
+DROP TRIGGER IF EXISTS event_search_update ON public.event;
+
+CREATE TRIGGER event_search_update
+ BEFORE INSERT OR UPDATE ON event
+ FOR EACH ROW
+ EXECUTE PROCEDURE event_search_update();
+
+DROP INDEX IF EXISTS search_idx_event CASCADE;
+CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
+
+~~~~
 
 
 | **Index**           | IDX15                                  |
