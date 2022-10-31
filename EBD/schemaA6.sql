@@ -217,19 +217,11 @@ CREATE TRIGGER trig_comment
          
 CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
         BEGIN
-<<<<<<< HEAD
                INSERT INTO 
                 notification(notification_text,notification_date, notification_type, user_id)
                 VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
         RETURN new;
-=======
-        
-                INSERT INTO 
-                            notification(notification_text,notification_date, notification_type, user_id)
-                            VALUES('You have just joined new event, welcome!', CURRENT_TIMESTAMP, 'event', NEW.user_id);
-                            RETURN new;
 
->>>>>>> 9cef2dbe5556f8181282bbe6d7c52b05046ed8d5
 END;
 $event_notification$
 language plpgsql;
