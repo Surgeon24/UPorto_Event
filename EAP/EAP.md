@@ -31,3 +31,7 @@ This section defines the permissions used in the modules to establish the condit
 |     | 	|
 
 ### 3. OpenAPI Specification
+
+* OpenAPI specification in YAML format to describe the vertical prototype's web resources.
+
+* Link to the a7_openapi.yaml file in the group's repository.
