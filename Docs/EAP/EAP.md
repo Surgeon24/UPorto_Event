@@ -2,6 +2,9 @@
 ## A7: Web Resources Specification
 /*
    **_all comments to be deleted before delivery_**
+
+   **If you want to change/add anything - ask or JUST TO IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
+
    */
 
 //need to be changed according to the specific of our project
@@ -28,14 +31,14 @@ application, in which all modules are defined and briefly described. More inform
 
 ### 2. Permissions
 
-This section defines the permissions used in the modules to establish the conditions of access to resources.
+This section defines the permissions used by each module, required to access its data and features.
 
-|     |     |
-| --------- | ---------- |
-|     | 	|
-|     | 	|
-|     | 	|
-|     | 	|
+|  Abbreviation   |  Permission type | Description |
+| --------- | ---------- | ---------- |
+|  **PUB**   | Public	| Unauthenticated users  |
+|  **USR**   | User	| Authenticated users, have priviliges over their profile pages  |
+|  **OWN**   | Owner	| Users who created events, have priviliges on their own events |
+|  **ADM**   | Administrator	| Users with extended permissions, system managers, super users |
 
 ### 3. OpenAPI Specification
 
