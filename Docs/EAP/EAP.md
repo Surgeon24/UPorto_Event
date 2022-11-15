@@ -12,11 +12,11 @@ application, in which all modules are defined and briefly described. More inform
 
 |     |     |
 | --------- | ---------- |
+|M01: Authentication and individual Profile      |Web resources associated with user authentication and individual profile management. Includes the following system features: login/logout, registration, credential recovery, view and edit personal profile information. 	|
+|M02: Events and Categories     |Web resources associated with events such as event list and search, view/edit event details, delete and add events. 	|
+|M03: Comments and Replies     |Web resources associated with comments and replies. Includes the following system features: add comment/reply, list comments/replies and delete comments/replies; add replies to comments. 	|
 |     | 	|
-|     | 	|
-|     | 	|
-|     | 	|
-|     | 	|
+|M05: User Administration and Static pages     |Web resources associated with users administration and overall event management, including user ban for improper behavior; add users to private events; delete comments; create polls; create announcements. Web resources with static content: About and FAQ. 	|
 
 
 ### 2. Permissions
