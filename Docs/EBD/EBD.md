@@ -4,11 +4,11 @@
 
 ## A4: Conceptual Data Model
 
-In A4 we will take over our first database topic. This will cover the **Class Diagram** which compiles all entities, attributes and relations of our database, in order to stre efficiently all website information.
+In A4 we will take over our first database topic. This will cover the **Class Diagram** which compiles all entities, attributes and relations of our database, in order to store efficiently all website information.
 
 ### 1. Class diagram
 
-![A4- UML_Diagram](images/A4- UPortoEvent.jpg)
+![A4-UML_Diagram](images/A4-UPortoEvent.jpg)
 
 ### 2. Additional Business Rules
  
