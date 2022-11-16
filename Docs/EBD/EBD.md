@@ -8,7 +8,7 @@ In A4 we will take over our first database topic. This will cover the **Class Di
 
 ### 1. Class diagram
 
-![A4- UML_Diagram](images/A4- UPortoEventUML.jpg)
+![A4- UML_Diagram](images/A4- UPortoEvent.jpg)
 
 ### 2. Additional Business Rules
  
