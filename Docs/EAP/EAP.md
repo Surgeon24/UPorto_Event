@@ -45,3 +45,38 @@ This section defines the permissions used by each module, required to access its
 * OpenAPI specification in YAML format to describe the vertical prototype's web resources.
 
 * Link to the a7_openapi.yaml file in the group's repository.
+
+
+
+
+## A8: Vertical Prototype
+The Vertical Prototype is intended to validate the presented architecture, as well as to familiarize yourself with the technologies used in the project. It contains implementation of main features  that are represented in requirements documents.
+
+### 1. Implemented Features
+
+#### 1.1. Implemented User Stories
+
+| User Story | Name | Priority | Description |
+| ---------- | ---- | -------- | ----------- |
+|            |     	|          |             |
+
+#### 1.2. Implemented Web Resources
+
+| Web ID | URL |
+| ------ | --- |
+|        |     |
+
+### 2. Prototype
+
+
+## Revision history
+
+1. template was created. Some comments were added.
+2.
+***
+GROUP21122, 16/11/2022
+
+* João Sousa, up201904739@up.pt    
+* Mikhail Ermolaev, up202203498@up.pt
+* David Burchakov, up202203777@up.pt
+* Válter Castro, up201706546@up.pt
