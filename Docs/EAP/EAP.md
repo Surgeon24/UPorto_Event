@@ -3,7 +3,7 @@
 /*
    **_all comments to be deleted before delivery_**
 
-   **If you want to change/add anything - ask or JUST TO IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
+   **If you want to change/add anything - ask or JUST TO IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!** (c) David
 
    */
 
@@ -18,7 +18,7 @@ This artifact documents the  architecture of the "UPorto event", indicating the 
 This section provides a short description of the web part of the 
 application, in which all modules are defined and briefly described. More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
 
-**//** maybe add something to description if you want idk **(c) David.**
+**//** Not sure about Comments, Polls and Notifications. Maybe delete? **(c) David.**
 |   Module   | Description    |
 | --------- | ---------- |
 |  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration, credential recovery and view and edit profile data. 	|
@@ -56,23 +56,65 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 #### 1.1. Implemented User Stories
 
+// Please fill User Stories (c) David
+
 | User Story | Name | Priority | Description |
 | ---------- | ---- | -------- | ----------- |
 |            |     	|          |             |
 
 #### 1.2. Implemented Web Resources
 
-| Web ID | URL |
-| ------ | --- |
-|        |     |
+**M01 - Authentication and Individual Profile**
+
+
+| Web Resource Reference | URL |
+|  ------------------    | --- |
+|  R101: Sign In Form    | --- |
+|  R102: Sign In Action  | --- |
+|  R103: Logout Action   | --- |
+|  R104: Sign Up Form    | --- |
+|  R105: Sign Up Action  | --- |
+|  R106: View User Profile | --- |
+|  R107: Edit Profile    | --- |
+|  R108: Delete Account  | --- |
+|  R109: View Account Settings | --- |
+|  R110: Edit Account Settings | --- |
+|  R111: Get Avatar      | --- |
+
+
+**M02 - Events**
+
+| Web Resource Reference | URL |
+| ---------------------- | --- |
+| R201: Serach Event API | --- |
+
+**M03 - Comments**
+
+| Web Resource Reference | URL |
+| ---------------------- | --- |
+
+**M04 - Polls**
+
+| Web Resource Reference | URL |
+| ---------------------- | --- |
+
+**M05 - Notifications**
+
+| Web Resource Reference | URL |
+| ---------------------- | --- |
+
+**M06 - Administration**
+
+| Web Resource Reference | URL |
+| ---------------------- | --- |
 
 ### 2. Prototype
 
 
 ## Revision history
 
-1. template was created. Some comments were added.
-2.
+1. template was created. Some comments were added. // [ Isn't revision needed for changes after deadline? ] (c) David.
+2. 
 ***
 GROUP21122, 16/11/2022
 
