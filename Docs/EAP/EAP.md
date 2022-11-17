@@ -18,15 +18,13 @@ This artifact documents the  architecture of the "UPorto event", indicating the 
 This section provides a short description of the web part of the 
 application, in which all modules are defined and briefly described. More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
 
-**//** Not sure about Comments, Polls and Notifications. Maybe delete? **(c) David.**
+**//** Comments and Polls are inside Events. You can change/add the description **(c) David.**
 |   Module   | Description    |
 | --------- | ---------- |
 |  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration, credential recovery and view and edit profile data. 	|
 |  M02 - Events   | Web component that deals with event creation, management and promotion. 	|
-|  M03 - Comments   | Web component that related to comment creation. Comprises replies to comments.	|
-|  M04 - Polls   | Web component associated with polls. Includes the following features: poll participation, viewing poll results	|
-|  M05 - Notifications   | Web component that handles notifications. Namely, notification pop-ups. |
-|  M06 - Administration   | Web component connected with user and system control(management). Specifically: user deletion, changing system static information (i.e. about, contacts, home etc.), managing user reports. 	|
+|  M03 - Notifications   | Web component that handles notifications. Namely, notification pop-ups. |
+|  M04 - Administration   | Web component connected with user and system control(management). Specifically: user deletion, changing system static information (i.e. about, contacts, home etc.), managing user reports. 	|
 
 
 ### 2. Permissions
@@ -38,6 +36,7 @@ This section defines the permissions used by each module, required to access its
 |  **PUB**   | Public	| Unauthenticated users  |
 |  **USR**   | User	| Authenticated users, have priviliges over their profile pages  |
 |  **OWN**   | Owner	| Users who created events, have priviliges on their own events |
+|  **COM**   | Comment Author | User who authored an comment can delete it |
 |  **ADM**   | Administrator	| Users with extended permissions, system managers, super users |
 
 ### 3. OpenAPI Specification
