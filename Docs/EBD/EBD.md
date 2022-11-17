@@ -13,9 +13,7 @@ In A4 we will take over our first database topic. This will cover the **Class Di
 ### 2. Additional Business Rules
  
 - BR01 : Only registred users who participate on the event can make comments and answer to polls.
-- BR02 : Only event creators can delete or cancel the event. So event moderators, can´t.
-- BR03 : Only Participants of an specific event can vote in polls
-- BR04 : Only Event Moderators can invite users to an event
+- BR02 : Only Participants of an specific event can vote in polls
 ---
 
 
@@ -27,8 +25,8 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | authorized_user(<ins>user_id</ins>, name **NN**, surname **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
-| R02                | event(<ins>event_id</ins>, name **NN**, descriprion **NN**, start_date **NN**, location **NN**, schedule **NN**, role **DF** 'participant' **CK** (role **IN** member_role)) ) |
+| R01                | authorized_user(<ins>user_id</ins>, full_name **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
+| R02                | event(<ins>event_id</ins>, name **NN**, description **NN**, start_date **NN**, location **NN**, is_public **NN**, role **DF** 'participant' **CK** (role **IN** member_role)) ) |
 | R03                | notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → authorized_user **NN** ) |
 | R04                | photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
 | R05				 | poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorized_user **NN**, #event_id → event **NN** ) |
@@ -39,6 +37,12 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), report_type **DF** 'Spam' **CK** (report_type **IN** report_type), reported → authorized_user **NN**, reporter → authorized_user **NN**, manages → administrator **NN**) |
 | R11                | user_event(<ins>user_id → authorized_user</ins>,<ins>event_id → event</ins>, accepted) |
 | R12                | administrator(<ins>#user_id → authorized_user</ins>) |
+| R13                | Report_Notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
+| R14                | Poll_Notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
+| R15                | Event_Notification(<ins>#notification_id → Notification **NN**</ins>, #event → Event **NN**) |
+| R16                | Comment_Notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
+
+
 
 ### 2. Domains
 
@@ -54,7 +58,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | { user_id }, { email }, {url}  |
 | **Functional Dependencies:** |       |
-| FD0101          | user_id → {name, surname, nickname, password, email, date_registered, last_seen, birth_date, url, status, is_admin, photo_path} |
+| FD0101          | user_id → {full_name, nickname, password, email, date_registered, last_seen, birth_date, url, status, is_admin, photo_path} |
 | FD0102          | email → {user_id, name, surname, nickname, password, date_registered, last_seen, birth_date, url, status, is_admin, photo_path} |
 | FD0103          | url → {user_id, name, surname, nickname, password, email, date_registered, last_seen, birth_date, status, is_admin, photo_path}  |         |
 | **NORMAL FORM** | BCNF               |
@@ -64,7 +68,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | {event_id}         |
 | **Functional Dependencies:** |       |
-| FD0201          | event_id → {name, descriprion, start_date, location, schedule} |
+| FD0201          | event_id → {name, description, start_date, location, is_public} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -146,6 +150,39 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **Functional Dependencies:** |       |
 | FD1801          | none               |
 | **NORMAL FORM** | BCNF               |
+
+| **TABLE R13**   | Report_Notification|
+| --------------  | ---                |
+| **Keys**        | { notification_id }  |
+| **Functional Dependencies:** |       |
+| FD1201          | notification_id → {report_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R14**   | Poll_Notification  |
+| --------------  | ---                |
+| **Keys**        | { notification_id }  |
+| **Functional Dependencies:** |       |
+| FD1301          | notification_id → {poll_id}  |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R15**   | Event_Notification |
+| --------------  | ---                |
+| **Keys**        | { notification_id } |
+| **Functional Dependencies:** |       |
+| FD1401          | notification_id → {event_id} |
+| **NORMAL FORM** | BCNF               |
+
+
+| **TABLE R16**   |Comment_Notification|
+| --------------  | ---                |
+| **Keys**        | { notification_id } |
+| **Functional Dependencies:** |       |
+| FD1501          | notification_id → {comment_id} |
+| **NORMAL FORM** | BCNF               |
+
+
 
 The Schema is already in BCNF. Every relation is in BCNF (Boyce-Codd Normal Form).
 
