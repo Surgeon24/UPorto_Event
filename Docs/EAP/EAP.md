@@ -83,26 +83,19 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 **M02 - Events**
 
-| Web Resource Reference | URL |
-| ---------------------- | --- |
-| R201: Serach Event API | --- |
-
-**M03 - Comments**
+// Full-text search APIs are not mandatory (c) Teacher
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R201: ------- | --- |
 
-**M04 - Polls**
 
-| Web Resource Reference | URL |
-| ---------------------- | --- |
-
-**M05 - Notifications**
+**M03 - Notifications**
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
 
-**M06 - Administration**
+**M04 - Administration**
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
