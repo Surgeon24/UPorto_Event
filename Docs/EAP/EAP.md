@@ -30,6 +30,7 @@ application, in which all modules are defined and briefly described. More inform
 ### 2. Permissions
 
 This section defines the permissions used by each module, required to access its data and features.
+// PAR permission added. Opinions?
 
 |  Abbreviation   |  Permission type | Description |
 | --------- | ---------- | ---------- |
@@ -37,6 +38,7 @@ This section defines the permissions used by each module, required to access its
 |  **USR**   | User	| Authenticated users, have priviliges over their profile pages  |
 |  **OWN**   | Owner	| Users who created events, have priviliges on their own events |
 |  **COM**   | Comment Author | User who authored an comment can delete it |
+|  **PAR**   | Event participant | User who take part in an event |
 |  **ADM**   | Administrator	| Users with extended permissions, system managers, super users |
 
 ### 3. OpenAPI Specification
