@@ -24,7 +24,7 @@ application, in which all modules are defined and briefly described. More inform
 |  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration, credential recovery and view and edit profile data. 	|
 |  M02 - Events   | Web component that deals with event creation, management and promotion. 	|
 |  M03 - Notifications   | Web component that handles notifications. Namely, notification pop-ups. |
-|  M04 - Administration   | Web component connected with user and system control(management). Specifically: user deletion, changing system static information (i.e. about, contacts, home etc.), managing user reports. 	|
+|  M04 - User Administration and Static pages   | Web component connected with user and system control(management). Specifically: user deletion, changing system static information (i.e. about, contacts, home etc.), managing user reports. 	|
 
 
 ### 2. Permissions
@@ -117,10 +117,20 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 | Web Resource Reference | URL |
 | ---------------------- | --- |
 
-**M04 - Administration**
+**M04 - User Administration and Static pages**
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R401: View Homepage (Landing Page) | --- |  
+| R402: View Contacts Page | --- |
+| R403: Send Support Ticket Action | --- |
+| R404: View About page | --- |
+| R405: View dashboard | --- |
+| R406: View search page | --- |
+| R407: View User Management Page | --- |
+| R408: View Event Management Page | --- |
+| R409: View User Support Page | --- |
+| R410: Deletes a user   | --- |
 
 ### 2. Prototype
 
