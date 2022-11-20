@@ -18,18 +18,22 @@ This artifact documents the  architecture of the "UPorto event", indicating the 
 This section provides a short description of the web part of the 
 application, in which all modules are defined and briefly described. More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
 
-**//** Comments and Polls are inside Events. You can change/add the description **(c) David.**
+
+
 |   Module   | Description    |
 | --------- | ---------- |
 |  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration, credential recovery and view and edit profile data. 	|
 |  M02 - Events   | Web component that deals with event creation, management and promotion. 	|
 |  M03 - Notifications   | Web component that handles notifications. Namely, notification pop-ups. |
-|  M04 - User Administration and Static pages   | Web component connected with user and system control(management). Specifically: user deletion, changing system static information (i.e. about, contacts, home etc.), managing user reports. 	|
+|  M04 - User Administration and Static pages   | Web resources associated with user management such as view, search and delete users, view and change user information, manage reports and user support tickets. Web resources with static content are associated with this module: dashboard, search, contact, about. 	|
+
+
 
 
 ### 2. Permissions
 
 This section defines the permissions used by each module, required to access its data and features.
+
 // PAR permission added. Opinions?
 
 |  Abbreviation   |  Permission type | Description |
@@ -57,7 +61,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 #### 1.1. Implemented User Stories
 
-// Please fill User Stories (c) David
+
 
 | User Story | Name | Priority | Description |
 | ---------- | ---- | -------- | ----------- |
@@ -137,10 +141,10 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 ## Revision history
 
-1. template was created. Some comments were added. // [ Isn't revision needed for changes after deadline? ] (c) David.
+1. 
 2. 
 ***
-GROUP21122, 16/11/2022
+GROUP21122, 20/11/2022
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
