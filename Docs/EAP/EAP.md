@@ -65,6 +65,10 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 #### 1.2. Implemented Web Resources
 
+// something that will be added in the future. Idk where to specify
+// invite member API
+// Social Media Module, including search users by username
+
 **M01 - Authentication and Individual Profile**
 
 
@@ -85,11 +89,27 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 **M02 - Events**
 
-// Full-text search APIs are not mandatory (c) Teacher
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
-| R201: ------- | --- |
+| R201: Search Events API | --- |
+| R202: Create Event     | --- |
+| R203: Get Event Information | --- |
+| R204: Leave Event      | --- |
+| R205: View Event Overview | --- |
+| R206: View Event Preferences | --- |
+| R207: Edit Event       | --- |
+| R208: Delete Event     | --- |
+| R209: Get Tags         | --- |
+| R210: Create Tag       | --- |
+| R211: Delete Tag       | --- |
+| R212: Get Comments     | --- |
+| R213: Add a comment    | --- |
+| R214: Delete Comment   | --- |
+| R215: View a Polls Detail | --- |
+| R216: Vote on an Choice | --- |
+| R217: List All Polls   | --- |
+| R218: Create a New Poll | --- |
 
 
 **M03 - Notifications**
