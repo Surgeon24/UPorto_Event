@@ -76,19 +76,22 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 **M01 - Authentication and Individual Profile**
 
 
+// URLs filled without links. Don't know how to associate with UIs and even if we have to do that. Please clarify
+
+
 | Web Resource Reference | URL |
 |  ------------------    | --- |
-|  R101: Sign In Form    | --- |
-|  R102: Sign In Action  | --- |
-|  R103: Logout Action   | --- |
-|  R104: Sign Up Form    | --- |
-|  R105: Sign Up Action  | --- |
-|  R106: View User Profile | --- |
-|  R107: Edit Profile    | --- |
-|  R108: Delete Account  | --- |
-|  R109: View Account Settings | --- |
-|  R110: Edit Account Settings | --- |
-|  R111: Get Avatar      | --- |
+|  R101: Sign In Form    | GET /login |
+|  R102: Sign In Action  | POST /login |
+|  R103: Logout Action   | POST /logout |
+|  R104: Sign Up Form    | GET /register  |
+|  R105: Sign Up Action  | POST /register |
+|  R106: View User Profile | GET /users/{id} |
+|  R107: Edit Profile    | PATCH /users/{id}/edit  |
+|  R108: Delete Account  | DELETE /users/{id} |
+|  R109: View Account Settings | GET /settings |
+|  R110: Edit Account Settings | PATCH /settings |
+|  R111: Get Avatar      | /avatars/{img} |
 
 
 **M02 - Events**
@@ -96,24 +99,24 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
-| R201: Search Events API | --- |
-| R202: Create Event     | --- |
-| R203: Get Event Information | --- |
-| R204: Leave Event      | --- |
-| R205: View Event Overview | --- |
-| R206: View Event Preferences | --- |
-| R207: Edit Event       | --- |
-| R208: Delete Event     | --- |
-| R209: Get Tags         | --- |
-| R210: Create Tag       | --- |
-| R211: Delete Tag       | --- |
-| R212: Get Comments     | --- |
-| R213: Add a comment    | --- |
-| R214: Delete Comment   | --- |
-| R215: View a Polls Detail | --- |
-| R216: Vote on an Choice | --- |
-| R217: List All Polls   | --- |
-| R218: Create a New Poll | --- |
+| R201: Search Events API | GET /api/events |
+| R202: Create Event     | POST /api/events |
+| R203: Get Event Information | GET /api/events/{id} |
+| R204: Leave Event      | DELETE /api/events/event_id/{user_id} |
+| R205: View Event Overview | GET /events/{id}/overview |
+| R206: View Event Preferences | GET /events/{id}/preferences |
+| R207: Edit Event       | PATCH /events/{id}/preferences |
+| R208: Delete Event     | DELETE /events/{id}/preferences |
+| R209: Get Tags         | GET /api/events/{id}/tag |
+| R210: Create Tag       | POST /api/events/{id}/tag |
+| R211: Delete Tag       | DELETE /api/events/{id}/tag |
+| R212: Get Comments     | GET /api/events/{id}/comments |
+| R213: Add a comment    | POST /api/{events}/{id}/comments |
+| R214: Delete Comment   | DELETE /api/events/{id}/comments/{comment} |
+| R215: View a Polls Detail | GET /api/events/id/polls/{poll_id} |
+| R216: Vote on an Choice | POST /api/events/id/polls/{poll_id}/choices/{choice_id} |
+| R217: List All Polls   | GET /api/events/id/polls |
+| R218: Create a New Poll | POST /api/events/id/polls |
 
 
 **M03 - Notifications**
@@ -125,16 +128,16 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
-| R401: View Homepage (Landing Page) | --- |  
-| R402: View Contacts Page | --- |
-| R403: Send Support Ticket Action | --- |
-| R404: View About page | --- |
-| R405: View dashboard | --- |
-| R406: View search page | --- |
-| R407: View User Management Page | --- |
-| R408: View Event Management Page | --- |
-| R409: View User Support Page | --- |
-| R410: Deletes a user   | --- |
+| R401: View Homepage (Landing Page) | GET / |  
+| R402: View Contacts Page | GET /contacts |
+| R403: View User Support Page | GET /support |
+| R404: Send Support Ticket Action | POST /support |
+| R405: View About page | GET /about |
+| R406: View dashboard | GET /dashboard |
+| R407: View search page | GER /search |
+| R408: View User Management Page | GET /admin/users |
+| R409: View Event Management Page | GET admin/events |
+| R410: Deletes a user   | DELETE /admin/users/{user_id} |
 
 ### 2. Prototype
 
