@@ -25,22 +25,22 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 
 | Relation reference | Relation Compact Notation                        |
 | ------------------ | ------------------------------------------------ |
-| R01                | authorized_user(<ins>user_id</ins>, full_name **NN**, nickname **NN**, password **NN**, email **UK** **NN**, date_registered, last_seen **NN**, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
+| R01                | authorized_user(<ins>user_id</ins>, firstname **NN**, lastname **NN**, username **NN**, password **NN**, email **UK** **NN**, date_registered, birth_date **NN**, url **UK** **NN**, status, is_admin, photo_path ) |
 | R02                | event(<ins>event_id</ins>, name **NN**, description **NN**, start_date **NN**, location **NN**, is_public **NN**, role **DF** 'participant' **CK** (role **IN** member_role)) ) |
 | R03                | notification(<ins>notification_id</ins>, text **NN**, date **NN**, #user_id → authorized_user **NN** ) |
 | R04                | photo(<ins>photo_id</ins>, upload_date **NN**, image_path **NN**, #event_id → Event ) |
-| R05				 | poll(<ins>poll_id</ins>, title **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorized_user **NN**, #event_id → event **NN** ) |
-| R06				 | poll_option(<ins>poll_option_id</ins>, option **NN**, #poll_id → poll **NN**) |
+| R05				 | poll(<ins>poll_id</ins>, question **NN**, content **NN**, start_date **NN**, end_date **NN**, #user_id → authorized_user **NN**, #event_id → event **NN** ) |
+| R06				 | poll_choice(<ins>poll_choice_id</ins>, choice **NN**, #poll_id → poll **NN**) |
 | R07   			 | comment(<ins>comment_id</ins>, publish_date **NN**, description **NN**, #comment_id → comment **NN**, #event_id → event **NN**, #user_id → authorized_user **NN** ) |
 | R08    			 | tag(<ins>tag_id</ins>, name **NN**, color **NN**, #event_id → event **NN** ) |
-| R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorized_user **NN**, #poll_option_id → poll_option **NN** ) |
+| R09  			     | poll_vote(<ins>vote_id</ins>, date **NN**, #user_id → authorized_user **NN**, #poll_choice_id → poll_choice **NN** ) |
 | R10 				 | report(<ins>report_id</ins>, text **NN**, report_status **DF** 'waiting' **CK** (report_status **IN** report_status), report_type **DF** 'Spam' **CK** (report_type **IN** report_type), reported → authorized_user **NN**, reporter → authorized_user **NN**, manages → administrator **NN**) |
 | R11                | user_event(<ins>user_id → authorized_user</ins>,<ins>event_id → event</ins>, accepted) |
 | R12                | administrator(<ins>#user_id → authorized_user</ins>) |
-| R13                | Report_Notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
-| R14                | Poll_Notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
-| R15                | Event_Notification(<ins>#notification_id → Notification **NN**</ins>, #event → Event **NN**) |
-| R16                | Comment_Notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
+| R13                | report_notification(<ins>#notification_id → Notification **NN**</ins>, #report → Report **NN**) |
+| R14                | poll_notification(<ins>#notification_id → Notification **NN**</ins>, #poll → Poll **NN**) |
+| R15                | event_notification(<ins>#notification_id → Notification **NN**</ins>, #event → Event **NN**) |
+| R16                | comment_notification(<ins>#notification_id → Notification **NN**</ins>, #comment → Comment **NN**) |
 
 
 
@@ -49,7 +49,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | Domain Name  | Domain Specification           |
 | -----------  | ------------------------------ |
 | member_role   | ENUM ('owner', 'moderator', 'participant') |
-| report_type | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information') |
+| report_type | ENUM ('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information', 'other') |
 | report_status | ENUM('waiting', 'ignored', 'sanctioned')|
 
 ### 3. Schema validation
@@ -92,15 +92,15 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | { poll_id }        |
 | **Functional Dependencies:** |       |
-| FD0501          | poll_id → {title, content, start_date, end_date, user_id, event_id} |
+| FD0501          | poll_id → {question, content, start_date, end_date, user_id, event_id} |
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R06**   | poll_option         |
+| **TABLE R06**   | poll_choice         |
 | --------------  | ---                |
-| **Keys**        | { poll_option_id }     |
+| **Keys**        | { poll_choice_id }     |
 | **Functional Dependencies:** |       |
-| FD0601          | poll_option_id → {option, poll_id} |
+| FD0601          | poll_choice_id → {choice, poll_id} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -124,7 +124,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | --------------  | ---                |
 | **Keys**        | { vote_id } |
 | **Functional Dependencies:** |       |
-| FD0901          | vote_id → {date, user_id, poll_option_id} |
+| FD0901          | vote_id → {date, user_id, poll_choice_id} |
 | **NORMAL FORM** | BCNF               |
 
 
@@ -389,7 +389,7 @@ The designation 1+ means several, 10+ means tens, 100+ means hundreds, and so on
 | R03  | notification   	| 10.000+	| 10+  |
 | R04  | photo          	| 10.000+	| 10+  |
 | R05  | poll		    	| 1.000+ 	| 1+   |
-| R06  | poll_option     	| 1.000+ 	| 1+   |
+| R06  | poll_choice     	| 1.000+ 	| 1+   |
 | R07  | comment        	| 10.000+ 	| 10+  |
 | R08  | tag        		| 1000+		| 1+   |
 | R09  | vote        		| 1.000+ 	| 1+   |
@@ -1231,6 +1231,12 @@ insert into administrator(ID) values(20);
 3. report/comment/poll/event notification-tables were removed - added triggers instead. Guests-table removed.  David. 
 4. UML simplified, indexes started.
 5. Added description to many items. Added 6 new indexes (the description of some indexes needs improvement). Existing indexes are also left.
+6. Changes for readability and simplicity purposes:
+    - name, surename, nickname changed to firstname, lastname, username.
+    - 'other' report_type added.
+    - poll_option changed to poll_choice
+    - title in poll table changed to question
+7. notification tables
 ***
 GROUP21122, 12/10/2022
 
