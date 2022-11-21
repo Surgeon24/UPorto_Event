@@ -22,9 +22,9 @@ application, in which all modules are defined and briefly described. More inform
 
 |   Module   | Description    |
 | --------- | ---------- |
-|  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration, credential recovery and view and edit profile data. 	|
-|  M02 - Events   | Web component that deals with event creation, management and promotion. 	|
-|  M03 - Notifications   | Web component that handles notifications. Namely, notification pop-ups. |
+|  M01 - Authentication and Individual Profile    | Web component that concerns itself with the user's authentication and each user's profile. It covers, inter alia, login/logout, registration and view and edit profile data. 	|
+|  M02 - Events   | Web component that deals with event creation, management and promotion. Among others, contains Polls, Tags and Comments APIs. 	|
+|  M03 - Notifications   | Web component that handles notifications. |
 |  M04 - User Administration and Static pages   | Web resources associated with user management such as view, search and delete users, view and change user information, manage reports and user support tickets. Web resources with static content are associated with this module: dashboard, search, contact, about. 	|
 
 
