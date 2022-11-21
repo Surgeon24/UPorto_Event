@@ -52,7 +52,7 @@ This section defines the permissions used by each module, required to access its
 * Link to the a7_openapi.yaml file in the group's repository.
 
 
-**// please add link to file called _a7_openapi.yml_ cause I don't remember how **
+**// please add link to file called _a7_openapi.yml_ cause I don't remember how**
 
 
 https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0
@@ -128,6 +128,10 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R301: list of all notifications by user | GET /notifications |
+| R302: Create a notification | POST /notifications |
+| R303: get a notification | GET /notifications/id |
+| R304: delete a notification | DELETE /notifications/id |
 
 **M04 - User Administration and Static pages**
 
