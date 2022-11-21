@@ -91,7 +91,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 |  R108: Delete Account  | DELETE /users/{id} |
 |  R109: View Account Settings | GET /settings |
 |  R110: Edit Account Settings | PATCH /settings |
-|  R111: Get Avatar      | /avatars/{img} |
+|  R111: Get Avatar      | GET /users/id/avatars/{img} |
 
 
 **M02 - Events**
