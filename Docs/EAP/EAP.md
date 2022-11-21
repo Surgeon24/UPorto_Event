@@ -67,9 +67,12 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 
 
-| User Story | Name | Priority | Description |
-| ---------- | ---- | -------- | ----------- |
-|            |     	|          |             |
+|ID   | Actor    | Name      |Priority | Description |
+| --- | -----    | ----      | ------- | ----------- |
+|vi01 | Visitor  | Log In    | High    | As a visitor, I want to be able to log-in, to get a status of authenticated user. |
+|au04 |Auth. user| Log Out   | High    | As an authenticated user, I want to be able to log out from service for privacy purposes. |
+|vi02 | Visitor  | Sign Up   | High    |As a visitor, I want to be able to create my profile on the site to become an authenticated user. |
+
 
 #### 1.2. Implemented Web Resources
 
