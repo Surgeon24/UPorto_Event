@@ -1,4 +1,5 @@
 openapi: 3.0.1
+
 info:
   version: '1.0'
   title: lbaw22122 UPorto Event
@@ -9,11 +10,8 @@ info:
     email: up202203777@g.uporto.pt
     
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lbaw22122_Event/UPortoEvent/1.0
   - description: 'production server'
-    url: http://lbaw.fe.up.pt  # What URL here?????????
+    url: http://lbaw.fe.up.pt 
 externalDocs:
   description: Find more info here.
   url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/wikis/home
