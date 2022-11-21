@@ -47,10 +47,15 @@ This section defines the permissions used by each module, required to access its
 
 ### 3. OpenAPI Specification
 
-* OpenAPI specification in YAML format to describe the vertical prototype's web resources.
+* OpenAPI specification in YAML format to describe the web application's web resources.
 
 * Link to the a7_openapi.yaml file in the group's repository.
 
+
+**// please add link to file called _a7_openapi.yml_ cause I don't remember how **
+
+
+https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0
 
 
 
