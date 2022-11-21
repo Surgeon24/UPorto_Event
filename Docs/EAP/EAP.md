@@ -47,13 +47,12 @@ This section defines the permissions used by each module, required to access its
 
 ### 3. OpenAPI Specification
 
-* OpenAPI specification in YAML format to describe the web application's web resources.
+This section describes the web application's web resources with OpenAPI specification in YAML format.
+
 
 * Link to the a7_openapi.yaml file in the group's repository.
 
-
 **// please add link to file called _a7_openapi.yml_ cause I don't remember how**
-
 
 https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0
 
@@ -75,8 +74,12 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 #### 1.2. Implemented Web Resources
 
 // something that will be added in the future. Idk where to specify
+
 // invite member API
+
 // Social Media Module, including search users by username
+
+// Reset password UI
 
 **M01 - Authentication and Individual Profile**
 
