@@ -1,1 +1,1453 @@
+openapi: 3.0.1
+info:
+  version: '1.0'
+  title: lbaw22122 UPorto Event
+  description: 'Web resource specification (A7) for Event management system'
+  contact:
+    name: lbaw22122 
+    url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122
+    email: up202203777@g.uporto.pt
+    
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lbaw22122_Event/UPortoEvent/1.0
+  - description: 'production server'
+    url: http://lbaw.fe.up.pt  # What URL here?????????
+externalDocs:
+  description: Find more info here.
+  url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/wikis/home
 
+tags: 
+- name: M01 - Authentication and Individual Profile
+- name: M02 - Events
+- name: M03 - Notifications
+- name: M04 - User Administration and Static pages
+
+paths: 
+  /login:
+    get:
+        operationId: R101
+        summary: 'R101: Sign In Form'
+        description: 'Provide sign in form. Access: PUB'
+        tags:
+        - 'M01 - Authentication and Individual Profile'
+        responses:
+          '200':
+            description: 'Ok. Show Log-in UI [UIXX]'
+          '302':
+            description: 'Redirect if user is logged in.'
+            headers:
+              Location:
+                schema:
+                  type: string
+                examples:
+                  302Success:
+                    description: 'Authenticated. Redirect to user dashboard.'
+                    value: '/dashboard'
+    post:
+      operationId: R102
+      summary: 'R102: Sign In Action'
+      description: 'Processes the sign in form submission. Access: PUB'
+      tags: 
+      - 'M01 - Authentication and Individual Profile'
+      
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              required: 
+                - username
+                - password
+                
+      responses:
+        '302':
+          description: 'Redirect after processing the sign in credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user dashboard.'
+                  value: '/dashboard'
+                302Error:
+                  description: 'Failed authentication. Redirect to sign in form.'
+                  value: '/sign_in'
+
+  /logout:
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated used. Access: USR, ADM'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+      responses:
+        '302':
+          description: 'Redirect after processing logout.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to home page.'
+                  value: '/'
+                  
+  /sign_up:
+    get:
+      operationId: R104
+      summary: 'R104: Sign Up Form'
+      description: 'Provide new user sign up form. Access: PUB'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+      responses:
+        '200':
+          description: 'Ok. Show Sign Up UI [UIxx]()'
+        '302':
+          description: 'Redirect if user is logged in.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Authenticated. Redirect to user dashboard.'
+                  value: '/dashboard'
+
+    post:
+      operationId: R105
+      summary: 'R105: Sign Up Action'
+      description: 'Processes the new user sign up form submission. Access: PUB'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+              
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to user profile.'
+                  value: '/profile'
+                302Failure:
+                  description: 'Failed authentication. Redirect to sign in form.'
+                  value: '/sign_in'
+                  
+  /users/{user_id}:
+    get:
+      operationId: R106
+      summary: 'R106: View User Profile'
+      description: 'Show the individual user profile. Access: USR'
+      tags: 
+        - 'M01 - Authentication and Individual Profile'
+      
+      parameters: 
+        - in: path
+          name: user_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show profile UI [UIXX]'
+        '404':
+          description: 'Not found. [UIXX]'
+
+    patch:
+      operationId: R107
+      summary: 'R107: Edit Profile'
+      description: 'Edit account information. Access: USR'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                photo_path:
+                  description: path to the original location of an avatar
+                  type: string
+      responses:
+        '200':
+          description: 'Ok'
+        "401":
+          description: "Unauthorized"
+          
+    delete:
+      operationId: R108
+      summary: 'R108: Delete Account'
+      description: 'Delete account. Access: USR, ADM'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+        
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok'
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+      
+  /settings:
+    get:
+      operationId: R109
+      summary: 'R109: View Account Settings'
+      description: 'Show individual account settings page. Access: USR'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+
+      responses:
+        '200':
+          description: 'Ok'
+        "401":
+          description: "Unauthorized"
+    
+    patch:
+      operationId: R110
+      summary: 'R110: Edit Account Settings'
+      description: 'Edit account settings. Access: USR'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                firstname: 
+                  type: string
+                lastname:
+                  type: string
+                birthdate:
+                  type: string 
+                  format: date-time
+                username:
+                  type: string
+                  example: ValterMaster777
+                email:
+                  type: string
+                  example: up201706546@edu.fe.up.pt
+                password:
+                  type: string
+                  format: password
+                  example: 9Sb2fP5Yr7*cYc&Hmk
+      responses:
+        '200':
+          description: 'Ok. Show Edit Account UI [UIxx]()'
+        "401":
+          description: "Unauthorized"
+          
+  /users/id/avatars/{img}:
+    get:
+      operationId: R111
+      summary: 'R111: Get Avatar'
+      description: 'Get avatar image from local storage. Access: USR'
+      tags:
+        - 'M01 - Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: img
+          schema:
+            type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok'
+        "404":
+          description: "Not Found"
+          
+  /api/events:
+    get:
+      operationId: R201
+      summary: "R201: Search Events API"
+      description: "Searches for events and returns the results as JSON. Access: PUB."
+      tags:
+        - 'M02 - Events'
+      
+      parameters:
+        - in: query
+          name: query
+          description: String to use for full-text search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: public
+          description: Boolean with the public flag value
+          schema:
+            type: boolean
+          required: true
+        - in: query
+          name: start_date
+          description: String of start date in date format
+          schema:
+            type: string
+            format: date-time
+          required: false
+
+      responses:
+        '200':
+          description: Success. Show Search Events UI [UIxx].
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+        '400':
+          description: Bad Request
+                  
+    post:
+      operationId: R202
+      summary: 'R202: Create Event'
+      description: 'Processes the event creation form submission. Access: USR'
+      tags:
+        - 'M02 - Events'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                start_date:
+                  type: string
+                  format: date-time
+                is_public:
+                  type: boolean
+                location:
+                  type: string
+              required:
+                - name
+                - start_date
+                - is_public
+                - location
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new event information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful creation. Redirect to project overview.'
+                  value: '/events/{id}/overview'
+                302Failure:
+                  description: 'Failed creation. Redirect to user dashboard.'
+                  value: '/dashboard'
+          
+  /api/events/{id}:
+    get:
+      operationId: R203
+      summary: 'R203: Get Event Information'
+      description: "Get event information as JSON. Access: PAR, ADM, OWN."
+      tags:
+        - 'M02 - Events'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: Success. Show Get Event UI [UIxx].
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+          
+  /api/events/event_id/{user_id}:          
+    delete:
+      operationId: R204
+      summary: 'R204: Leave Event'
+      description: 'Leave an event. Access: PAR'
+      tags:
+        - 'M02 - Events'    
+        
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+        
+      responses:
+        '302':
+          description: 'Redirect after processing the leave request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful. Redirect to user dashboard.'
+                  value: '/dashboard'
+                302Failure:
+                  description: 'Failed. Redirect to user dashboard.'
+                  value: '/dashboard'
+        "400":
+          description: "Bad Request. Must have at least one owner in the event"
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+
+  /events/{id}/overview:
+    get:
+      operationId: R205
+      summary: 'R205: View Event Overview'
+      description: "Show the event overview page. Access: PAR, OWN, ADM"
+      tags:
+        - 'M02 - Events'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show overview UI [UIXX]'
+        '403':
+          description: Forbidden
+        '404':
+          description: 'Not Found. Show Not Found UI [UIXX]'
+
+
+  /events/{id}/preferences:
+    get:
+      operationId: R206
+      summary: 'R206: View Event Preferences'
+      description: "Show the event preferences page. Access: OWN, PAR"
+      tags:
+        - 'M02 - Events'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show Preferences UI [UIXX]'
+        '403':
+          description: Forbidden
+        '404':
+          description: 'Not Found. Show Not Found UI [UIXX]'
+  
+    patch:
+      operationId: R207
+      summary: 'R207: Edit Event'
+      description: 'Processes the event settings form submission. Access: OWN'
+      tags:
+        - 'M02 - Events'
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                start_date:
+                  type: string
+                  format: date-time
+                is_public:
+                  type: boolean
+                location:
+                  type: string
+      responses:
+        "200":
+          description: Success
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  
+    delete:
+      operationId: R208
+      summary: 'R208: Delete Event'
+      description: 'Delete event. Access: OWN, ADM'
+      tags:
+        - 'M02 - Events'    
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        
+      responses:
+        '302':
+          description: 'Redirect after processing the delete event request.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful. Redirect to user dashboard.'
+                  value: '/dashboard'
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+
+
+  /api/events/{id}/tag:
+    get:
+      operationId: R209
+      summary: 'R209: Get Tags'
+      description: 'Get all event tags in JSON. Access: PAR, OWN, ADM'
+      tags:
+        - 'M02 - Events'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: Success. Show Get Tags UI [UIxx].
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '400':
+          description: Bad Request
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+    
+    post:
+      operationId: R210
+      summary: 'R210: Create Tag'
+      description: 'Processes the tag creation form submission. Access: OWN'
+      tags:
+        - 'M02 - Events'
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                color:
+                  type: string
+              required:
+                - name
+                - color
+
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad input parameter
+        '403':
+          description: Forbidden request
+        '500':
+          description: System Error
+
+  /api/events/{id}/tag/{tag}:
+    delete:
+      operationId: R211
+      summary: 'R211: Delete Tag'
+      description: 'Removes tag from event. Access: OWN'
+      tags:
+        - 'M02 - Events' 
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: tag
+          schema:
+            type: integer
+          required: true
+      
+      responses:
+        '200':
+          description: Success
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+
+ 
+
+  /api/events/{id}/comments:
+    get:
+      operationId: R212
+      summary: 'R212: Get Comments'
+      description: 'Get all comments of a specific event in JSON. Access: PAR, OWN, ADM'
+      tags:
+        - 'M02 - Events'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: Success. Show Comment UI [UIxx].
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '400':
+          description: Bad Request
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+          
+  /api/{events}/{id}/comments:    
+    post:
+      operationId: R213
+      summary: 'R213: Add a comment'
+      description: 'Add a comment to an event. Access: PAR, OWN, ADM'
+      tags:
+        - 'M02 - Events' 
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: events
+          schema:
+            type: integer
+          required: true
+          
+      requestBody:
+        required: true
+        content:
+          application/JSON:
+            schema:
+              $ref: "#/components/schemas/Comment"
+        
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad input parameter request"
+        "403":
+          description: "Forbidden access"
+        "404":
+          description: "Tag not found"
+        "500":
+          description: "System Error"
+
+  /api/events/{id}/Comments/{comment}:
+    delete:
+      operationId: R214
+      summary: 'R214: Delete Comment'
+      description: 'Removes comment from event. Access: COM, ADM'
+      tags:
+        - 'M02 - Events' 
+        
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: comment
+          schema:
+            type: integer
+          required: true
+      
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad input parameter request"
+        "403":
+          description: "Forbidden access"
+        "404":
+          description: "Tag not found"
+        "500":
+          description: "System Error"
+
+  /api/events/id/polls/{poll_id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              example:
+                event_id: 3
+                question: What is your favourite programming language?
+                choices:  
+                  - choice_id: 1
+                    poll_id: 11
+                    choice: Swift
+                  - choice_id: 2
+                    poll_id: 11
+                    choice: Python
+                  - choice_id: 3
+                    poll_id: 11
+                    choice: Java
+                  - choice_id: 4
+                    poll_id: 11
+                    choice: C/C++
+                starts_at: '2022-11-11T08:40:51.620Z'
+                ends_at: '2022-12-11T08:40:51.620Z'
+      summary: "R215: View a Polls Detail"
+      operationId: R215
+      tags:
+        - "M02 - Events"
+      parameters:
+        - name: poll_id
+          in: path
+          description: ID of the Poll in form of an integer
+          required: true
+          example: '1'
+          schema:
+            type: number
+  
+  
+  /api/events/id/polls/{poll_id}/choices/{choice_id}:
+    post:
+      responses:
+        '201':
+          description: Success. Vote submitted
+        '400':
+          description: Bad input parameter
+        '403':
+          description: Forbidden request
+        '500':
+          description: System Error
+          headers:
+            Location:
+              schema:
+                type: string
+          content: {}
+      summary: "R216: Vote on an Choice"
+      operationId: R216
+      description: This action allows you to vote on a poll's choice.
+      tags:
+        - "M02 - Events"
+      parameters:
+        - name: poll_id
+          in: path
+          description: ID of the Poll in form of an integer
+          required: true
+          example: '1'
+          schema:
+            type: number
+        - name: choice_id
+          in: path
+          description: ID of the Choice in form of an integer
+          required: true
+          example: '1'
+          schema:
+            type: number
+            
+            
+            
+  /api/events/id/polls:
+    get:
+      responses:
+        '200':
+          description: OK. Show list Polls UI [UIxx].
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+          headers:
+            Link:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Poll"
+
+      summary: "R217: List All Polls"
+      operationId: R217
+      tags:
+        - "M02 - Events"
+      parameters:
+        - name: page
+          in: query
+          description: The page of polls to return
+          example: '1'
+          schema:
+            type: number
+            
+            
+    post:
+      responses:
+        '201':
+          description: Success. New Poll has created
+        '400':
+          description: Bad input parameter
+        '403':
+          description: Forbidden request
+        '500':
+          description: System Error
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Poll"
+      summary: "R218: Create a New Poll"
+      operationId: R218
+      description: >-
+        You may create your own poll using this action. It takes a JSON
+        object containing a poll and a collection of answers in the form of
+        choices.
+        + poll (string) - The poll
+        + choices (array[string]) - A collection of choices.
+      tags:
+        - "M02 - Events"
+      parameters:
+        - name: page
+          in: query
+          description: The page of questions to return
+          example: '1'
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            example:
+              question: What is your favourite programming language?
+              choices:
+                - PHP
+                - Python
+                - C/C++
+                - Java
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                choices:
+                  type: array
+                  items:
+                    type: string
+
+
+  /notifications:
+    get:
+      operationId: R301
+      summary: "R301: list of all notifications by user"
+      description: list all notifications by user
+      tags:
+        - 'M03 - Notifications'
+      parameters:
+        - in: query
+          name: user_id
+          description: id of the user associated with the notifications
+          schema:
+            type: string
+          required: true
+      
+      responses:
+        '200':
+          description: Success. Returns an array of notifications. Show list notifications UI [UIXX].
+          content:
+            application/JSON:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        '400': 
+          description: Bad input parameter
+        '403': 
+          description: Forbidden request
+        '500':
+          description: System Error
+          
+    post:
+      operationId: R302
+      summary: "R302: Create a notification"
+      description: Create a notification for a specific user
+      tags:
+        - 'M03 - Notifications'
+      requestBody:
+        description: information to create a notification
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+      responses:
+        '201': 
+          description: New notification was created for user
+        '400':
+          description: Bad input parameter
+        '403':
+          description: Forbidden request
+        '500':
+          description: System Error
+  
+
+
+  /notifications/id:
+    get:
+      operationId: R303
+      summary: "R303: get a notification"
+      description: get a notification Id
+      tags:
+        - 'M03 - Notifications'
+      parameters:
+        - in: query
+          name: user_id
+          description: user_id of the notification owner
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok. Show notification UI [UIXX].
+          content:
+            application/JSON:
+              schema:
+                $ref: '#/components/schemas/Notification'
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+    
+    
+    delete:
+      operationId: R304
+      summary: "R304: delete a notification."
+      description: delete a notification with given id.
+      tags:
+        - "M03 - Notifications"
+      
+      responses:
+        '200':
+          description: Successful. Id of notification deleted
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+
+
+  /:   
+    get:
+      operationId: R401
+      summary: 'R401: View Homepage (Landing Page)'
+      description: "View Homepage. Access: PUB"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show Homepage UI  [UIXX]'
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+
+  /contacts:   
+    get:
+      operationId: R402
+      summary: 'R402: View Contacts Page'
+      description: "View contacts page. Access: PUB"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show Contacts [UIXX]'
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+          
+  /support:
+    get:
+      operationId: R403
+      summary: 'R403: View User Support Page'
+      description: "View user support page. Access: ADM"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show support page UI [UIXX]'   
+        '403':
+          description: Forbidden request
+        '404':
+          description: Resource Not found
+        '500':
+          description: System Error
+
+    post:
+      operationId: R404
+      summary: 'R404: Send Support Ticket Action'
+      description: 'Processes the user support form submission. Access: PUB'
+      tags:
+        - 'M04 - User Administration and Static pages'
+ 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                body:
+                  type: string
+                email:
+                  type: string
+                reporter_id:
+                  type: integer
+                reported_id:
+                  type: integer
+                report_type:
+                  type: string
+              required:
+                - reporter_id
+                - email
+                - subject
+                - body
+                - report_type
+                
+      responses:
+        '302':
+          description: 'Redirect after processing the new user support ticket.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful submission. Redirect to home page.'
+                  value: '/'
+        '400':
+          description: Bad input parameter
+        '403':
+          description: Forbidden request
+        '500':
+          description: System Error
+  /about:
+    get:
+      operationId: R405
+      summary: "R405: View About page"
+      description: "View About page, where users can learn about more about website's goals, motivation and history"
+      tags:
+        - 'M04 - User Administration and Static pages'
+      
+      responses:
+        '200':
+          description: 'Ok. Show About UI [UIXX]'
+        '403':
+          description: 'Forbidden request'
+        '404':
+          description: 'Resource Not found'
+        '408':
+          description: 'Request timeout.'
+        '500':
+          description: 'System Error'
+          
+  /dashboard:
+    get:
+      operationId: R406
+      summary: 'R465: View dashboard'
+      description: "View search page. Access: USR"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show dashboard UI [UIXX]' 
+        '403':
+          description: 'Forbidden request'
+        '404':
+          description: 'Resource Not found'
+        '408':
+          description: 'Request timeout.'
+        '500':
+          description: 'System Error'
+
+  /search:   
+    get:
+      operationId: R407
+      summary: 'R407: View search page'
+      description: "View search page. Access: USR"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show search page UI [UIXX]'  
+        '403':
+          description: 'Forbidden request'
+        '404':
+          description: 'Resource Not found'
+        '408':
+          description: 'Request timeout.'
+        '500':
+          description: 'System Error'  
+
+
+  /admin/users:   
+    get:
+      operationId: R408
+      summary: 'R408: View User Management Page'
+      description: "View user management page. Access: ADM"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show User Management UI [UIXX]'   
+        '403':
+          description: 'Forbidden request'
+        '404':
+          description: 'Resource Not found'
+        '408':
+          description: 'Request timeout.'
+        '500':
+          description: 'System Error'
+
+  /admin/events:   
+    get:
+      operationId: R409
+      summary: 'R409: View Event Management Page'
+      description: "View event management page. Access: ADM"
+      tags:
+        - 'M04 - User Administration and Static pages'      
+        
+      responses:
+        '200':
+          description: 'OK. Show User Management UI [UIXX]'   
+        '403':
+          description: 'Forbidden request'
+        '404':
+          description: 'Resource Not found'
+        '408':
+          description: 'Request timeout.'
+        '500':
+          description: 'System Error'
+
+
+  /admin/users/{user_id}:
+    delete:
+      operationId: R410
+      summary: "R410: Deletes a user."
+      description: "Admin can delete a user. Returns success if users are deleted successfully. Access: ADM"
+      tags:
+        - "M04 - User Administration and Static pages"
+      parameters:
+        - name: user_id
+          in: path
+          schema:
+            type: string
+            format: uuid
+          description: User id in uuid format to be deleted.
+          required: true
+
+      responses:
+        '200':
+          description: User deleted successfully
+        '404':
+          description: User not found.
+    
+components:
+  schemas:
+    
+    Events:
+      description: Array of event info
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    
+    Event:
+      description: Model containing Event info
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: "Adega leonor party"
+        description:
+          type: string
+          example: "party of 3rd year FEUP students"
+        start_date: 
+          type: string 
+          format: date-time
+          example: "19-11-2022"
+        is_public:
+          type: boolean
+          example: true
+        location:
+          type: string
+          example: "Campo Mártires da Pátria 60, Porto 4050-366 Portugal"
+    Tag:
+      description: Model containing Tag info
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+        event_id:
+          type: integer
+          example: 3
+        name: 
+          type: string
+          example: FEUP
+        color:
+          type: string
+          example: black
+
+    Comment:
+      description: Model containing Comment info and content
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        user_id:
+          type: string
+          format: uuid
+        event_id:
+          type: integer
+          example: 34
+        content:
+          type: string
+          example: Amaizing concert! I'd like to hear Pink Floyd at Porto stadium again!
+        parent_comment_id:
+          description: "id of a parent comment if this comment is a reply. Otherwise 0 or NULL."
+          type: integer
+          example: NULL
+    
+    Poll:
+      description: Model containing Poll info
+      type: object
+      properties:
+        question:
+          type: string
+          example: What is your favourite programming language?
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Choice'
+        starts_at:
+          type: string
+          format: date-time
+          example: '2022-11-11T08:40:51.620Z'
+        ends_at:
+          type: string
+          format: date-time
+          example: '2022-12-11T08:40:51.620Z'
+      
+    Choice:
+      description: Model of a single choice option
+      type: object
+      properties:
+        choice_id: 
+          type: integer
+        poll_id:
+          type: integer
+        choice:
+          type: string
+      example:
+        - choice_id: 1
+          poll_id: 11
+          choice: Swift
+        - choice_id: 2
+          poll_id: 11
+          choice: Python
+        - choice_id: 3
+          poll_id: 11
+          choice: Java
+        - choice_id: 4
+          poll_id: 11
+          choice: C/C++
+
+    Notification:
+      description: Model of a single notification
+      type: object
+      properties:
+        id:
+          type: integer
+          description: generated notification id
+        user_id:
+          type: string
+          format: uuid
+          description: user uuid
+        createdAt:
+          type: string
+          format: date-time
+        notification_type:
+          description: "type defined in our database. Expects one of the following values: comment/event/poll/report"
+          type: string
+          format: TYPE_NOTIFICATION 
+          example: 'comment'
+        notification_body:
+          type: string
+          example: "Valter replied to your comment."
+      required:
+        - id
+        - user_id
+        - notification_type
+        - notification_body
+
+    
+    User:
+      description: Model containing User info
+      properties:
+        firstname: 
+          type: string
+          example: Válter Ochôa de Spínola Catanho 
+        lastname:
+          type: string
+          example: Castro
+        birthdate:
+          type: string 
+          format: date-time
+          example: 1978-04-12
+        username:
+          type: string
+          example: ValterMaster777
+        email:
+          type: string
+          example: up201706546@edu.fe.up.pt
+        password:
+          type: string
+          format: password
+          example: 9Sb2fP5Yr7*cYc&Hmk
+      required:
+        - firstname
+        - lastname
+        - birthdate
+        - username
+        - email
+        - password
