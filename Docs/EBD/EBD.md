@@ -191,6 +191,8 @@ The SQL script that contains the creation statements, cleans up the current data
 
 **A.1 Database Schema**
 
+**Caveat:** In order to run the script administator permissions might be required to create extensions.
+
 [A5.sql](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EBD/schemaA5.sql)
 
 
@@ -467,6 +469,8 @@ SQL script in included. It cintains the creation statements, cleans up the curre
 ## A.1 Database Schema
 
 The SQL creation script is expanded in the A6 to include indexes, triggers, and transactions.
+
+**Caveat:** In order to run the script administator permissions might be required to create extensions.
 
 [A6.sql](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EBD/schemaA6.sql)
 
