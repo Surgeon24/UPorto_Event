@@ -1,23 +1,15 @@
 # EAP: Architecture Specification and Prototype
 ## A7: Web Resources Specification
-/*
-   **_all comments to be deleted before delivery_**
 
-   **If you want to change/add anything - ask or JUST TO IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!** (c) David
+This artifact documents the  architecture of the web application to be developed, indicating the catalog of resources, the properties of each resource, and the format of JSON responses. This specification adheres to the OpenAPI standard using YAML.
 
-   */
-
-//need to be changed according to the specific of our project
-
-This artifact documents the  architecture of the "UPorto event", indicating the catalog of resources, permissions used in the modules, and the format of JSON responses and defining specifications using OpenAPI standard.
-
+This artifact presents the documentation for MediaLibrary, including the CRUD (create, read, update, delete) operations for each resource.
 
 
 ### 1. Overview
 
-This section provides a short description of the web part of the 
-application, in which all modules are defined and briefly described. More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
-
+The modules of the application are identified and briefly described with the web resources associated in the individual documentation.
+More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
 
 
 |   Module   | Description    |
@@ -29,12 +21,10 @@ application, in which all modules are defined and briefly described. More inform
 
 
 
-
 ### 2. Permissions
 
-This section defines the permissions used by each module, required to access its data and features.
+This section defines the permissions used in the modules to establish the conditions of access to resources.
 
-// PAR permission added. Opinions?
 
 |  Abbreviation   |  Permission type | Description |
 | --------- | ---------- | ---------- |
@@ -47,12 +37,11 @@ This section defines the permissions used by each module, required to access its
 
 ### 3. OpenAPI Specification
 
-This section describes the web application's web resources with OpenAPI specification in YAML format.
-
+OpenAPI specification in YAML format to describe the web application's web resources.
 
 [OpenAPI](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EAP/a7_openapi.yml)
 
-[On swaggerhub](https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0)
+[Swagger documentation](https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0)
 
 
 
@@ -107,7 +96,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 1. 
 2. 
 ***
-GROUP21122, 20/11/2022
+GROUP21122, 22/11/2022
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
