@@ -1,10 +1,3 @@
-# business rules
-# invite member API?
-# Social Media Module
-# Reset password UI
-
-#Qs:
-# 'OK. Show dashboard UI [UIXX]', what XX?
 openapi: 3.0.1
 info:
   version: '1.0'
