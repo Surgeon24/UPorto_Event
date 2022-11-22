@@ -1,14 +1,4 @@
 -----------------------------------------
--- EXTENSIONS
------------------------------------------
-
--- The citext module provides a case-insensitive character string type. 
--- Essentially, it internally calls lower when comparing values.
--- https://www.postgresql.org/docs/current/citext.html
-CREATE EXTENSION IF NOT EXISTS citext;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
------------------------------------------
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
@@ -51,12 +41,12 @@ CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 -----------------------------------------
 
 CREATE TABLE IF NOT EXISTS authorized_user(
-    ID uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    ID SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     firstname TEXT DEFAULT 'Válter Ochôa de Spínola Catanho' NOT NULL,
     lastname TEXT DEFAULT 'Castro' NOT NULL,
     password TEXT DEFAULT sha256('DEFAULT_password') NOT NULL,
-    email citext UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     date_registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     birth_date DATE DEFAULT (current_date - INTERVAL '18 YEAR') CHECK (
         birth_date <= (current_date - INTERVAL '18 YEAR')
@@ -71,7 +61,7 @@ CREATE TABLE IF NOT EXISTS authorized_user(
 
 CREATE TABLE IF NOT EXISTS administrator(
     id SERIAL PRIMARY KEY,
-    admin_id uuid,
+    admin_id INTEGER,
     FOREIGN KEY (admin_id) REFERENCES authorized_user(id)
 );
 
@@ -91,8 +81,8 @@ CREATE TABLE IF NOT EXISTS event(
 
 CREATE TABLE IF NOT EXISTS report(
     id SERIAL PRIMARY KEY,
-    reported_id uuid,
-    reporter_id uuid,
+    reported_id INT,
+    reporter_id INT,
     admin_id INT,
     report_text TEXT NOT NULL,
         report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
@@ -107,7 +97,7 @@ CREATE TABLE IF NOT EXISTS report(
 
 CREATE TABLE IF NOT EXISTS user_event(
     id SERIAL PRIMARY KEY,
-    user_id uuid,
+    user_id INT,
     event_id INT,  
     role MEMBER_ROLE,
     accepted BOOLEAN,   -- used only in private events
@@ -122,7 +112,7 @@ CREATE TABLE IF NOT EXISTS user_event(
 CREATE TABLE IF NOT EXISTS comments(
     id SERIAL PRIMARY KEY,
     comment_text TEXT DEFAULT ('Great event!'),
-    user_id uuid,
+    user_id INT,
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
@@ -172,7 +162,7 @@ CREATE TABLE IF NOT EXISTS poll_choice(
 
 CREATE TABLE IF NOT EXISTS poll_vote(
     id SERIAL PRIMARY KEY,
-    user_id uuid,
+    user_id INT,
     event_id INT,
     poll_id INT,
     choice_id INT,
@@ -186,7 +176,7 @@ CREATE TABLE IF NOT EXISTS poll_vote(
 
 CREATE TABLE IF NOT EXISTS notification(
     id SERIAL PRIMARY KEY,
-    user_id uuid,
+    user_id INT,
     notification_type type_notification NOT NULL,
     notification_title TEXT NOT NULL DEFAULT ('Main topic of the notification (header)'),
     body TEXT,  -- is not supposed to be filled for all types of notifications
@@ -232,7 +222,7 @@ DECLARE reply_username TEXT = (
   SELECT username FROM authorized_user WHERE id = NEW.user_id
 );
 
-DECLARE parent_id uuid = (
+DECLARE parent_id INT = (
     select user_id from comments where NEW.parent_comment_id = id
 );
 
@@ -311,7 +301,3 @@ CREATE TRIGGER trig_event_join
      AFTER INSERT OR UPDATE ON user_event
      FOR EACH ROW
      EXECUTE PROCEDURE event_join_notification();
-
-
-
-
