@@ -1,5 +1,11 @@
-openapi: 3.0.1
+# business rules
+# invite member API?
+# Social Media Module
+# Reset password UI
 
+#Qs:
+# 'OK. Show dashboard UI [UIXX]', what XX?
+openapi: 3.0.1
 info:
   version: '1.0'
   title: lbaw22122 UPorto Event
@@ -10,8 +16,11 @@ info:
     email: up202203777@g.uporto.pt
     
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/lbaw22122_Event/UPortoEvent/1.0
   - description: 'production server'
-    url: http://lbaw.fe.up.pt 
+    url: http://lbaw.fe.up.pt  # What URL here?????????
 externalDocs:
   description: Find more info here.
   url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/wikis/home
@@ -237,57 +246,6 @@ paths:
           description: Resource Not found
         '500':
           description: System Error
-      
-  /settings:
-    get:
-      operationId: R109
-      summary: 'R109: View Account Settings'
-      description: 'Show individual account settings page. Access: USR'
-      tags:
-        - 'M01 - Authentication and Individual Profile'
-
-      responses:
-        '200':
-          description: 'Ok'
-        "401":
-          description: "Unauthorized"
-    
-    patch:
-      operationId: R110
-      summary: 'R110: Edit Account Settings'
-      description: 'Edit account settings. Access: USR'
-      tags:
-        - 'M01 - Authentication and Individual Profile'
-
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                firstname: 
-                  type: string
-                lastname:
-                  type: string
-                birthdate:
-                  type: string 
-                  format: date-time
-                username:
-                  type: string
-                  example: ValterMaster777
-                email:
-                  type: string
-                  example: up201706546@edu.fe.up.pt
-                password:
-                  type: string
-                  format: password
-                  example: 9Sb2fP5Yr7*cYc&Hmk
-      responses:
-        '200':
-          description: 'Ok. Show Edit Account UI [UIxx]()'
-        "401":
-          description: "Unauthorized"
           
   /users/id/avatars/{img}:
     get:
@@ -1164,26 +1122,6 @@ paths:
       responses:
         '200':
           description: 'Ok. Show About UI [UIXX]'
-        '403':
-          description: 'Forbidden request'
-        '404':
-          description: 'Resource Not found'
-        '408':
-          description: 'Request timeout.'
-        '500':
-          description: 'System Error'
-          
-  /dashboard:
-    get:
-      operationId: R406
-      summary: 'R465: View dashboard'
-      description: "View search page. Access: USR"
-      tags:
-        - 'M04 - User Administration and Static pages'      
-        
-      responses:
-        '200':
-          description: 'OK. Show dashboard UI [UIXX]' 
         '403':
           description: 'Forbidden request'
         '404':
