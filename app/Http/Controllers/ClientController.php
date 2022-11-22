@@ -19,7 +19,7 @@ class ClientController extends Controller{
     public function show_edit($id){
         $user = User::find($id);
           //$this->authorize('show', $user);
-          return view('pages.profile_edit', ['user' => $user]);
+        return view('pages.profile_edit', ['user' => $user]);
     }
 
     public function update(Request $request, $id)
