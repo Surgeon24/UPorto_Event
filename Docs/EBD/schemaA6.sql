@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS tag CASCADE;
 DROP TABLE IF EXISTS photo CASCADE;
 DROP TABLE IF EXISTS poll CASCADE;
 DROP TABLE IF EXISTS poll_choice CASCADE;
+DROP TABLE IF EXISTS event_poll CASCADE;
 DROP TABLE IF EXISTS poll_vote CASCADE;
 DROP TABLE IF EXISTS event_notification CASCADE;
 DROP TABLE IF EXISTS comment_notification CASCADE;
@@ -41,7 +42,7 @@ CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 -----------------------------------------
 
 CREATE TABLE IF NOT EXISTS users(
-    ID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     firstname TEXT DEFAULT 'Válter Ochôa de Spínola Catanho' NOT NULL,
     lastname TEXT DEFAULT 'Castro' NOT NULL,
@@ -146,7 +147,8 @@ CREATE TABLE IF NOT EXISTS poll(
     event_id INT NOT NULL,
     question TEXT DEFAULT('What is your favorite programming language?') NOT NULL,
     starts_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
-    end_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
+    ends_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(ends_at > starts_at) NOT NULL,
+    UNIQUE(id, event_id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
@@ -155,8 +157,20 @@ CREATE TABLE IF NOT EXISTS poll_choice(
     id SERIAL PRIMARY KEY,
     poll_id INT,
     choice TEXT NOT NULL,
-        UNIQUE(poll_id, id),
+    UNIQUE(poll_id, id),
     FOREIGN KEY (poll_id) REFERENCES poll(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS event_poll(
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    poll_id INT,
+    UNIQUE(user_id, poll_id),
+    UNIQUE(user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+    FOREIGN KEY (poll_id, event_id) REFERENCES poll (id, event_id) 
 );
 
 
@@ -167,11 +181,13 @@ CREATE TABLE IF NOT EXISTS poll_vote(
     poll_id INT,
     choice_id INT,
     date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
-    UNIQUE(poll_id, user_id),
-    UNIQUE(choice_id, poll_id),
-    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
-    FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice(id, poll_id)           -- double reference
+    UNIQUE (user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id),
+    FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice (id, poll_id)
+
 );
+
+
 
 
 CREATE TABLE IF NOT EXISTS notification(
@@ -245,8 +261,8 @@ DECLARE title_text TEXT = (
                                 INSERT INTO 
                                         comment_notification(id, comment)
                                         select inserted.id, NEW.id from inserted;
-      RETURN new; 
              END IF;
+                         RETURN new;
         
 END;
 $BODY$
@@ -302,3 +318,193 @@ CREATE TRIGGER trig_event_join
      FOR EACH ROW
      EXECUTE PROCEDURE event_join_notification();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- sends notifications to all participants of the events when the event is modified
+
+-- CREATE OR REPLACE FUNCTION event_update_notification() RETURNS trigger AS 
+-- $BODY$
+
+-- -- list of all users to be notified
+-- DECLARE all_users ARRAY = (
+--     select array (select user_id from user_event where event_id = 1);
+-- );
+
+
+-- DECLARE event_name TEXT = (
+--     select title from event where id = NEW.event_id
+-- );
+
+-- DECLARE title TEXT = (
+--     select 'Event was updated. Some significant might have been made!'
+-- );
+
+-- DECLARE start_date_body TEXT = (
+--     select concat(event_name, ' was modified!')
+-- );
+                
+--                 BEGIN
+--                 WITH INSERTED AS (
+--                INSERT INTO 
+--                 notification(user_id,notification_type,notification_title, body,  notification_date)
+--                 VALUES(NEW.user_id, 'event', title ,start_date_body ,CURRENT_TIMESTAMP)
+--                                         RETURNING id)
+--                              INSERT INTO event_notification(id, event)
+--                                                      select inserted.id, NEW.event_id from inserted;
+--         RETURN new;
+-- END;
+-- $BODY$
+-- language plpgsql;
+                
+-- DROP TRIGGER IF EXISTS trig_event_join ON user_event;
+
+-- CREATE TRIGGER trig_event_join
+--      AFTER INSERT OR UPDATE ON user_event
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE event_join_notification();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- CREATE OR REPLACE FUNCTION event_notification() RETURNS trigger AS $event_notification$
+--         BEGIN
+--                INSERT INTO 
+--                 notification(notification_date, notification_type, user_id,notification_text)
+--                 VALUES(CURRENT_TIMESTAMP, 'event', NEW.user_id, 'You have just joined new event, welcome!');
+--         RETURN new;
+-- END;
+-- $event_notification$
+-- language plpgsql;
+                
+-- DROP TRIGGER IF EXISTS trig_event ON public.user_event;
+
+-- CREATE TRIGGER trig_event
+--      AFTER INSERT OR UPDATE ON user_event
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE event_notification();
+         
+         
+         
+-- CREATE OR REPLACE FUNCTION poll_notification() RETURNS trigger AS $poll_notification$
+--         BEGIN
+--             INSERT INTO 
+--                 notification(notification_date, notification_type, user_id, notification_text)
+--                 select NEW.starts_at, 'poll', NEW.user_id, 'New poll was created. ' || NEW.question || ' You can vote!' from poll;
+--     RETURN new;
+-- END;
+-- $poll_notification$
+-- language plpgsql;
+                
+-- DROP TRIGGER IF EXISTS trig_poll ON public.poll;
+
+-- CREATE TRIGGER trig_poll
+--      AFTER INSERT ON poll
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE poll_notification();
+
+
+
+
+-- CREATE OR REPLACE FUNCTION report_notification() RETURNS trigger AS $report_notification$
+--         BEGIN
+--             INSERT INTO 
+--                 notification(user_id, notification_type, notification_date, notification_text)
+--                 select NEW.reporter_id, 'report', NEW.report_date, 'Thank you for your report. We will check information given as fast as possible. Report status: ' || NEW.report_status || ' Message: ' || NEW.report_text from report;
+--         RETURN new;
+-- END;
+-- $report_notification$
+-- language plpgsql;
+                
+-- DROP TRIGGER IF EXISTS trig_report ON public.report;
+
+-- CREATE TRIGGER trig_report
+--      AFTER INSERT ON report
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE report_notification();
+
+-- -----------------------------------------
+-- -- Performance indexes
+-- -----------------------------------------
+
+-- IDX01 
+-- To make event search by date faster.
+DROP INDEX IF EXISTS idx_event_date CASCADE;
+CREATE INDEX idx_event_date ON "event" USING btree(start_date);
+
+-- IDX02
+DROP INDEX IF EXISTS idx_comment CASCADE;
+CREATE INDEX idx_comment ON comments USING btree(event_id, comment_text);
+
+
+
+-- -----------------------------------------
+-- -- FULL TEXT indexes
+-- ----------------------------------------- 
+ALTER TABLE event
+ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
+
+CREATE OR REPLACE FUNCTION event_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors = (
+         setweight(to_tsvector('english', NEW.title), 'A') ||
+         setweight(to_tsvector('english', NEW.description), 'B') ||
+             setweight(to_tsvector('english', NEW.location), 'C')
+        );
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
+           NEW.tsvectors = (
+             setweight(to_tsvector('english', NEW.title), 'A') ||
+             setweight(to_tsvector('english', NEW.description), 'B') ||
+                 setweight(to_tsvector('english', NEW.location), 'C')
+           );
+    END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+
+DROP TRIGGER IF EXISTS event_search_update ON event;
+
+CREATE TRIGGER event_search_update
+ BEFORE INSERT OR UPDATE ON event
+ FOR EACH ROW
+ EXECUTE PROCEDURE event_search_update();
+
+DROP INDEX IF EXISTS search_idx_event CASCADE;
+CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
