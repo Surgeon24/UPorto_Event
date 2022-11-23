@@ -151,7 +151,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | FD1801          | none               |
 | **NORMAL FORM** | BCNF               |
 
-| **TABLE R13**   | Report_Notification|
+| **TABLE R13**   | report_notification|
 | --------------  | ---                |
 | **Keys**        | { notification_id }  |
 | **Functional Dependencies:** |       |
@@ -159,7 +159,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R14**   | Poll_Notification  |
+| **TABLE R14**   | poll_notification  |
 | --------------  | ---                |
 | **Keys**        | { notification_id }  |
 | **Functional Dependencies:** |       |
@@ -167,7 +167,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R15**   | Event_Notification |
+| **TABLE R15**   | event_notification |
 | --------------  | ---                |
 | **Keys**        | { notification_id } |
 | **Functional Dependencies:** |       |
@@ -175,7 +175,7 @@ In A5 we are going to interpretate de UML diagram into the Relational Schema, so
 | **NORMAL FORM** | BCNF               |
 
 
-| **TABLE R16**   |Comment_Notification|
+| **TABLE R16**   |comment_notification|
 | --------------  | ---                |
 | **Keys**        | { notification_id } |
 | **Functional Dependencies:** |       |
@@ -229,13 +229,13 @@ Indexes are used to improve database performance by allowing the database server
 
 | **Index**           | IDX01                                  |
 | ---                 | ---                                    |
-| **Relation**        | authorized_user    				       |
-| **Attribute**       | surname								   |
+| **Relation**        | event    				       |
+| **Attribute**       | date								   |
 | **Type**            | b-tree             					   |
-| **Cardinality**     | high                                   |
+| **Cardinality**     | medium                                   |
 | **Clustering**      | No                                     |
-| **Justification**   | The'authorized_user' table has a huge wokrload. Index ensures fast counting of the number of users by surname.     |
-| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_id_user ON authorized_user USING BTREE(surename);` |
+| **Justification**   |  This index is for searching an event according to is start_date and is to be executed many times so it must be fast. |
+| **SQL code**		  |`CREATE INDEX idx_event_date ON "event" USING btree(start_date);` |
 
 
 
@@ -243,25 +243,18 @@ Indexes are used to improve database performance by allowing the database server
 
 | **Index**           | IDX02                                  |
 | ---                 | ---                                    |
-| **Relation**        | user_event    						   |
-| **Attribute**       | event_id							   |
-| **Type**            | hash             					   |
+| **Relation**        | comments    						   |
+| **Attribute**       | event_id, comment_text							   |
+| **Type**            | b-tree             					   |
 | **Cardinality**     | medium                                 |
-| **Clustering**      | No                                     |
-| **Justification**   | The main purpose of this index is to ease the search of people associated with an specific event, during search equality (=) will be used. `select user_id from user_event where event_id = 1;`       | 
-| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_event_user on user_event USING hash(event_id);` |
+| **Clustering**      | Yes                                     |
+| **Justification**   | The main purpose of this index is to ease the search of comments associated with an specific event. Cardinality is medium because event_id can be repeated. | 
+| **SQL code**		  |`CREATE INDEX idx_comment ON comments USING btree(event_id, comment_text);` |
 
 
 
-| **Index**           | IDX03                                            |
-| ---                 | ---                                              |
-| **Relation**        | poll_vote    							         |
-| **Attribute**       | id								                 |
-| **Type**            | hash             					             |
-| **Cardinality**     | medium                                           |
-| **Clustering**      | No                                               |
-| **Justification**   | This index lets us count all the votes for a specific poll. `select select count(*) from poll_vote where poll_id = 1;` equality operator is used, hence the hash index type is suggested.       |
-| **SQL code**		  |`CREATE INDEX IF NOT EXISTS idx_poll_vote on poll_vote USING hash(id);` |
+
+
 
 
 
@@ -303,7 +296,7 @@ END $$
 LANGUAGE plpgsql;
 
 
-DROP TRIGGER IF EXISTS event_search_update ON public.event;
+DROP TRIGGER IF EXISTS event_search_update ON event;
 
 CREATE TRIGGER event_search_update
  BEFORE INSERT OR UPDATE ON event
@@ -314,16 +307,6 @@ DROP INDEX IF EXISTS search_idx_event CASCADE;
 CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 
 ~~~~
-
-
-| **Index**           | IDX12                                  |
-| ---                 | ---                                    |
-| **Relation**        | tag    |
-| **Attribute**       | name   |
-| **Type**            | GIST              |
-| **Clustering**      | NO                |
-| **Justification**   | To improve overall performance of full-text searches while searching for events by tags; GiST better for dynamic data   |
-| **SQL code**        |`CREATE INDEX IF NOT EXISTS idx_tag_name ON tag USING GIST (name);`   |
 
 
 ### 3. Triggers
@@ -493,8 +476,9 @@ This section describes the population of our Database
     - 'other' report_type added.
     - poll_option changed to poll_choice
     - title in poll table changed to question
-7. notification tables added
+7. notification tables returned
 8. link to schemaA5.sql, schemaA6.sql, populate.sql added instead of source code for readability purposes.
+9. IDX01, IDX02 changed after bad feedback from teacher. 
 ***
 GROUP21122, 12/10/2022
 
