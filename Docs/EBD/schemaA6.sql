@@ -2,7 +2,7 @@
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
-DROP TABLE IF EXISTS authorized_user CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS administrator CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
@@ -40,7 +40,7 @@ CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 -- TABLES
 -----------------------------------------
 
-CREATE TABLE IF NOT EXISTS authorized_user(
+CREATE TABLE IF NOT EXISTS users(
     ID SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     firstname TEXT DEFAULT 'Válter Ochôa de Spínola Catanho' NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS authorized_user(
 CREATE TABLE IF NOT EXISTS administrator(
     id SERIAL PRIMARY KEY,
     admin_id INTEGER,
-    FOREIGN KEY (admin_id) REFERENCES authorized_user(id)
+    FOREIGN KEY (admin_id) REFERENCES users(id)
 );
 
 
@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS report(
         report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
         report_type REPORT_TYPE,
     report_status REPORT_STATUS,
-    FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
-    FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (reported_id) REFERENCES users(id),
+    FOREIGN KEY (reporter_id) REFERENCES users(id),
     FOREIGN KEY (admin_id) REFERENCES administrator(id)
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS user_event(
     role MEMBER_ROLE,
     accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
-    FOREIGN KEY (user_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
@@ -181,12 +181,12 @@ CREATE TABLE IF NOT EXISTS notification(
     notification_title TEXT NOT NULL DEFAULT ('Main topic of the notification (header)'),
     body TEXT,  -- is not supposed to be filled for all types of notifications
     notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES authorized_user(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
 CREATE TABLE IF NOT EXISTS comment_notification(
-		id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
+        id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
     comment INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE
 );
 
@@ -194,13 +194,13 @@ CREATE TABLE IF NOT EXISTS comment_notification(
 CREATE TABLE IF NOT EXISTS poll_notification
 (
     id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    poll 		INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
+    poll        INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS event_notification
 (
     id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    event 	INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
+    event   INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS report_notification
@@ -219,7 +219,7 @@ CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS
 $BODY$
 
 DECLARE reply_username TEXT = (
-  SELECT username FROM authorized_user WHERE id = NEW.user_id
+  SELECT username FROM users WHERE id = NEW.user_id
 );
 
 DECLARE parent_id INT = (
@@ -227,7 +227,7 @@ DECLARE parent_id INT = (
 );
 
 DECLARE parent_username TEXT = (
-    select username from authorized_user where id = parent_id
+    select username from users where id = parent_id
 );
 
 DECLARE title_text TEXT = (
@@ -267,7 +267,7 @@ CREATE OR REPLACE FUNCTION event_join_notification() RETURNS trigger AS
 $BODY$
 
 DECLARE new_username TEXT = (
-    select username from authorized_user where id = NEW.user_id
+    select username from users where id = NEW.user_id
 );
 
 DECLARE event_name TEXT = (
@@ -301,3 +301,4 @@ CREATE TRIGGER trig_event_join
      AFTER INSERT OR UPDATE ON user_event
      FOR EACH ROW
      EXECUTE PROCEDURE event_join_notification();
+
