@@ -74,9 +74,6 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 |  R104: Sign Up Form    | GET /register  |
 |  R105: Sign Up Action  | POST /register |
 |  R106: View User Profile | GET /users/{id} |
-|  R107: Edit Profile    | PATCH /users/{id}/edit  |
-|  R108: Delete Account  | DELETE /users/{id} |
-|  R111: Get Avatar **- Done?**     | GET /users/id/avatars/{img} |
 
 
 **M02 - Events**
