@@ -239,7 +239,56 @@ paths:
           description: Resource Not found
         '500':
           description: System Error
-          
+
+
+  /password/reset:
+    get:
+      operationId: R109
+      summary: "R109: Password recovery Form"
+      description: "Page with a form to request a token to reset the password. Access: Public. "
+      tags:
+        - "M01 - Authentication and Individual Profile"
+      responses:
+        '200':
+          description: "Ok. Show password recovery form UI [UIxx]"
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+
+    post:
+      operationId: R110
+      summary: "R110: Password recovery Action"
+      description: "Web resource that sends a reset password link to the specified email. Access: Public."
+      tags:
+        - "M01 - Authentication and Individual Profile"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                - email
+      responses:
+        '302':
+          description: 'Redirect after processing the new reset information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful reset. Redirect to user profile.'
+                  value: '/users/{user_id}'
+                302Failure:
+                  description: 'Failed creation. Redirect to user dashboard.'
+                  value: '/'
+
+
   /users/id/avatars/{img}:
     get:
       operationId: R111
@@ -260,6 +309,7 @@ paths:
           description: 'Ok'
         "404":
           description: "Not Found"
+
           
   /api/events:
     get:
@@ -1123,6 +1173,28 @@ paths:
           description: 'Request timeout.'
         '500':
           description: 'System Error'
+          
+  # Duplicate of homepage
+  
+  # /dashboard:
+  #   get:
+  #     operationId: R406
+  #     summary: 'R406: View dashboard'
+  #     description: "View search page. Access: USR"
+  #     tags:
+  #       - 'M04 - User Administration and Static pages'      
+        
+  #     responses:
+  #       '200':
+  #         description: 'OK. Show dashboard UI [UIXX]' 
+  #       '403':
+  #         description: 'Forbidden request'
+  #       '404':
+  #         description: 'Resource Not found'
+  #       '408':
+  #         description: 'Request timeout.'
+  #       '500':
+  #         description: 'System Error'
 
   /search:   
     get:
