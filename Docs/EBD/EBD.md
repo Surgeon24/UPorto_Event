@@ -482,7 +482,7 @@ This section describes the population of our Database
 ***
 GROUP21122, 12/10/2022
 
-* João Sousa, up201904739@up.pt    
+* João Sousa, up201904739@up.pt (editor)
 * Mikhail Ermolaev, up202203498@up.pt
 * David Burchakov, up202203777@up.pt
 * Válter Castro, up201706546@up.pt
