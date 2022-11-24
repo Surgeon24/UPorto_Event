@@ -73,7 +73,9 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 |  R103: Logout Action   | POST /logout |
 |  R104: Sign Up Form    | GET /register  |
 |  R105: Sign Up Action  | POST /register |
-|  R106: View User Profile | GET /users/{id} |
+|  R106: View User Profile | GET /profile/{id} |
+|  R107: Edit Profile    | PATCH /profile/{id}  |
+
 
 
 **M02 - Events**
@@ -81,6 +83,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R205: View Event Overview | GET /event/{id} |
 
 
 **M03 - Notifications**
@@ -93,6 +96,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R401: View Homepage (Landing Page) | GET /home |  
 
 
 ### 2. Prototype
