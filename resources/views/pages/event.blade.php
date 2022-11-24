@@ -34,21 +34,32 @@
 
 <div>
     <div>
-        <h1 class="">{{ $event->title }} </h1>
-        <h2 class="">{{ $event->description }} </h2>
-        <h3 class="">
+        <h1 style=display:inline; class="">{{ $event->title }} </h1>
+
+        <h3 class="">{{ $event->description }} </h3>
+        <h4 class="">
             <label style=display:inline;>Date:</label>
             {{ $event->start_date }}
 
-        </h3>
-        <h4 class="">
+        </h4>
+        <h5 class="">
             <label style=display:inline;>Location: </label>
             {{ $event->location }}
-        </h4>
+        </h5>
     </div>
-    
     <div>
-    
+        <form class="card" method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
+            @csrf
+            <label> New comment </label>
+            <input type="text" id="content" name="content"></input>
+            <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
+            <button type="submit">Comment</button>
+        </form>
+
+    </div>
+    @each('partials.comment',$event->comments()->get(), 'comment')
+    <div>
+
     </div>
 </div>
 

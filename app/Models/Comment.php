@@ -4,9 +4,12 @@ namespace App\Models;
 
 //use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+
+
     // use HasFactory;
     public $timestamps = false;
 
@@ -20,5 +23,9 @@ class Comment extends Model
         'user_id', 'event_id', 
     ];
 
+    public function event():BelongsTo {
+        return $this->belongsTo('App\Models\Event');
+    }
+        
 
 }
