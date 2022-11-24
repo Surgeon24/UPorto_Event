@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('/', 'Auth\LoginController@home')->name('home');
 Route::get('home' , function(){return view('pages.home');});
+Route::get('main', function(){return view('pages.main');});
 
 // Cards
 Route::get('cards', 'CardController@list');

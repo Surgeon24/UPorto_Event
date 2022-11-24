@@ -38,4 +38,19 @@ class EventController extends Controller{
         $event = Event::orderBy('id')->get();
         return view('pages.home', ['event' => $event]);
     }
+
+
+
+    public function create(array $data)
+    {
+      $event = new Event();
+
+      $this->authorize('create', $event);
+
+      $event->title = $data['title'];
+      $event->location = $data['location'];
+      $event->save();
+
+      return $event;
+    }
 }
