@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'photo_path',
+        'username', 'firstname', 'lastname', 'password', 'email', 'date_registered', 'birth_date', 'url', 'status', 'is_admin', 'photo_path',
     ];
 
     /**
@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 
     ];
 
     /**
@@ -46,13 +46,6 @@ class User extends Authenticatable
 
     public function getPhotoPath()
     {   
-        /*
-        if ($this->photo_path != null) {
-            dump($this->photo_path);
-            return asset(User::find($this->photo_path));
-        }
-        */
-        //dump($this->photo_path);
         return $this->photo_path;
     }
 }

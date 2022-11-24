@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+//use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Comment extends Model
+{
+    // use HasFactory;
+    public $timestamps = false;
+
+    protected $table = 'comments';
+
+    protected $fillable = [
+        'comment_text', 'user_id', 'event_id', 'comment_date'
+    ];
+
+    protected $hidden = [
+        'user_id', 'event_id', 
+    ];
+
+
+}

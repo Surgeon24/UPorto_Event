@@ -5,7 +5,8 @@
         <div>
           
           <div>
-          <img class="" src="{{ asset($user->getPhotoPath()) }}"
+          <img class="media-object"
+                                     src="{{ asset('assets/profileImages/'.$user->photo_path) }}"
                                      alt="Profile Picture">
           </div>
           
