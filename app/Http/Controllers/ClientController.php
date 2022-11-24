@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class ClientController extends Controller{ 
+
+  protected $table = 'users';
+
     public function show($id){
       $user = User::find($id);
       //$this->authorize('show', $user);

@@ -23,7 +23,7 @@
   <body>
     <main>
       <header>
-        <h1><a href="{{ url('/cards') }}">Thingy!</a></h1>
+        <h1><a href="{{ url('home') }}">UPorto Event</a></h1>
         @if (Auth::check())
         <a class="button" href="{{ url('/logout') }}"> Logout </a> <!--<span>{{ Auth::user()->name }}</span>-->
         <a class="button" href="{{ url('/profile/'. Auth::user()->id) }}"> {{ Auth::user()->name }} </a>
@@ -38,6 +38,8 @@
       <section id="profile_edit">
         @yield('profile_edit')
       </section>
+      <section id="event">
+        @yield('event')
     </main>
   </body>
 </html>
