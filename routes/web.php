@@ -50,3 +50,7 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::get('event/{id}', 'EventController@show')->name('event');
 Route::get('home', 'EventController@list')->name('event_list');
 //Route::get('event/{id}', 'CommentController@list')->name('comment_list');
+
+//Comment
+Route::post('event/{id}', 'CommentController@create')->name('new_comment');
+Route::delete('event/{id}/', 'CommentController@delete')->name('delete_comment')->middleware('auth');
