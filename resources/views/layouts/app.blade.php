@@ -40,6 +40,10 @@
       </section>
       <section id="event">
         @yield('event')
+      </section>
+      <section id="event_edit">
+        @yield('event_edit')
+      </section>
     </main>
   </body>
 </html>
