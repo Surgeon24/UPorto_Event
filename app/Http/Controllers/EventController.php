@@ -47,7 +47,6 @@ class EventController extends Controller{
 
 
 
-<<<<<<< HEAD
     public function create(array $data)
     {
       $event = new Event();
@@ -59,15 +58,16 @@ class EventController extends Controller{
       $event->save();
 
       return $event;
-=======
-    public function delete(Request $request)
-    {   
-       
-        $id = $request->input('id');
-        $event= Event::find($id);
-        $event->comments()->delete();
-        $event->delete();
-        return redirect('/home');
->>>>>>> 8b7540d0a4fe315b2655e95cbe4d8c3b06a6d25e
     }
+      
+      public function delete(Request $request)
+      {   
+         
+          $id = $request->input('id');
+          $event= Event::find($id);
+          $event->comments()->delete();
+          $event->delete();
+          return redirect('/home');
+      }
+  
 }
