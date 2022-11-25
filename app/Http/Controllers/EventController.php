@@ -22,14 +22,20 @@ class EventController extends Controller{
         return view('pages.event', ['event' => $event]);
       }
     
-    /*
-    public function show($id){
+      public function show_edit($id){
         $event = Event::find($id);
         //$this->authorize('show', $user);
-        $comment = CommentController::list();
-        return view('pages.event', ['event' => $event, 'comment' => $comment]);
+        //$comment = Comment::list();
+        return view('pages.event_edit', ['event' => $event]);
+      }
+
+    public function update(Request $request, $id)
+    {
+      $event = Event::find($id);
+      $event->title = $request->get('title');
+      $event->save();
+      return redirect('event/' . $id)->withSuccess('Your profile was successfully updated!');
     }
-    */
 
     public function list()
     {
@@ -37,5 +43,17 @@ class EventController extends Controller{
         //$this->authorize('list', Card::class);
         $event = Event::orderBy('id')->get();
         return view('pages.home', ['event' => $event]);
+    }
+
+
+
+    public function delete(Request $request)
+    {   
+       
+        $id = $request->input('id');
+        $event= Event::find($id);
+        $event->comments()->delete();
+        $event->delete();
+        return redirect('/home');
     }
 }

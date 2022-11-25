@@ -37,7 +37,7 @@
     <article class="card">
       <h1 class="">{{ $comment->comment_text }}
         <h1>
-          <h2 class="">{{ $comment->comment_date }} </h2>
+          <h2  class="">{{ $comment->comment_date }} </h2>
           <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}"  method="post">
             @csrf
             @method("DELETE")
