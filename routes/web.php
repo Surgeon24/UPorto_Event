@@ -52,7 +52,7 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register_sub
 Route::get('event/{id}', 'EventController@show')->name('event');
 Route::get('home', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
-Route::post('event_edit/{id}', 'EventController@update')->name('event_edit');
+Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
 Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_event');
 //Route::get('event/{id}', 'CommentController@list')->name('comment_list');
 

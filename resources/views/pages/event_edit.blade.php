@@ -2,7 +2,7 @@
 
 @section('event_edit')
 <div>
-  <form method="post" action="{{ route('event_edit', ['id' => $event->id]) }}" accept-charset="UTF-8">
+  <form method="post" action="{{ route('event_update', ['id' => $event->id]) }}" accept-charset="UTF-8">
     {{ csrf_field() }}
     <div>
       <label for="title">Title</label>
