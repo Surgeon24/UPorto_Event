@@ -117,12 +117,12 @@ if(!$isAdmin){
         $this->middleware('guest')->except('logout');
     }
 
-    public function getUser(){
+    public function getUser(Request $request){
         return $request->user();
     }
 
     public function home() {
-        return redirect('login');
+        return view('auth.login');
     }
 
 }

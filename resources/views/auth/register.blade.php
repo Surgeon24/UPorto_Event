@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<form method="POST" action="{{ route('register') }}">
+<form method="POST" action="{{ route('register_submit') }}">
     {{ csrf_field() }}
 
     <label for="name">Name</label>
-    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-    @if ($errors->has('name'))
+    <input id="name" type="text" name="name" required autofocus>
+    @if ($errors->has('username'))
       <span class="error">
-          {{ $errors->first('name') }}
+          {{ $errors->first('username') }}
       </span>
     @endif
 
     <label for="email">E-Mail Address</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+    <input id="email" type="text" name="email" required>
     @if ($errors->has('email'))
       <span class="error">
           {{ $errors->first('email') }}

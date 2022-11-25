@@ -6,8 +6,7 @@
     {{ csrf_field() }}
     <div>
       <label for="title">Title</label>
-      <input type="text" id="title" name="title" value="{{$event['title']}}">
-      </input>
+      <input type="text" id="title" name="title" value="{{$event['title']}}"> </input>
     </div>
     <button type="submit">submit</button>
   </form>
