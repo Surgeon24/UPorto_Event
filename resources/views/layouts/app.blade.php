@@ -44,6 +44,9 @@
       <section id="event_edit">
         @yield('event_edit')
       </section>
+      <section id="event_create">
+        @yield('event_create')
+      </section>
     </main>
   </body>
 </html>

@@ -14,7 +14,8 @@
             <h3 class="">{{ $user->email }} </h3>
         </div>
         
-        <a class="button" href="{{ url('profile_edit/'. $user['id']) }}" > Edit </a>      
+        <a class="button" href="{{ url('profile_edit/'. $user['id']) }}" > Edit </a>  
+        <a class="button" href="{{ url('event_create/') }}" > + Event </a>          
   </div> 
 @endsection
 
