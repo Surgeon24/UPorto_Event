@@ -29,6 +29,24 @@ class EventController extends Controller{
         return view('pages.event_edit', ['event' => $event]);
       }
 
+      public function show_create(){
+        return view('pages.event_create');
+      }
+
+
+      public function create(Request $request)
+    {
+
+        Event::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'location' => $request->input('location'),
+            
+        ]);
+
+        return redirect('home');
+    }
+
     public function update(Request $request, $id)
     {
       $event = Event::find($id);
