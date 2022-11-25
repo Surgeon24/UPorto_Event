@@ -22,14 +22,20 @@ class EventController extends Controller{
         return view('pages.event', ['event' => $event]);
       }
     
-    /*
-    public function show($id){
+      public function show_edit($id){
         $event = Event::find($id);
         //$this->authorize('show', $user);
-        $comment = CommentController::list();
-        return view('pages.event', ['event' => $event, 'comment' => $comment]);
+        //$comment = Comment::list();
+        return view('pages.event_edit', ['event' => $event]);
+      }
+
+    public function update(Request $request, $id)
+    {
+      $event = Event::find($id);
+      $event->title = $request->get('title');
+      $event->save();
+      return redirect('event/' . $id)->withSuccess('Your profile was successfully updated!');
     }
-    */
 
     public function list()
     {
@@ -41,6 +47,7 @@ class EventController extends Controller{
 
 
 
+<<<<<<< HEAD
     public function create(array $data)
     {
       $event = new Event();
@@ -52,5 +59,15 @@ class EventController extends Controller{
       $event->save();
 
       return $event;
+=======
+    public function delete(Request $request)
+    {   
+       
+        $id = $request->input('id');
+        $event= Event::find($id);
+        $event->comments()->delete();
+        $event->delete();
+        return redirect('/home');
+>>>>>>> 8b7540d0a4fe315b2655e95cbe4d8c3b06a6d25e
     }
 }

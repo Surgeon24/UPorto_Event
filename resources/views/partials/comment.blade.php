@@ -34,23 +34,18 @@
 
 <div>
   <div style=display:inline-block;>
-    @foreach($events as $event)
     <article class="card">
-      <a href="{{ route('event', ['id' => $event->id]) }}">
-        <h1 class="">{{ $event->title }}
-          <h1>
-            <h2 class="">{{ $event->description }} </h2>
-            <h3 class="">
-              <label style=display:inline;>Date:</label>
-              {{ $event->start_date }}
-
-            </h3>
-            <h4 class="">
-              <label style=display:inline;>Location: </label>
-              {{ $event->location }}
-            </h4>
-      </a>
+      <h1 class="">{{ $comment->comment_text }}
+        <h1>
+          <h2  class="">{{ $comment->comment_date }} </h2>
+          <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}"  method="post">
+            @csrf
+            @method("DELETE")
+            <input type='hidden' id='id' name='id' value='{{ $comment->id }}'></input> 
+            <button type="submit">
+              Delete
+            </button>
+          </form>
     </article>
-    @endforeach
   </div>
 </div>

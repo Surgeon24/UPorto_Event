@@ -34,7 +34,8 @@
 
 <div>
     <div>
-        <h1 class="">{{ $event->title }} </h1>
+        <h1 style=display:inline; class="">{{ $event->title }} </h1>
+
         <h2 class="">{{ $event->description }} </h2>
         <h3 class="">
             <label style=display:inline;>Date:</label>
@@ -45,11 +46,36 @@
             <label style=display:inline;>Location: </label>
             {{ $event->location }}
         </h4>
+        <h5 style=display:inline;>
+            <a class="button" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
+        </h5>
+
+        <h6>
+            <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
+                @csrf
+                @method("DELETE")
+                <input type='hidden' id='id' name='id' value='{{ $event->id }}'></input>
+                <button type="submit">
+                    Delete
+                </button>
+            </form>
+        </h6>
     </div>
-    
-    <div>
-    
-    </div>
+</div>
+<div>
+    <form class="card" method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
+        @csrf
+        <label> New comment </label>
+        <input type="text" id="content" name="content"></input>
+        <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
+        <button type="submit">Comment</button>
+    </form>
+
+</div>
+@each('partials.comment',$event->comments()->get(), 'comment')
+<div>
+
+</div>
 </div>
 
 @endsection

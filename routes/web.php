@@ -13,6 +13,7 @@
 */
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -43,11 +44,18 @@ Route::delete('api/item/{id}', 'ItemController@delete');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
+Route::get('/register', 'Auth\RegisterController@index')->name('register')->middleware('guest');
+Route::post('/register', 'Auth\RegisterController@register')->middleware('guest');
 
 
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
 Route::get('home', 'EventController@list')->name('event_list');
+Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
+Route::post('event_edit/{id}', 'EventController@update')->name('event_edit');
+Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_event');
 //Route::get('event/{id}', 'CommentController@list')->name('comment_list');
+
+//Comment
+Route::post('event/{id}', 'CommentController@create')->name('new_comment');
+Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
