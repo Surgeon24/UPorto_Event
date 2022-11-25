@@ -14,10 +14,10 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 // Home
-Route::get('/', 'Auth\LoginController@home')->name('home');
 Route::get('home' , function(){return view('pages.home');});
 
 // Cards
@@ -40,12 +40,12 @@ Route::delete('api/item/{id}', 'ItemController@delete');
 
 // Authentication
 //Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/', 'Auth\LoginController@home')->name('login_home');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/register', 'Auth\RegisterController@index')->name('register')->middleware('guest');
-Route::post('/register', 'Auth\RegisterController@register')->middleware('guest');
-
+Route::post('/register', 'Auth\RegisterController@register')->name('register_submit')->middleware('guest');
 
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
