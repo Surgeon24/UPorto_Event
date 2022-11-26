@@ -11,6 +11,9 @@ This artifact presents the documentation for UPortoEvent, including the CRUD (cr
 The modules of the application are identified and briefly described with the web resources associated in the individual documentation.
 More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
 
+The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/template-laravel). The prototype implements pages for visualizing, inserting, editing and removing information, as well as functionality for access management.
+
+
 
 |   Module   | Description    |
 | --------- | ---------- |
