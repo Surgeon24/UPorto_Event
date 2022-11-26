@@ -3,27 +3,28 @@ function addEventListeners() {
   [].forEach.call(itemCheckers, function(checker) {
     checker.addEventListener('change', sendItemUpdateRequest);
   });
-
-  let itemCreators = document.querySelectorAll('article.card form.new_item');
-  [].forEach.call(itemCreators, function(creator) {
-    creator.addEventListener('submit', sendCreateItemRequest);
+  
+  let itemLike = document.querySelectorAll('.like');
+  [].forEach.call(itemLike, function(likes) {
+    likes.addEventListener('click', sendLikeItemRequest);
   });
-
-  let itemDeleters = document.querySelectorAll('article.card li a.delete');
-  [].forEach.call(itemDeleters, function(deleter) {
-    deleter.addEventListener('click', sendDeleteItemRequest);
-  });
-
-  let cardDeleters = document.querySelectorAll('article.card header a.delete');
-  [].forEach.call(cardDeleters, function(deleter) {
-    deleter.addEventListener('click', sendDeleteCardRequest);
-  });
-
-  let cardCreator = document.querySelector('article.card form.new_card');
-  if (cardCreator != null)
-    cardCreator.addEventListener('submit', sendCreateCardRequest);
 }
 
+function sendLikeItemRequest(event) {
+  let id = this.getAttribute('data-id');
+  this.classList.toggle("liked");  
+
+  sendAjaxRequest('PATCH', '/api/like/' + id, null, commentLikeHandler);
+}
+function sendCreateItemRequest(event) {
+  let id = this.closest('article').getAttribute('data-id');
+  let description = this.querySelector('input[name=description]').value;
+
+  if (description != '')
+    sendAjaxRequest('put', '/api/cards/' + id, {description: description}, itemAddedHandler);
+
+  event.preventDefault();
+}
 function encodeForAjax(data) {
   if (data == null) return null;
   return Object.keys(data).map(function(k){
@@ -55,21 +56,7 @@ function sendDeleteItemRequest() {
   sendAjaxRequest('delete', '/api/item/' + id, null, itemDeletedHandler);
 }
 
-function sendCreateItemRequest(event) {
-  let id = this.closest('article').getAttribute('data-id');
-  let description = this.querySelector('input[name=description]').value;
 
-  if (description != '')
-    sendAjaxRequest('put', '/api/cards/' + id, {description: description}, itemAddedHandler);
-
-  event.preventDefault();
-}
-
-function sendDeleteCardRequest(event) {
-  let id = this.closest('article').getAttribute('data-id');
-
-  sendAjaxRequest('delete', '/api/cards/' + id, null, cardDeletedHandler);
-}
 
 function sendCreateCardRequest(event) {
   let name = this.querySelector('input[name=name]').value;
@@ -79,7 +66,9 @@ function sendCreateCardRequest(event) {
 
   event.preventDefault();
 }
-
+function commentLikeHandler() {
+  if (this.status != 200) location.reload();
+}
 function itemUpdatedHandler() {
   let item = JSON.parse(this.responseText);
   let element = document.querySelector('li.item[data-id="' + item.id + '"]');
@@ -88,7 +77,6 @@ function itemUpdatedHandler() {
 }
 
 function itemAddedHandler() {
-  if (this.status != 200) window.location = '/';
   let item = JSON.parse(this.responseText);
 
   // Create the new item
@@ -178,3 +166,4 @@ function createItem(item) {
 }
 
 addEventListeners();
+

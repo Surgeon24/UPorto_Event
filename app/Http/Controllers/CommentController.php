@@ -32,6 +32,7 @@ class CommentController extends Controller
        
         $id = $request->input('id');
         $comment= Comment::find($id);
+        $comment->votes()->delete();
         $comment->delete();
         return back();
     }
