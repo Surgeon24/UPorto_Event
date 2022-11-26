@@ -17,6 +17,7 @@ class EventController extends Controller{
     
     public function show($id){
         $event = Event::find($id);
+        if (!Auth::check()) return redirect('/login');
         //$this->authorize('show', $user);
         //$comment = Comment::list();
         return view('pages.event', ['event' => $event]);
@@ -24,6 +25,7 @@ class EventController extends Controller{
     
       public function show_edit($id){
         $event = Event::find($id);
+        if (!Auth::check()) return redirect('/login');        //should be changed on veryfing the owner. Not just registered user
         //$this->authorize('show', $user);
         //$comment = Comment::list();
         return view('pages.event_edit', ['event' => $event]);
