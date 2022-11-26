@@ -149,7 +149,7 @@ paths:
                   description: 'Failed authentication. Redirect to sign in form.'
                   value: '/sign_in'
                   
-  /users/{user_id}:
+  /profile/{user_id}:
     get:
       operationId: R106
       summary: 'R106: View User Profile'
@@ -236,7 +236,8 @@ paths:
           description: Resource Not found
         '500':
           description: System Error
-
+          
+ 
   /password/reset:
     get:
       operationId: R109
@@ -307,7 +308,7 @@ paths:
           description: "Not Found"
 
           
-  /api/events:
+  /event:
     get:
       operationId: R201
       summary: "R201: Search Events API"
@@ -392,7 +393,7 @@ paths:
                   description: 'Failed creation. Redirect to user dashboard.'
                   value: '/dashboard'
           
-  /api/events/{id}:
+  /event/{id}:
     get:
       operationId: R203
       summary: 'R203: Get Event Information'
@@ -455,31 +456,9 @@ paths:
         "404":
           description: Not Found
 
-  /events/{id}/overview:
-    get:
-      operationId: R205
-      summary: 'R205: View Event Overview'
-      description: "Show the event overview page. Access: PAR, OWN, ADM"
-      tags:
-        - 'M02 - Events'
-
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-
-      responses:
-        '200':
-          description: 'Ok. Show overview UI'
-        '403':
-          description: Forbidden
-        '404':
-          description: 'Not Found. Show Not Found UI'
 
 
-  /events/{id}/preferences:
+  /event/{id}/preferences:
     get:
       operationId: R206
       summary: 'R206: View Event Preferences'
@@ -703,8 +682,26 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-          
-  /api/{events}/{id}/comments:    
+
+    post:
+      operationId: R220
+      summary: 'R220: Unlike a comment'
+      description: 'Unlike a comment. Access: USR'
+      tags:
+        - 'M02 - Events'
+      parameters:
+        - in: path
+          name: id
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'Success.'
+        '400':
+          description: 'Bad input parameter request'
+
+  /{event}/{id}/comments:    
     post:
       operationId: R213
       summary: 'R213: Add a comment'
@@ -719,7 +716,7 @@ paths:
             type: integer
           required: true
         - in: path
-          name: events
+          name: event
           schema:
             type: integer
           required: true
@@ -738,12 +735,31 @@ paths:
           description: "Bad input parameter request"
         "403":
           description: "Forbidden access"
-        "404":
-          description: "Tag not found"
         "500":
           description: "System Error"
+          
+  /api/event/{id}/like:
+    post:
+      operationId: R219
+      summary: 'R219: Like a comment'
+      description: 'Add a like to comment. Access: USR'
+      tags:
+        - 'M02 - Events'
+      parameters:
+        - in: path
+          name: id
+          schema: 
+            type: integer
+          required: true
+      responses:
+        '201':
+          description: 'Success.'
+        '400':
+          description: 'Bad input parameter request'
+          
 
-  /api/events/{id}/Comments/{comment}:
+          
+  /api/event/{id}/comments/{comment}:
     delete:
       operationId: R214
       summary: 'R214: Delete Comment'
@@ -1169,6 +1185,7 @@ paths:
           description: 'Request timeout.'
         '500':
           description: 'System Error'
+          
 
   /search:   
     get:
