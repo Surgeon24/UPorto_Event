@@ -3,7 +3,7 @@
 
 This artifact documents the  architecture of the web application to be developed, indicating the catalog of resources, the properties of each resource, and the format of JSON responses. This specification adheres to the OpenAPI standard using YAML.
 
-This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations for each resource.
+This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations.
 
 
 ### 1. Overview
