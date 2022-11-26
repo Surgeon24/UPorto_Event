@@ -122,7 +122,10 @@ if(!$isAdmin){
     }
 
     public function home() {
-        return view('auth.login');
+        if (Auth::check()){
+            return redirect('home');
+        } else
+            return redirect('login');
     }
 
 }

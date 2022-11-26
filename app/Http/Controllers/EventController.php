@@ -70,7 +70,7 @@ class EventController extends Controller{
         //if (!Auth::check()) return redirect('/login');
         //$this->authorize('list', Card::class);
         $event = Event::orderBy('id')->get();
-        return view('pages.home', ['event' => $event]);
+        return view('pages.home');
     }
 
 

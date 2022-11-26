@@ -1,6 +1,6 @@
 body {
   background-color: #cbcbcb;
-  color: #2a2a2a;
+  color: #dcdcdc;
 }
 main > header {
   display: grid;
@@ -86,7 +86,7 @@ main > header span {
   margin: 0 auto;
   padding: 1em;
   max-width: 20em;
-  border: 1px solid #d2afe7;
+  border: 1px solid #ffffff;
 }
 #content > form .error {
   font-weight: bold;
