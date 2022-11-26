@@ -116,10 +116,10 @@ admin@example.com
 
 ## Revision history
 
-1. 23/11/2022 - First Version
-2. 
+1. 24/11/2022 - First Version
+2. 26/11/2022 - Late delivery
 ***
-GROUP21122, 23/11/2022
+GROUP22122, 26/11/2022
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
