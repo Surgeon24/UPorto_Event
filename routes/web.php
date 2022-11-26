@@ -20,10 +20,6 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('home', 'HomeController@show');
 
-// Cards
-Route::get('cards', 'CardController@list');
-Route::get('cards/{id}', 'CardController@show');
-
 // Client
 Route::get('profile/{id}', 'ClientController@show')->name('user');
 Route::get('profile_edit/{id}', [ClientController::class, 'show_edit']);
@@ -32,17 +28,11 @@ Route::post('profile_edit/{id}', 'ClientController@update')->name('user-update')
 Route::delete('profile/{id}', 'ClientController@delete')->name('delete_user')->middleware('auth');
 
 // API
-Route::put('api/cards', 'CardController@create');
-Route::delete('api/cards/{card_id}', 'CardController@delete');
-Route::put('api/cards/{card_id}/', 'ItemController@create');
-Route::post('api/item/{id}', 'ItemController@update');
-Route::delete('api/item/{id}', 'ItemController@delete');
 Route::patch('api/like/{id}', 'CommentController@like');
 Route::get('api/like/{id}', 'CommentController@like');
 
 
 // Authentication
-//Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('/', 'Auth\LoginController@home')->name('login_home');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
