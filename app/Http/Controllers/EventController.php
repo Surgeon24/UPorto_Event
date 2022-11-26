@@ -75,27 +75,14 @@ class EventController extends Controller{
 
 
 
-    // public function create(array $data)
-    // {
-    //   $event = new Event();
-
-    //   $this->authorize('create', $event);
-
-    //   $event->title = $data['title'];
-    //   $event->location = $data['location'];
-    //   $event->save();
-
-    //   return $event;
-    // }
-      
-      public function delete(Request $request)
-      {   
-         
-          $id = $request->input('id');
-          $event= Event::find($id);
-          $event->comments()->delete();
-          $event->delete();
-          return redirect('/home');
-      }
-  
+    public function delete(Request $request)
+    {   
+       
+        $id = $request->input('id');
+        $event= Event::find($id);
+        $event->comments()->votes()->delete();
+        $event->comments()->delete();
+        $event->delete();
+        return redirect('/home');
+    }
 }
