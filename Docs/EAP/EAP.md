@@ -89,7 +89,7 @@ The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/te
 |  R105: Sign Up Action  | POST /register |
 |  R106: View User Profile | GET /profile/{id} |
 |  R107: Edit Profile    | PATCH /profile/{id}  |
-
+|  R108: Delete Account  | POST /profile/{id} |
 
 
 **M02 - Events**
@@ -97,8 +97,14 @@ The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/te
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
-| R205: View Event Overview | GET /event/{id} |
-
+|  R202: Create Event    | POST /create_event |
+|  R203: Get Event Information | GET /event/{id} |
+|  R207: Edit Event      | PATCH /event/{id} |
+|  R212: Get Comments    | GET /event/{id} |
+|  R213: Add a comment   | POST /event/{id} |
+|  R214: Delete Comment | DELETE event/{id}/comment|
+|  R219: Like a comment | POST /event/{id} |
+|  R220: Unlike a comment | POST /event/{id} |
 
 **M03 - Notifications**
 
@@ -110,14 +116,14 @@ The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/te
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
-| R401: View Homepage (Landing Page) | GET /home |  
+| R401: View Homepage | GET [/home](https://lbaw22122.lbaw.fe.up.pt/home) |  
 
 
 ### 2. Prototype
 
 The Prototype is available at https://lbaw22122.lbaw.fe.up.pt/
 
-_note: in order to connect institutional VPN might be required._ 
+
 
 **Credentials:**
  
@@ -130,8 +136,8 @@ email:      user@example.com\
 password:   123456
 ## Revision history
 
-1. 24/11/2022 - First Version
-2. 26/11/2022 - Late delivery
+1. 26/11/2022 - Late delivery
+
 ***
 GROUP22122, 26/11/2022
 
