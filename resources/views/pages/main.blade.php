@@ -23,7 +23,7 @@
       <div class="u-clearfix u-sheet u-sheet-1">
         <h2 class="u-text u-text-default u-text-1">Welcome to the UPorto Event</h2>
 
-        <article class="card">
+        {{-- <article class="card">
           <a href="{{ route('event', ['id' => $event->id]) }}">
             <h1 class="">{{ $event->title }}
               <h1>
@@ -38,7 +38,7 @@
                   {{ $event->location }}
                 </h4>
           </a>
-        </article>
+        </article> --}}
 
         <h4 class="u-text u-text-default u-text-2"> Slogan, that definitely catch you!</h4>
         @include('partials._search')
