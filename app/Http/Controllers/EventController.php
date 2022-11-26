@@ -17,18 +17,26 @@ class EventController extends Controller{
     
     public function show($id){
         $event = Event::find($id);
-        if (!Auth::check()) return redirect('/login');
-        //$this->authorize('show', $user);
-        //$comment = Comment::list();
-        return view('pages.event', ['event' => $event]);
+        if (Auth::check()) {        // check, if user is loged in
+          if ($event){              // check, if event is exist
+            return view('pages.event', ['event' => $event]);
+          } else {
+            abort('404');
+          }
+        } else{
+          return redirect('/login');
+        }
       }
     
       public function show_edit($id){
         $event = Event::find($id);
-        if (!Auth::check()) return redirect('/login');        //should be changed on veryfing the owner. Not just registered user
-        //$this->authorize('show', $user);
-        //$comment = Comment::list();
-        return view('pages.event_edit', ['event' => $event]);
+        if (Auth::check()) {
+          if (TRUE){        //should be changed on veryfing the owner
+            return view('pages.event_edit', ['event' => $event]);
+          }
+        } else {
+          return redirect('/login'); 
+        }
       }
 
       public function show_create(){
