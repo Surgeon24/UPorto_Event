@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS poll_notification CASCADE;
 DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
+DROP TABLE IF EXISTS administrators CASCADE;
 
 -----------------------------------------
 -- TYPES
@@ -118,11 +119,18 @@ FOREIGN KEY (event_id) REFERENCES event(id)
 
 CREATE TABLE users (
 id SERIAL PRIMARY KEY,
-photo_path TEXT,
+photo_path TEXT DEFAULT ('/default-profile-photo.webp'),
 name VARCHAR NOT NULL,
 email VARCHAR UNIQUE NOT NULL,
 password VARCHAR NOT NULL,
 remember_token VARCHAR
+);
+
+CREATE TABLE administrators(
+
+    user_id INTEGER, 
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 -- word "comments" was used because "comment" is a reserved word in PostgreSQL 
 -- inspirations: https://stackoverflow.com/questions/55074867/posts-comments-replies-and-likes-database-schema
@@ -339,6 +347,18 @@ DEFAULT,
 'admin@example.com',
 '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W'
 ); -- Password is 1234. Generated using Hash::make('1234')
+
+INSERT INTO users VALUES (
+DEFAULT,
+DEFAULT,
+'Doe John',
+'user@example.com',
+'$2a$12$de8vO5hCTMjKQpHd.OE/R.atg/xpTmVheKs3rTcSIPVvzYjhRKBE6'
+);
+
+INSERT INTO administrators VALUES (
+    1
+);
 
 INSERT INTO event VALUES (
 DEFAULT,
