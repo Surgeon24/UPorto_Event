@@ -106,10 +106,6 @@ The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/te
 |  R219: Like a comment | POST /event/{id} |
 |  R220: Unlike a comment | POST /event/{id} |
 
-**M03 - Notifications**
-
-| Web Resource Reference | URL |
-| ---------------------- | --- |
 
 
 **M04 - User Administration and Static pages**
