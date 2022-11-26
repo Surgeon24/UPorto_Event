@@ -15,8 +15,16 @@ class ClientController extends Controller{
 
     public function show($id){
       $user = User::find($id);
-      //$this->authorize('show', $user);
-      return view('pages.profile', ['user' => $user]);
+      if (Auth::check()) {
+        if ($user){
+          //$this->authorize('show', $user);
+          return view('pages.profile', ['user' => $user]);
+        } else {
+          abort('404');
+        }
+      } else {
+        return redirect('/login');
+      }
     }
 
     public function show_edit($id){

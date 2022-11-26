@@ -27,6 +27,8 @@
         @if (Auth::check())
         <a class="button" href="{{ url('/logout') }}"> Logout </a> <!--<span>{{ Auth::user()->name }}</span>-->
         <a class="button" href="{{ url('/profile/'. Auth::user()->id) }}"> {{ Auth::user()->name }} </a>
+        @elseif (Request::url() != url('/login'))
+          <a class="button" href="{{ url('/login') }}"> Login </a>
         @endif
       </header>
       <section id="content">

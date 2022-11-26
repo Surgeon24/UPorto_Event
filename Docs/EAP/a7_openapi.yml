@@ -6,14 +6,11 @@ info:
   contact:
     name: lbaw22122 
     url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122
-    email: up202203777@g.uporto.pt
+    email: up202203777@g.uporto.pt  
     
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/lbaw22122_Event/UPortoEvent/1.0
   - description: 'production server'
-    url: http://lbaw.fe.up.pt  # What URL here?????????
+    url: https://lbaw22122.lbaw.fe.up.pt
 externalDocs:
   description: Find more info here.
   url: https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/wikis/home
@@ -34,7 +31,7 @@ paths:
         - 'M01 - Authentication and Individual Profile'
         responses:
           '200':
-            description: 'Ok. Show Log-in UI [UIXX]'
+            description: 'Ok. Show Log-in [UI](https://lbaw22122.lbaw.fe.up.pt/login)'
           '302':
             description: 'Redirect if user is logged in.'
             headers:
@@ -102,7 +99,7 @@ paths:
                   description: 'Successful logout. Redirect to home page.'
                   value: '/'
                   
-  /sign_up:
+  /register:
     get:
       operationId: R104
       summary: 'R104: Sign Up Form'
@@ -111,7 +108,7 @@ paths:
         - 'M01 - Authentication and Individual Profile'
       responses:
         '200':
-          description: 'Ok. Show Sign Up UI [UIxx]()'
+          description: 'Ok. Show Sign Up UI [UIxx](https://lbaw22122.lbaw.fe.up.pt/register)'
         '302':
           description: 'Redirect if user is logged in.'
           headers:
@@ -169,9 +166,9 @@ paths:
           required: true
       responses:
         '200':
-          description: 'Ok. Show profile UI [UIXX]'
+          description: 'Ok. Show profile UI'
         '404':
-          description: 'Not found. [UIXX]'
+          description: 'Not found'
 
     patch:
       operationId: R107
@@ -239,7 +236,55 @@ paths:
           description: Resource Not found
         '500':
           description: System Error
-          
+
+  /password/reset:
+    get:
+      operationId: R109
+      summary: "R109: Password recovery Form"
+      description: "Page with a form to request a token to reset the password. Access: Public. "
+      tags:
+        - "M01 - Authentication and Individual Profile"
+      responses:
+        '200':
+          description: "Ok. Show password recovery form UI"
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+
+    post:
+      operationId: R110
+      summary: "R110: Password recovery Action"
+      description: "Web resource that sends a reset password link to the specified email. Access: Public."
+      tags:
+        - "M01 - Authentication and Individual Profile"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                - email
+      responses:
+        '302':
+          description: 'Redirect after processing the new reset information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful reset. Redirect to user profile.'
+                  value: '/users/{user_id}'
+                302Failure:
+                  description: 'Failed creation. Redirect to user dashboard.'
+                  value: '/'
+
+
   /users/id/avatars/{img}:
     get:
       operationId: R111
@@ -260,6 +305,7 @@ paths:
           description: 'Ok'
         "404":
           description: "Not Found"
+
           
   /api/events:
     get:
@@ -292,7 +338,7 @@ paths:
 
       responses:
         '200':
-          description: Success. Show Search Events UI [UIxx].
+          description: Success. Show Search Events [UI](https://lbaw22122.lbaw.fe.up.pt/home)
           content:
             application/json:
               schema:
@@ -363,7 +409,7 @@ paths:
 
       responses:
         '200':
-          description: Success. Show Get Event UI [UIxx].
+          description: Success. Show Get Event UI
           content: 
             application/json:
               schema:
@@ -426,11 +472,11 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show overview UI [UIXX]'
+          description: 'Ok. Show overview UI'
         '403':
           description: Forbidden
         '404':
-          description: 'Not Found. Show Not Found UI [UIXX]'
+          description: 'Not Found. Show Not Found UI'
 
 
   /events/{id}/preferences:
@@ -450,11 +496,11 @@ paths:
 
       responses:
         '200':
-          description: 'Ok. Show Preferences UI [UIXX]'
+          description: 'Ok. Show Preferences UI'
         '403':
           description: Forbidden
         '404':
-          description: 'Not Found. Show Not Found UI [UIXX]'
+          description: 'Not Found. Show Not Found UI'
   
     patch:
       operationId: R207
@@ -544,7 +590,7 @@ paths:
 
       responses:
         '200':
-          description: Success. Show Get Tags UI [UIxx].
+          description: Success. Show Get Tags UI.
           content: 
             application/json:
               schema:
@@ -644,7 +690,7 @@ paths:
 
       responses:
         '200':
-          description: Success. Show Comment UI [UIxx].
+          description: Success. Show Comment UI
           content: 
             application/json:
               schema:
@@ -812,7 +858,7 @@ paths:
     get:
       responses:
         '200':
-          description: OK. Show list Polls UI [UIxx].
+          description: OK. Show list Polls UI
         '403':
           description: Forbidden request
         '404':
@@ -914,7 +960,7 @@ paths:
       
       responses:
         '200':
-          description: Success. Returns an array of notifications. Show list notifications UI [UIXX].
+          description: Success. Returns an array of notifications. Show list notifications UI
           content:
             application/JSON:
               schema:
@@ -969,7 +1015,7 @@ paths:
           required: true
       responses:
         '200':
-          description: Ok. Show notification UI [UIXX].
+          description: Ok. Show notification UI
           content:
             application/JSON:
               schema:
@@ -1010,7 +1056,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show Homepage UI  [UIXX]'
+          description: 'OK. Show Homepage UI'
         '403':
           description: Forbidden request
         '404':
@@ -1028,7 +1074,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show Contacts [UIXX]'
+          description: 'OK. Show Contacts'
         '403':
           description: Forbidden request
         '404':
@@ -1046,7 +1092,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show support page UI [UIXX]'   
+          description: 'OK. Show support page UI'   
         '403':
           description: Forbidden request
         '404':
@@ -1114,7 +1160,7 @@ paths:
       
       responses:
         '200':
-          description: 'Ok. Show About UI [UIXX]'
+          description: 'Ok. Show About UI'
         '403':
           description: 'Forbidden request'
         '404':
@@ -1134,7 +1180,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show search page UI [UIXX]'  
+          description: 'OK. Show search page UI'  
         '403':
           description: 'Forbidden request'
         '404':
@@ -1155,7 +1201,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show User Management UI [UIXX]'   
+          description: 'OK. Show User Management UI'   
         '403':
           description: 'Forbidden request'
         '404':
@@ -1175,7 +1221,7 @@ paths:
         
       responses:
         '200':
-          description: 'OK. Show User Management UI [UIXX]'   
+          description: 'OK. Show User Management UI'   
         '403':
           description: 'Forbidden request'
         '404':

@@ -71,6 +71,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'photo_path' => 'image.png',   //after registration user has default photo
         ]);
     }
 }

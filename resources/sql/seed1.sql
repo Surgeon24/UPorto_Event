@@ -2,6 +2,7 @@
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
+create schema if not exists lbaw22122;
 
 set search_path=lbaw22122;
 
