@@ -61,9 +61,18 @@ The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/te
 
 |ID   | Actor    | Name      |Priority | Description |
 | --- | -----    | ----      | ------- | ----------- |
+| us02 | User | View Event | High | As a User, I want to navigate through a specific public event so I can see more detailed information |
 |vi01 | Visitor  | Log In    | High    | As a visitor, I want to be able to log-in, to get a status of authenticated user. |
-|au04 |Auth. user| Log Out   | High    | As an authenticated user, I want to be able to log out from service for privacy purposes. |
 |vi02 | Visitor  | Sign Up   | High    |As a visitor, I want to be able to create my profile on the site to become an authenticated user. |
+| au01 | Auth. user | Home | High | As an authenticated user, I want to access my home page, where I can see all information about the website. |
+| au03 | Auth. user | Create Event | High | As an authenticated user, I want to create new events by myself to become an event organizer. |
+|au04 |Auth. user| Log Out   | High    | As an authenticated user, I want to be able to log out from service for privacy purposes. |
+| au06 | Auth. user | Edit Profile | High | As an authenticated user, I want to edit my profile whenever I please, to keep it up to date.|
+| au07 | Auth. user | Delete Profile | High | As an authenticated user, I want to delete my profile if I feel like it. |
+| au08 | Auth. user | View Profile | High | As an authenticated user, I want to see my profile and others to check information I want. |
+| au12 | Auth. user | Comment | Medium | As an authenticated user, I want to ask any questions I’d like about an event, even if I'm not a member of this event yet. | v0.2 |
+| ad01 | Admin | Delete Event | High | As an administrator, I want to be able to delete events on the site, if they violate the rules of the service. | v1.0 |
+
 
 
 #### 1.2. Implemented Web Resources
@@ -111,14 +120,14 @@ The Prototype is available at https://lbaw22122.lbaw.fe.up.pt/
 _note: in order to connect institutional VPN might be required._ 
 
 **Credentials:**
+ 
+***for admin:***\
+email:      admin@example.com\
+password:   1234
 
-email, password: 
-
-admin@example.com
-
-1234
-
-
+***for casual user:***\
+email:      user@example.com\
+password:   123456
 ## Revision history
 
 1. 24/11/2022 - First Version
