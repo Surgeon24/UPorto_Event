@@ -38,6 +38,8 @@ Route::delete('api/cards/{card_id}', 'CardController@delete');
 Route::put('api/cards/{card_id}/', 'ItemController@create');
 Route::post('api/item/{id}', 'ItemController@update');
 Route::delete('api/item/{id}', 'ItemController@delete');
+Route::patch('api/like/{id}', 'CommentController@like');
+Route::get('api/like/{id}', 'CommentController@like');
 
 
 // Authentication

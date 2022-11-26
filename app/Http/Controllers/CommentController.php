@@ -8,26 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Comment;
+use App\Models\CommentVote;
 
 class CommentController extends Controller
 {
-
-
-    public function show($id)
-    {
-        $event = Comment::find($id);
-        //$this->authorize('show', $user);
-        return view('pages.event', ['event' => $event]);
-    }
-
-
-    public function list()
-    {
-        //if (!Auth::check()) return redirect('/login');
-        //$this->authorize('list', Card::class);
-        $comment = Comment::orderBy('id')->get();
-        return view('pages.home', ['comment' => $comment]);
-    }
 
     public function create(Request $request)
     {
@@ -50,5 +34,20 @@ class CommentController extends Controller
         $comment= Comment::find($id);
         $comment->delete();
         return back();
+    }
+
+    public function like(Request $request, $id)
+    {   
+        $like = CommentVote::where('comment_id', $id)->where('user_id', Auth::user()->id)->first();
+        if($like == null){
+            CommentVote::create([
+                'comment_id' => $id,
+                'user_id' => Auth::user()->id,
+            ]);
+        }
+        else{
+            $like->delete();
+        }
+        return Response()->json(['status' => 'ok'],200);
     }
 }
