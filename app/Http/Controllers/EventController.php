@@ -67,18 +67,18 @@ class EventController extends Controller{
 
 
 
-    public function create(array $data)
-    {
-      $event = new Event();
+    // public function create(array $data)
+    // {
+    //   $event = new Event();
 
-      $this->authorize('create', $event);
+    //   $this->authorize('create', $event);
 
-      $event->title = $data['title'];
-      $event->location = $data['location'];
-      $event->save();
+    //   $event->title = $data['title'];
+    //   $event->location = $data['location'];
+    //   $event->save();
 
-      return $event;
-    }
+    //   return $event;
+    // }
       
       public function delete(Request $request)
       {   
