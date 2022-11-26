@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('home', 'HomeController@show');
 
+
 // Client
 Route::get('profile/{id}', 'ClientController@show')->name('user');
 Route::get('profile_edit/{id}', [ClientController::class, 'show_edit']);
