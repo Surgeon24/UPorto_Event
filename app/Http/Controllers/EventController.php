@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CommentController;
+
 
 use App\Models\Event;
-//use App\Models\Comment;
+use App\Models\Comment;
 
 
 class EventController extends Controller{ 
@@ -70,8 +70,15 @@ class EventController extends Controller{
        
         $id = $request->input('id');
         $event= Event::find($id);
-        $event->comments()->votes()->delete();
-        $event->comments()->delete();
+        /* 
+        $comments = $event->comments();
+        foreach ($comments as $comment){
+          $comment->votes()->delete();
+          if($comment->event() == $event){
+            $comment->delete();
+          }
+        }
+        */
         $event->delete();
         return redirect('/home');
     }

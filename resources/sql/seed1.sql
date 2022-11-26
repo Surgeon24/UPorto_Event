@@ -143,7 +143,7 @@ event_id INT,
 comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
 --FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
 FOREIGN KEY (user_id) REFERENCES users(id),
-FOREIGN KEY (event_id) REFERENCES event(id)
+FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS comment_votes(
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS comment_votes(
     comment_id INTEGER,
     type comment_vote NOT NULL DEFAULT ('like'),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (comment_id) REFERENCES comments(id) 
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
 );
 
 
