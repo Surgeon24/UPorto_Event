@@ -54,4 +54,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function administrator()
+    {
+        return $this->hasOne(Administrator::class, 'user_id');
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->administrator()->exists();
+    }
+
+    public function isStaff(): bool {
+        return $this->isAdministrator();
+    }
 }

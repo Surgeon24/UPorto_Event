@@ -32,12 +32,13 @@ class CommentController extends Controller
        
         $id = $request->input('id');
         $comment= Comment::find($id);
+        $this->authorize('delete', $comment);
         $comment->votes()->delete();
         $comment->delete();
         return back();
     }
 
-    public function like(Request $request, $id)
+    public function like($id)
     {   
         $like = CommentVote::where('comment_id', $id)->where('user_id', Auth::user()->id)->first();
         if($like == null){

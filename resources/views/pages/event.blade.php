@@ -46,11 +46,8 @@
             <label style=display:inline;>Location: </label>
             {{ $event->location }}
         </h4>
-        <h5 style=display:inline;>
+        <div style="display:flex; gap:10px;">
             <a class="button" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
-        </h5>
-
-        <h6>
             <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                 @csrf
                 @method("DELETE")
@@ -59,7 +56,7 @@
                     Delete
                 </button>
             </form>
-        </h6>
+        </div>
     </div>
 </div>
 <div>

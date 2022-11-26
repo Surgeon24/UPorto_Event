@@ -33,7 +33,7 @@
 
 
 <div>
-  <div style=display:inline-block;>
+  <div style="display:flex; gap:10px;">
     @foreach($events as $event)
     <article class="card">
       <a href="{{ route('event', ['id' => $event->id]) }}">

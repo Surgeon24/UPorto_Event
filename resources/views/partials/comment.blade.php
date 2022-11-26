@@ -57,6 +57,7 @@
             <h1 class="">{{ $comment->comment_text }}</h1>
             <p>{{ $comment->comment_date }}</p>
             <div style="display:flex; gap:10px; " class="">
+                @if(Auth::user()->isStaff() || Auth::user()->id === $comment->user_id)
                 <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}" method="post">
                     @csrf
                     @method('DELETE')
@@ -65,6 +66,7 @@
                         Delete
                     </button>
                 </form>
+                @endif
                 <button  class="like"  data-id="{{$comment->id}}">
                     <i class="fa fa-thumbs-up"></i>
                     <span class="icon">Like</span>
