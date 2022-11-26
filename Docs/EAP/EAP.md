@@ -68,10 +68,10 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 |  ------------------    | --- |
-|  R101: Sign In Form    | GET /login |
+|  R101: Sign In Form    |  [/login](https://lbaw22122.lbaw.fe.up.pt/login) |
 |  R102: Sign In Action  | POST /login |
 |  R103: Logout Action   | POST /logout |
-|  R104: Sign Up Form    | GET /register  |
+|  R104: Sign Up Form    |  [/register](https://lbaw22122.lbaw.fe.up.pt/register)  |
 |  R105: Sign Up Action  | POST /register |
 |  R106: View User Profile | GET /profile/{id} |
 |  R107: Edit Profile    | PATCH /profile/{id}  |
@@ -100,6 +100,18 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 
 ### 2. Prototype
+
+The Prototype is available at https://lbaw22122.lbaw.fe.up.pt/
+
+_note: in order to connect institutional VPN might be required._ 
+
+**Credentials:**
+
+email, password: 
+
+admin@example.com
+
+1234
 
 
 ## Revision history
