@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS comment_notification CASCADE;
 DROP TABLE IF EXISTS poll_notification CASCADE;
 DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS comment_votes CASCADE;
 
 -----------------------------------------
 -- TYPES
@@ -39,6 +40,8 @@ CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
 drop type if exists TYPE_NOTIFICATION;
 CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 
+drop type if exists "comment_vote" CASCADE;
+CREATE TYPE "comment_vote" AS ENUM ('like', 'dislike');
 
 -----------------------------------------
 -- TABLES
@@ -133,6 +136,15 @@ comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
 --FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
 FOREIGN KEY (user_id) REFERENCES users(id),
 FOREIGN KEY (event_id) REFERENCES event(id)
+);
+
+CREATE TABLE IF NOT EXISTS comment_votes(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER, 
+    comment_id INTEGER,
+    type comment_vote NOT NULL DEFAULT ('like'),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (comment_id) REFERENCES comments(id) 
 );
 
 
