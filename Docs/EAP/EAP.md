@@ -47,7 +47,7 @@ OpenAPI specification in YAML format to describe the web application's web resou
 
 
 ## A8: Vertical Prototype
-The Vertical Prototype is intended to validate the presented architecture, as well as to familiarize yourself with the technologies used in the project. It contains implementation of main features  that are represented in requirements documents.
+The Vertical Prototype includes the implementation of two or more user stories (the simplest) and aims to validate the architecture presented, also serving to gain familiarity with the technologies used in the project.
 
 
 The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/template-laravel). The prototype implements pages for visualizing, inserting, editing and removing information, as well as functionality for access management.
