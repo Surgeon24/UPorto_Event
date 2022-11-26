@@ -3,7 +3,7 @@
 
 This artifact documents the  architecture of the web application to be developed, indicating the catalog of resources, the properties of each resource, and the format of JSON responses. This specification adheres to the OpenAPI standard using YAML.
 
-This artifact presents the documentation for MediaLibrary, including the CRUD (create, read, update, delete) operations for each resource.
+This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations for each resource.
 
 
 ### 1. Overview
@@ -39,7 +39,7 @@ This section defines the permissions used in the modules to establish the condit
 
 OpenAPI specification in YAML format to describe the web application's web resources.
 
-[OpenAPI](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EAP/a7_openapi.yml)
+[OpenAPI specification file](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EAP/a7_openapi.yml)
 
 [Swagger documentation](https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0)
 
