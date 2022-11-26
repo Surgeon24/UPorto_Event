@@ -3,13 +3,14 @@
 
 This artifact documents the  architecture of the web application to be developed, indicating the catalog of resources, the properties of each resource, and the format of JSON responses. This specification adheres to the OpenAPI standard using YAML.
 
-This artifact presents the documentation for MediaLibrary, including the CRUD (create, read, update, delete) operations for each resource.
+This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations.
 
 
 ### 1. Overview
 
 The modules of the application are identified and briefly described with the web resources associated in the individual documentation.
 More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
+
 
 
 |   Module   | Description    |
@@ -39,14 +40,18 @@ This section defines the permissions used in the modules to establish the condit
 
 OpenAPI specification in YAML format to describe the web application's web resources.
 
-[OpenAPI](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EAP/a7_openapi.yml)
+[OpenAPI specification file](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122/-/blob/main/Docs/EAP/a7_openapi.yml)
 
 [Swagger documentation](https://app.swaggerhub.com/apis/lbaw22122_Event/UPortoEvent/1.0)
 
 
 
 ## A8: Vertical Prototype
-The Vertical Prototype is intended to validate the presented architecture, as well as to familiarize yourself with the technologies used in the project. It contains implementation of main features  that are represented in requirements documents.
+The Vertical Prototype includes the implementation of two or more user stories (the simplest) and aims to validate the architecture presented, also serving to gain familiarity with the technologies used in the project.
+
+
+The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/template-laravel). The prototype implements pages for visualizing, inserting, editing and removing information, as well as functionality for access management.
+
 
 ### 1. Implemented Features
 
@@ -68,15 +73,14 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 |  ------------------    | --- |
-|  R101: Sign In Form    | GET /login |
+|  R101: Sign In Form    |  [/login](https://lbaw22122.lbaw.fe.up.pt/login) |
 |  R102: Sign In Action  | POST /login |
 |  R103: Logout Action   | POST /logout |
-|  R104: Sign Up Form    | GET /register  |
+|  R104: Sign Up Form    |  [/register](https://lbaw22122.lbaw.fe.up.pt/register)  |
 |  R105: Sign Up Action  | POST /register |
-|  R106: View User Profile | GET /users/{id} |
-|  R107: Edit Profile    | PATCH /users/{id}/edit  |
-|  R108: Delete Account  | DELETE /users/{id} |
-|  R111: Get Avatar **- Done?**     | GET /users/id/avatars/{img} |
+|  R106: View User Profile | GET /profile/{id} |
+|  R107: Edit Profile    | PATCH /profile/{id}  |
+
 
 
 **M02 - Events**
@@ -84,6 +88,7 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R205: View Event Overview | GET /event/{id} |
 
 
 **M03 - Notifications**
@@ -96,19 +101,32 @@ The Vertical Prototype is intended to validate the presented architecture, as we
 
 | Web Resource Reference | URL |
 | ---------------------- | --- |
+| R401: View Homepage (Landing Page) | GET /home |  
 
 
 ### 2. Prototype
 
+The Prototype is available at https://lbaw22122.lbaw.fe.up.pt/
+
+_note: in order to connect institutional VPN might be required._ 
+
+**Credentials:**
+
+email, password: 
+
+admin@example.com
+
+1234
+
 
 ## Revision history
 
-1. 23/11/2022 - First Version
-2. 
+1. 24/11/2022 - First Version
+2. 26/11/2022 - Late delivery
 ***
-GROUP21122, 23/11/2022
+GROUP22122, 26/11/2022
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
-* David Burchakov, up202203777@up.pt
+* David Burchakov, up202203777@up.pt (editor)
 * Válter Castro, up201706546@up.pt
