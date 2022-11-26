@@ -23,7 +23,7 @@
   }
   
   .u-section-2 .u-image-1 {
-    min-height: 574px;
+    min-height: 200px;
     background-image: url("/public/StandartPicture.jpeg");
     background-position: 50% 50%;
   }
@@ -91,7 +91,7 @@
     }
   
     .u-section-2 .u-image-1 {
-      min-height: 473px;
+      min-height: 200px;
     }
   
     .u-section-2 .u-layout-cell-2 {
@@ -117,7 +117,7 @@
     }
   
     .u-section-2 .u-image-1 {
-      min-height: 725px;
+      min-height: 200px;
     }
   
     .u-section-2 .u-layout-cell-2 {
@@ -143,7 +143,7 @@
     }
   
     .u-section-2 .u-image-1 {
-      min-height: 544px;
+      min-height: 200px;
     }
   
     .u-section-2 .u-container-layout-1 {
@@ -178,7 +178,7 @@
     }
   
     .u-section-2 .u-image-1 {
-      min-height: 343px;
+      min-height: 200px;
     }
   }.u-section-3 .u-sheet-1 {
     min-height: 554px;
@@ -204,7 +204,7 @@
   }
   
   .u-section-3 .u-image-1 {
-    height: 213px;
+    height: 200px;
     margin: 0 auto 0 0;
   }
   
@@ -230,7 +230,7 @@
   }
   
   .u-section-3 .u-image-2 {
-    height: 213px;
+    height: 200px;
     margin: 0 auto 0 0;
   }
   
@@ -256,7 +256,7 @@
   }
   
   .u-section-3 .u-image-3 {
-    height: 213px;
+    height: 200px;
     margin: 0 auto 0 0;
   }
   
@@ -289,19 +289,19 @@
     }
   
     .u-section-3 .u-image-1 {
-      height: 169px;
+      height: 200px;
       margin-right: initial;
       margin-left: initial;
     }
   
     .u-section-3 .u-image-2 {
-      height: 169px;
+      height: 200px;
       margin-right: initial;
       margin-left: initial;
     }
   
     .u-section-3 .u-image-3 {
-      height: 169px;
+      height: 200px;
       margin-right: initial;
       margin-left: initial;
     }
@@ -343,7 +343,7 @@
     }
   
     .u-section-3 .u-image-1 {
-      height: 347px;
+      height: 200px;
       margin-right: initial;
       margin-left: initial;
     }
@@ -371,9 +371,9 @@
     }
   }
   
-  @media (max-width: 575px) {
+  @media (max-width: 200px) {
     .u-section-3 .u-image-1 {
-      height: 214px;
+      height: 200px;
       margin-right: initial;
       margin-left: initial;
     }
