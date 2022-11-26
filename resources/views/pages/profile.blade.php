@@ -28,16 +28,3 @@
 @endsection
 
 
-        <div style="display:flex; gap:10px;">
-            <a class="button" href="{{ url('profile_edit/' . $user['id']) }}"> Edit </a>
-            <form action="{{ route('delete_user', ['id' => $user->id]) }}" method="post">
-                @csrf
-                @method('DELETE')
-                <button type="submit">
-                    Delete
-                </button>
-            </form>
-            <a class="button" href="{{ url('event_create/') }}"> + Event </a>
-        </div>
-    </div>
-@endsection

@@ -355,7 +355,7 @@ DEFAULT,
 'Doe John',
 'user@example.com',
 '$2a$12$de8vO5hCTMjKQpHd.OE/R.atg/xpTmVheKs3rTcSIPVvzYjhRKBE6'
-);
+); -- Password is 123456
 
 INSERT INTO administrators VALUES (
     1
