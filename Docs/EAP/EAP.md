@@ -3,13 +3,14 @@
 
 This artifact documents the  architecture of the web application to be developed, indicating the catalog of resources, the properties of each resource, and the format of JSON responses. This specification adheres to the OpenAPI standard using YAML.
 
-This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations for each resource.
+This artifact presents the documentation for UPortoEvent, including the CRUD (create, read, update, delete) operations.
 
 
 ### 1. Overview
 
 The modules of the application are identified and briefly described with the web resources associated in the individual documentation.
 More information about web resources associated with each module can be found in each module's separate documentation in the OpenAPI specification.
+
 
 
 |   Module   | Description    |
@@ -47,6 +48,10 @@ OpenAPI specification in YAML format to describe the web application's web resou
 
 ## A8: Vertical Prototype
 The Vertical Prototype is intended to validate the presented architecture, as well as to familiarize yourself with the technologies used in the project. It contains implementation of main features  that are represented in requirements documents.
+
+
+The implementation is based on the [LBAW Framework](https://git.fe.up.pt/lbaw/template-laravel). The prototype implements pages for visualizing, inserting, editing and removing information, as well as functionality for access management.
+
 
 ### 1. Implemented Features
 
