@@ -70,6 +70,7 @@ class EventController extends Controller{
        
         $id = $request->input('id');
         $event= Event::find($id);
+        $event->comments()->votes()->delete();
         $event->comments()->delete();
         $event->delete();
         return redirect('/home');
