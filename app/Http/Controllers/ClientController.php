@@ -37,10 +37,12 @@ class ClientController extends Controller{
     public function delete(Request $request, $id)
     {
       $user = User::find($id);
-
-      //$this->authorize('delete', $card);
+      // to be changed 
+      $comments = $user->comments();
+      $comments->delete();
+      // comments shouldnt be deleted
       $user->delete();
 
-      return redirect('layout/app/')->withSuccess('Your account was successfully deleted!');
+      return redirect('home')->withSuccess('Your account was successfully deleted!');
     }
 }
