@@ -13,7 +13,7 @@
 
 ### 2. Usage
 
-> URL to the product: http://lbaw21gg.lbaw.fe.up.pt  
+> URL to the product: http://lbaw22122.lbaw.fe.up.pt  
 
 #### 2.1. Administration Credentials
 
@@ -90,7 +90,7 @@
 
 > Brief presentation of the product and its main features (2 paragraphs max).  
 >
-> URL to the product: http://lbaw21gg.lbaw.fe.up.pt  
+> URL to the product: http://lbaw22122.lbaw.fe.up.pt  
 >
 > Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
 
