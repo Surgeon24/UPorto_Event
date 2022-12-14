@@ -42,6 +42,10 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register_sub
 
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
+//Route::get('eventUpdate/{id}', 'EventController@showUpdate')->name('event');
+Route::get('eventUpdate2/{id}', 'EventController@showUpdate')->name('event');
+Route::get('eventUpdate3', 'EventController@showUpdate')->name('event');    // works without id
+
 Route::get('all_events', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
 Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
@@ -52,3 +56,6 @@ Route::post('event_create', 'EventController@create')->name('create_event');
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');
 Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
+
+Route::get('index', [EventController::class, 'index'])->name('index');
+Route::get('/search', 'EventController@search');
