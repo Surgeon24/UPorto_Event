@@ -116,6 +116,7 @@ Changes made to the first submission:
 ***
 GROUP21gg, DD/MM/2021
 
-* Group member 1 name, email (Editor)
-* Group member 2 name, email
-* ...
+* João Sousa, up201904739@up.pt    
+* Mikhail Ermolaev, up202203498@up.pt
+* David Burchakov, up202203777@up.pt (editor)
+* Válter Castro, up201706546@up.pt
