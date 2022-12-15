@@ -43,8 +43,8 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register_sub
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
 //Route::get('eventUpdate/{id}', 'EventController@showUpdate')->name('event');
-Route::get('eventUpdate2/{id}', 'EventController@showUpdate')->name('event');
-Route::get('eventUpdate3', 'EventController@showUpdate')->name('event');    // works without id
+Route::get('eventUpdate2/{id}', 'EventController@showUpdate2')->name('event2');
+Route::get('eventUpdate3', 'EventController@showUpdate3')->name('event3');    // works without id
 
 Route::get('all_events', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
