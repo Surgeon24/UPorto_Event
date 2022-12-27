@@ -88,14 +88,14 @@ border: 1px #000 solid;
     <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
         @csrf
         <label> New comment </label>
-        <input type="text" id="content" name="content"></input>
+        <input style="color:#000" type="text" id="content" name="content"></input>
         <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
         <button type="submit" class="btn btn-primary">Comment</button>
     </form>
 
-</div class="gray">
+</div>
 @each('partials.comment',$event->comments()->get(), 'comment')
-<div>
+
 
 </div>
 </div>
