@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('event')
+@extends('layouts.layout')
+@section('content')
 
 <style>
     .card {
@@ -30,10 +30,35 @@
     img {
         border-radius: 5px 5px 0 0;
     }
+
+
+    .gray{
+     position: relative;
+     padding: 50px;
+     text-align: center;
+     background-color: rgba(0, 0, 0, 0.8);
+     color: white;       
+   }
+
+  .bar{
+background-color:#363230;
+color:white;
+border-radius: 15px;
+border: 1px #000 solid;
+  }
+
+  .login{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -150px 0 0 -150px;
+      width:300px;
+      height:300px;
+  }
 </style>
 
-<div>
-    <div>
+<div class="gray">
+    <div >
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
 
         <h2 class="">{{ $event->description }} </h2>
@@ -46,7 +71,7 @@
             <label style=display:inline;>Location: </label>
             {{ $event->location }}
         </h4>
-        <div style="display:flex; gap:10px;">
+        <div>
             <a class="button" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
             <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                 @csrf
@@ -59,18 +84,18 @@
         </div>
     </div>
 </div>
-<div>
-    <form class="card" method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
+<div class="gray">
+    <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
         @csrf
         <label> New comment </label>
-        <input type="text" id="content" name="content"></input>
+        <input style="color:#000" type="text" id="content" name="content"></input>
         <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
-        <button type="submit">Comment</button>
+        <button type="submit" class="btn btn-primary">Comment</button>
     </form>
 
 </div>
 @each('partials.comment',$event->comments()->get(), 'comment')
-<div>
+
 
 </div>
 </div>
