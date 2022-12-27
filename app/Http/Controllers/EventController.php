@@ -27,33 +27,6 @@ class EventController extends Controller{
           return redirect('/login');
         }
       }
-
-
-      public function showUpdate3(){
-        $event = Event::find(3);
-        if (Auth::check()) {        // check, if user is loged in
-          if ($event){             // check, if event is exist
-            return view('pages.eventUpdate', ['event' => $event]);
-          } else {
-            abort('404');
-          }
-        } else{
-          return redirect('/login');
-        }
-      }
-
-      public function showUpdate2($id){
-        $event = Event::find($id);
-        if (Auth::check()) {        // check, if user is loged in
-          if ($event){             // check, if event is exist
-            return view('pages.eventUpdate', ['event' => $event]);
-          } else {
-            abort('404');
-          }
-        } else{
-          return redirect('/login');
-        }
-      }
     
       public function show_edit($id){
         $event = Event::find($id);
