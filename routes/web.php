@@ -56,3 +56,4 @@ Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_co
 Route::get('about', function(){
     return view('pages/about_view');
 });
+

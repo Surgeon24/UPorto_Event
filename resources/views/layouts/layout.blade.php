@@ -12,7 +12,7 @@
 <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
 
 
-  <title>CodePen - Hovering Navigation Bar</title>
+  <title>UPorto Event</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
@@ -30,25 +30,42 @@
 </head>
 
 <body translate="no" >
-  <div class="container-fluid">
-  <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav">
+    <header>
+        <h1 id="len7" class="hoverable"  ><a style="color: rgb(62, 66, 114);" href="{{ url('home') }}">UPorto Event</a></h1>
+    </header>
+
+    <div class="search-parent">
+        <div class="search-right">
+            <form action="/">
+                      <input class="round" type="text" placeholder="Search.." name="search">
+                      <button class="search-button" type="submit">Search</button>
+                    </form>        
+                </div>
+            </div>
+    
+    
+<div class="container-fluid">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">       
         <li><a id="len1" class="hoverable" href="{{ url('/home') }}">Home</a></li>
         <li><a id="len2" class="hoverable" href="{{ url('/about') }}">About</a></li>
         <li><a id="len3" class="hoverable" href="#">Portfolio</a></li>
         <li><a id="len4" class="hoverable" href="#">Contact</a></li>
+
+        @if (Auth::check())
+        <li><a id="len5" class="hoverable" href="{{ url('/logout') }}" style="color: rgb(141, 74, 74);">Logout</a></li>
+        <li><a id="len6" class="hoverable" href="{{ url('/profile/'. Auth::user()->id) }}" style="color: rgb(74, 141, 115);">{{ Auth::user()->name }} </a></li>
+        @elseif (Request::url() != url('/login'))
+          <li><a id="len5" class="hoverable" href="{{ url('/login') }}" style="color: rgb(141, 74, 74);">Login</a></li>
+        @endif
       </ul>
     </div>
   </nav>
 
-
-
-
-
-
   <main>
     @yield('content')
+    
 </main>
 
 
@@ -74,7 +91,7 @@ $(function () {
   $(document).ready(function () {
     var i, stop;
     i = 1;
-    stop = 4; //num elements
+    stop = 7; //num elements
     setInterval(function () {
       if (i > stop) {
         return;
@@ -92,4 +109,3 @@ $(function () {
 </body>
 
 </html>
- 
