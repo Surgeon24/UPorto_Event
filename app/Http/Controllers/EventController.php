@@ -92,4 +92,15 @@ class EventController extends Controller{
         $event->delete();
         return redirect('/home');
     }
+
+    public function search(){
+      $search_text = $_GET['search'];
+  
+      $event = Event::where(function ($event) use($search_text) {
+        $event->where('title', 'ilike', '%' . $search_text. '%')
+           ->orWhere('description', 'ilike', '%' . $search_text. '%');
+      })  ->get();
+    return view('pages.search',compact('event'));
+  
+    }
 }
