@@ -81,29 +81,6 @@
     
 </main>
 
-</div>
-    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
-
-  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-      <script id="rendered-js" >
-$(function () {
-  var str = '#len'; //increment by 1 up to 1-nelemnts
-  $(document).ready(function () {
-    var i, stop;
-    i = 1;
-    stop = 7; //num elements
-    setInterval(function () {
-      if (i > stop) {
-        return;
-      }
-      $('#len' + i++).toggleClass('bounce');
-    }, 500);
-  });
-});
-//# sourceURL=pen.js
-    </script>
-  <script src="https://cpwebassets.codepen.io/assets/editor/iframe/iframeRefreshCSS-550eae0ce567d3d9182e33cee4e187761056020161aa87e3ef74dc467972c555.js"></script>
-</div>
   <footer
   class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
   <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>

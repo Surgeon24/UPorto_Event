@@ -64,6 +64,9 @@ Route::get('about', function(){
     return view('pages/about');
 });
 
-Route::get('faq', function(){
-    return view('pages/faq');
+Route::get('faqs', function(){
+    return view('pages/faqs', [
+        'heading' => 'Frequently Asked Questions',
+        'faqs' => Faq::all()
+    ]);
 });
