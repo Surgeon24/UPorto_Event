@@ -42,7 +42,9 @@
     <header>
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
+
 <div class="content">
+  
     <div class="search-parent">
         <div class="search-right">
             <form action="/">

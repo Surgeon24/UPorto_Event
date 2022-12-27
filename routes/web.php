@@ -16,6 +16,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Faq;
 
 // Home
 Route::get('home', 'HomeController@show');
@@ -57,6 +58,9 @@ Route::get('about', function(){
     return view('pages/about');
 });
 
-Route::get('faq', function(){
-    return view('pages/faq');
+Route::get('faqs', function(){
+    return view('pages/faqs', [
+        'heading' => 'Frequently Asked Questions',
+        'faqs' => Faq::all()
+    ]);
 });

@@ -2,19 +2,14 @@
 
 @section('content')
 
-<style>
-    .faq{
-    padding: 50px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    }
-    </style>
+
+<div class="accordion">
+  <div class="accordion-item">
+    <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">{{$faq['q']}}</span><span class="icon" aria-hidden="true"></span></button>
+    <div class="accordion-content">
+      <p>{{$faq['a']}}</p>
+    </div>
+  </div>
 
 
-<div class="faq">
-<h1>Frequently Asked Questions</h1>
-<p>- What is UPorto Event service for?</p>
-<p>- For creating events</p>
-</div>
 @endsection
