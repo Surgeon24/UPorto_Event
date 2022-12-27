@@ -42,18 +42,20 @@
     <header>
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
-
-<div class="content">
-  
-    <div class="search-parent">
+    <div class="content">
+      @if (Request::url() != url('/login') && Request::url() != url('/register'))    
+      <div class="search-parent">
         <div class="search-right">
-            <form action="/">
-                      <input class="round-bar" type="text" placeholder="Search.." name="search">
-                      <button class="search-button" type="submit">Search</button>
-                    </form>        
-                </div>
-            </div>
-    
+            <form action="/search">
+              <input class="round-bar" type="text" placeholder="Search.." name="search">
+              <button class="search-button" type="submit">Search</button>
+            </form>        
+        </div>
+      </div>
+    @endif
+
+
+
     
 <div class="container-fluid">
     <nav class="navbar navbar-inverse">
