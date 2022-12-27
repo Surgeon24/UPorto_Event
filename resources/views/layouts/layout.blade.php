@@ -37,7 +37,7 @@
     <div class="search-parent">
         <div class="search-right">
             <form action="/">
-                      <input class="round" type="text" placeholder="Search.." name="search">
+                      <input class="round-bar" type="text" placeholder="Search.." name="search">
                       <button class="search-button" type="submit">Search</button>
                     </form>        
                 </div>
