@@ -121,13 +121,13 @@ INSERT INTO faqs(Q, A) VALUES(
 );
 
 INSERT INTO faqs(Q, A) VALUES(
-    'Are you stupid?',
-    'No'
+    'When UPorto event was founded?',
+    '2022'
 );
 
 INSERT INTO faqs(Q, A) VALUES(
-    'Are you stupid?',
-    'Yes'
+    'How long did it take to create UPorto Event?',
+    '4 month'
 );
 
 INSERT INTO users VALUES (
