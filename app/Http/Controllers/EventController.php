@@ -51,9 +51,7 @@ class EventController extends Controller{
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'location' => $request->input('location'),
-            
         ]);
-
         return redirect('home');
     }
 
@@ -93,14 +91,29 @@ class EventController extends Controller{
         return redirect('/home');
     }
 
-    public function search(){
-      $search_text = $_GET['search'];
-  
-      $event = Event::where(function ($event) use($search_text) {
-        $event->where('title', 'ilike', '%' . $search_text. '%')
-           ->orWhere('description', 'ilike', '%' . $search_text. '%');
-      })  ->get();
-    return view('pages.search',compact('event'));
-  
-    }
+    function index(Request $request) {
+      $events_query = Event::query();
+
+      $search_param = $request->query('q');
+
+      if ($search_param) {
+          $events_query = Event::search($search_param);
+      }
+      
+      $events = $events_query->get();
+
+      return view('index', compact('events', 'search_param'));
+  }
+
+  public function search(){
+    $search_text = $_GET['search'];
+
+    $event = Event::where(function ($event) use($search_text) {
+      $event->where('title', 'ilike', '%' . $search_text. '%')
+         ->orWhere('description', 'ilike', '%' . $search_text. '%');
+    })  ->get();
+  return view('pages.search',compact('event'));
+
+  }
 }
+

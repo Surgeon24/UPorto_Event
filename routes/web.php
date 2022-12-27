@@ -42,6 +42,7 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register_sub
 
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
+
 Route::get('all_events', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
 Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
@@ -54,6 +55,9 @@ Route::get('/search', 'EventController@search');
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');
 Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
+
+
+Route::get('index', [EventController::class, 'index'])->name('index');
 
 Route::get('about', function(){
     return view('pages/about');
