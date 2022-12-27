@@ -118,7 +118,6 @@ class EventController extends Controller{
         return redirect('/home');
     }
 
-
     function index(Request $request) {
       $events_query = Event::query();
 
@@ -144,3 +143,4 @@ class EventController extends Controller{
 
   }
 }
+

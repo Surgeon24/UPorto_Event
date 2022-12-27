@@ -52,6 +52,12 @@
     }
 </style>
 <div>
+
+
+
+    
+
+
     <div style="display:inline-block;">
         <article class="card">
             <h1 class="">{{ $comment->comment_text }}</h1>

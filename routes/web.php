@@ -53,9 +53,19 @@ Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_eve
 Route::get('event_create', 'EventController@show_create')->name('event_create');
 Route::post('event_create', 'EventController@create')->name('create_event');
 
+Route::get('/search', 'EventController@search');
+
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');
 Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
 
+
 Route::get('index', [EventController::class, 'index'])->name('index');
-Route::get('/search', 'EventController@search');
+
+Route::get('about', function(){
+    return view('pages/about');
+});
+
+Route::get('faq', function(){
+    return view('pages/faq');
+});
