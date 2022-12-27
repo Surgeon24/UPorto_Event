@@ -35,6 +35,8 @@
 
 
 <div>
+  @include('partials._search')
+  <p></p>
   <div style="display:flex; gap:10px;">
     @foreach($events as $event)
     <article class="card">
