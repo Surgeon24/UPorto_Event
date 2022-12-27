@@ -80,40 +80,11 @@ CREATE TABLE administrators(
 
 
 
-
-
-
-
-
-
-
 CREATE TABLE IF NOT EXISTS faqs(
     id SERIAL PRIMARY KEY,
     Q VARCHAR,
     A VARCHAR
 );
-
-
-
-
-
-
-
-
--- CREATE TABLE users (
--- id SERIAL PRIMARY KEY,
--- photo_path TEXT DEFAULT ('/default-profile-photo.webp'),
--- name VARCHAR NOT NULL,
--- email VARCHAR UNIQUE NOT NULL,
--- password VARCHAR NOT NULL,
--- remember_token VARCHAR
--- );
-
-
-
-
-
-
 
 
 
@@ -136,6 +107,7 @@ CREATE TABLE IF NOT EXISTS event(
     start_date TIMESTAMP DEFAULT (
         to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
     ) NOT NULL,
+    end_date date,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL
 );
@@ -511,24 +483,29 @@ INSERT INTO administrators VALUES (
     1
 );
 
-INSERT INTO event VALUES (
-    DEFAULT,
+INSERT INTO event(title, description, start_date, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
     '05 Dec 2023 22:00',
-    true,
     'AEFEUP'
 );
 
-INSERT INTO event VALUES (
-    DEFAULT,
+INSERT INTO event(title, description, start_date, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
     '07 Jan 2023 22:30',
-    true,
     'Um sitio fixe'
 );  
 
 
-
-
+CREATE TABLE IF NOT EXISTS event(
+    id SERIAL PRIMARY KEY,
+    title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
+    description TEXT DEFAULT('FEUP party') NOT NULL,
+    start_date TIMESTAMP DEFAULT (
+        to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
+    ) NOT NULL,
+    end_date date,
+    is_public BOOLEAN DEFAULT TRUE NOT NULL,
+    location TEXT DEFAULT 'Adega Leonor' NOT NULL
+);
