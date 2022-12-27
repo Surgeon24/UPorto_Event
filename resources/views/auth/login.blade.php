@@ -1,7 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.layout')
 
 @section('content')
 
+<link href="{{ asset('css/about.css') }}" rel="stylesheet">
+<div class="gray">
 <form method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
 
@@ -36,4 +38,5 @@
     </button>
     <a class="button button-outline" href="{{ route('register') }}">Register</a>
 </form>
+</div>
 @endsection

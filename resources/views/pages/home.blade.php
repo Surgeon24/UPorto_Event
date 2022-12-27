@@ -13,6 +13,7 @@
         <a class="button" href="{{ url('/all_events') }}"> Show all events </a>
 
       
+    
 
        
       

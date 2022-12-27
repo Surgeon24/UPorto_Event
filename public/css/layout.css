@@ -1,9 +1,10 @@
+
 .hoverable{
     display:inline-block;
     backface-visibility: hidden;
     vertical-align: middle;
     position:relative;
-    box-shadow: 0 0 1px rgba(0,0,0,0);
+    box-shadow: 0 0 1px rgba(241, 239, 239, 0);
     tranform: translateZ(0);
     transition-duration: .3s;
     transition-property:transform;
@@ -124,7 +125,7 @@
   }
   
   body {
-    background-color: rgba(0,0,0,1);
+    background-color: rgb(85, 76, 76);
     font-weight:600;
     text-align:center !important;
     color: white;
@@ -145,9 +146,3 @@
   .page-title {
     opacity: .75 !important;
   }
-
-
-
-
-  
-

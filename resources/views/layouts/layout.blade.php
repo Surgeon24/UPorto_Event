@@ -19,6 +19,14 @@
   <!-- Styles -->
   <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
   
+  <style>
+    body {
+  background-image: url('images/night.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  background-size: cover;
+}
+    </style>
   
   <script>
   if (document.location.search.match(/type=embed/gi)) {
@@ -48,10 +56,10 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <ul class="nav navbar-nav">       
-        <li><a id="len1" class="hoverable" href="{{ url('/home') }}">Home</a></li>
-        <li><a id="len2" class="hoverable" href="{{ url('/about') }}">About</a></li>
-        <li><a id="len3" class="hoverable" href="#">Portfolio</a></li>
-        <li><a id="len4" class="hoverable" href="#">Contact</a></li>
+        <li><a id="len1" class="hoverable" href="{{ url('/home') }}" style="color: rgb(164, 224, 243);">Home</a></li>
+        <li><a id="len2" class="hoverable" href="{{ url('/about') }}" style="color: rgb(164, 224, 243);">About</a></li>
+        <li><a id="len3" class="hoverable" href="{{ url('/all_events') }}" style="color: rgb(164, 224, 243);">Browse events</a></li>
+        <li><a id="len4" class="hoverable" href="#" style="color: rgb(164, 224, 243);">Contact</a></li>
 
         @if (Auth::check())
         <li><a id="len5" class="hoverable" href="{{ url('/logout') }}" style="color: rgb(141, 74, 74);">Logout</a></li>
