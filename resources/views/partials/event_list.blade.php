@@ -32,7 +32,8 @@
 </style>
 
 
-<div>
+
+<div >
   <div style="display:flex; gap:10px;">
     @foreach($events as $event)
     <article class="card">

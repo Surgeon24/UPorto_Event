@@ -54,6 +54,9 @@ Route::post('event/{id}', 'CommentController@create')->name('new_comment');
 Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
 
 Route::get('about', function(){
-    return view('pages/about_view');
+    return view('pages/about');
 });
 
+Route::get('faq', function(){
+    return view('pages/faq');
+});

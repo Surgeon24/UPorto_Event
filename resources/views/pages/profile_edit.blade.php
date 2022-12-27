@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.layout')
 
-@section('profile_edit')
+@section('content')
 <div>
   <form method="post" action="{{ route('user-update', ['id' => $user->id]) }}" accept-charset="UTF-8">
     {{ csrf_field() }}
