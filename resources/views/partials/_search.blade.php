@@ -29,8 +29,6 @@
 <div id="searchBarWrap">
     <form action="{{ url('/search')}}">
     <input id="searchBar" type="text" name="search" placeholder="Search..."/>
-    <button type="submit" class="h-10 w-20 text-white rounded-lg bg-red-500 hover:bg-red-600">
-        Search
-      </button>
+    <button type="submit" id="searchBtn"><i class="fa fa-search">search</i></button>
     </form>
 </div>
