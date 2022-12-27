@@ -21,6 +21,7 @@
   
   <style>
     body {
+      height: 100%;
   background-image: url('images/night.jpeg');
   background-repeat: no-repeat;
   background-attachment: fixed;  
@@ -39,9 +40,9 @@
 
 <body translate="no" >
     <header>
-        <h1 id="len7" class="hoverable"  ><a style="color: rgb(62, 66, 114);" href="{{ url('home') }}">UPorto Event</a></h1>
+        <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
-
+<div class="content">
     <div class="search-parent">
         <div class="search-right">
             <form action="/">
@@ -76,19 +77,6 @@
     
 </main>
 
-
-  <footer
-  class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
-  <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-
-  <a
-      href="create.html"
-      class="absolute top-1/3 right-10 bg-black text-white py-2 px-5"
-      >Post Job</a>
-</footer>
-
-
-
 </div>
     <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
 
@@ -110,10 +98,13 @@ $(function () {
 });
 //# sourceURL=pen.js
     </script>
-
-  
-
   <script src="https://cpwebassets.codepen.io/assets/editor/iframe/iframeRefreshCSS-550eae0ce567d3d9182e33cee4e187761056020161aa87e3ef74dc467972c555.js"></script>
+</div>
+  <footer
+  class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
+  <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
+  </footer>
+
 </body>
 
 </html>

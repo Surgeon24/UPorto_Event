@@ -1,4 +1,3 @@
-
 .hoverable{
     display:inline-block;
     backface-visibility: hidden;
@@ -113,7 +112,15 @@
   
   
   
-  /*everything below here is just setting up the page, so dont worry about it */
+  /*  */
+  html {
+    height: 100%;
+  }
+  
+
+  .content {
+    flex: 1 0 auto;
+  }
   
   
   @media (min-width: 768px) {
@@ -125,6 +132,8 @@
   }
   
   body {
+    display: flex;
+    flex-direction: column;
     background-color: rgb(85, 76, 76);
     font-weight:600;
     text-align:center !important;
@@ -146,3 +155,14 @@
   .page-title {
     opacity: .75 !important;
   }
+
+
+
+#footer {
+  position: relative;
+  margin-top: -180px;
+  /* negative value of footer height */
+  height: 180px;
+  clear: both;
+  background-color: red;
+}
