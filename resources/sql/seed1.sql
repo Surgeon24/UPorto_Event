@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
 DROP TABLE IF EXISTS administrators CASCADE;
+DROP TABLE IF EXISTS faqs CASCADE;
 
 -----------------------------------------
 -- TYPES
@@ -119,6 +120,15 @@ INSERT INTO faqs(Q, A) VALUES(
     'UPorto Event is free'
 );
 
+INSERT INTO faqs(Q, A) VALUES(
+    'Are you stupid?',
+    'No'
+);
+
+INSERT INTO faqs(Q, A) VALUES(
+    'Are you stupid?',
+    'Yes'
+);
 
 INSERT INTO users VALUES (
 DEFAULT,
