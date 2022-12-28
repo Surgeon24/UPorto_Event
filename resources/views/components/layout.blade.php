@@ -50,7 +50,7 @@
   }
   .red{
     
-      background-color: rgba(255, 0, 0, 0.8);
+      background-color: rgba(0, 255, 34, 0.8);
       border-style: solid;
       border-color: rgba(255, 255, 255, 0.753);
       border-width: 1px;
@@ -78,19 +78,14 @@
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
     <div class="content">
+    
       @if (Request::url() != url('/login') && Request::url() != url('/register'))    
-      <div class="search-parent">
-        <div class="search-right">
-            <form action="/search">
-              <input class="round-bar" type="text" placeholder="Search.." name="search">
-              <button class="search-button" type="submit">Search</button>
-            </form>        
-        </div>
-      </div>
+      
     @endif
 
 
 
+    
     
 <div class="container-fluid">
     <nav class="navbar navbar-inverse">
@@ -108,8 +103,25 @@
         @elseif (Request::url() != url('/login'))
           <li><a id="len5" class="hoverable" href="{{ url('/login') }}" style="color: rgb(141, 74, 74);">Login</a></li>
         @endif
-      </ul>
+      </ul>     
+      
+      
+      <div class="search-parent">
+        <div class="search-right">
+          <form action="/search">
+            <input class="round-bar" type="text" placeholder="Search.." name="search">
+            <button class="search-button" type="submit">Search</button>
+          </form>   
+        </div>
+      </div>
+
+
+
     </div>
+     
+   
+
+
   </nav>
  
     <main>

@@ -68,7 +68,7 @@
 .search-right{
   position: absolute;
   top:0;
-  right: 100px;
+  right: -500px;
 }
 
 .gray{
