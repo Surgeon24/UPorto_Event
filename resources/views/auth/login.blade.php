@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 
 
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
@@ -46,4 +44,4 @@
 </div>
 
 
-@endsection
+</x-layout>

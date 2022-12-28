@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('event')
+<x-layout>
 <!DOCTYPE html>
 
 <html style="font-size: 16px;" lang="eng"><head>
@@ -103,4 +101,4 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
     </section>
   
 </body></html>
-@endsection
+</x-layout>n

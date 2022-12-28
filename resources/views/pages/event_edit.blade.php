@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 <div class="gray">
   <form method="post" action="{{ route('event_update', ['id' => $event->id]) }}" accept-charset="UTF-8">
     {{ csrf_field() }}
@@ -11,4 +9,4 @@
     <button type="submit" class="btn btn-primary">submit</button>
   </form>
 </div>
-@endsection
+</x-layout>

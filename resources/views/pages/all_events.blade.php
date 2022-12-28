@@ -1,12 +1,5 @@
-@extends('layouts.layout')
-
-@section('event')
+<x-layout>
     @include('partials.event_list', ['events' => $event])
 
   
-@endsection
-
-
-
-
-
+</x-layout>

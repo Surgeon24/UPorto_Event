@@ -54,7 +54,6 @@
 </head>
 
 <body translate="no" >
-  <main>
     <header>
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
@@ -91,17 +90,14 @@
       </ul>
     </div>
   </nav>
-  <article>
-  <section id="content">
-        @yield('content') 
-    </section>   
-  </article>
-    <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
-      <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-      </footer>
-    
-  </main>
+ 
+    <main>
+        {{$slot}} 
+    </main>
 
+  <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
+    <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
+  </footer>
+  
 </body>
-
 </html>

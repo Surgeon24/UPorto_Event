@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 
 <link href="{{ asset('css/about.css') }}" rel="stylesheet">
 
@@ -74,6 +72,4 @@
 
 
 
-
-
-@endsection
+</x-layout>

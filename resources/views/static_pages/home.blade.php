@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 
 
     <section class="u-clearfix u-section-1" id="home section">
@@ -20,4 +18,4 @@
       </div>
     
     
-@endsection
+    </x-layout>
