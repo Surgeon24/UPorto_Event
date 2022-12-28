@@ -35,9 +35,23 @@ class EventController extends Controller{
     public function show($id){
         $user = Auth::id();
         $event = Event::find($id);
+
+        $role = User_event::where('user_id', $user)->where('event_id', $event->id)->first();
+        if ($role === null){
+          $role = 'Guest';
+        } else {
+          $role = $role->role;
+        }
+        // $role = DB::select('select * from user_event where user_id = ? AND event_id = ?', [$user, $event->id]);
+
+        // $role = DB::table('user_event')
+        //   ->where('event_id', '=', $event)
+        //   ->where('user_id', '=', $user)
+        //   ->get();
+
         if (Auth::check()) {        // check, if user is loged in
           if ($event){              // check, if event is exist
-            return view('pages.event', ['event' => $event, 'user' => $user]);
+            return view('pages.event', ['event' => $event, 'role' => $role]);
           } else {
             abort('404');
           }
@@ -71,11 +85,6 @@ class EventController extends Controller{
           'description' => $request->input('description'),
           'location' => $request->input('location'),
       ]);
-      // User_event::create([
-      //   'user_id' => $userId,
-      //   'event_id' => $event->id,
-      //   'role' => 'Owner',
-      // ]);
       return redirect('home');
     }
 

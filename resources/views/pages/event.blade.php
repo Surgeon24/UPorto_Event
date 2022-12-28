@@ -64,10 +64,10 @@ border: 1px #000 solid;
             {{ $event->location }}
         </h4>
         <div>
-            @if (TRUE) {{-- @if ($isModerator) --}}
+            @if ($role === 'Owner' or $role === 'Moderator')
                 <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
                 <p></p>
-                @if ($user === $event->owner_id)
+                @if ($role === 'Owner')
                     <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                         @csrf
                         @method("DELETE")
@@ -78,17 +78,24 @@ border: 1px #000 solid;
                     </form>
                 @endif
             @endif
+            @if ($role === 'Guest')
+                <a class="btn btn-primary" href="/NOT_IMPLEMENTED_YET"> Join </a>
+            @elseif ($role !== 'Owner')
+                <a class="btn btn-primary" href="/NOT_IMPLEMENTED_YET"> Quit </a>
+            @endif
         </div>
     </div>
 </div>
 <div class="gray">
-    <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
-        @csrf
-        <label> New comment </label>
-        <input style="color:#000" type="text" id="content" name="content"></input>
-        <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
-        <button type="submit" class="btn btn-primary">Comment</button>
-    </form>
+    @if ($role !== 'Guest')
+        <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
+            @csrf
+            <label> New comment </label>
+            <input style="color:#000" type="text" id="content" name="content"></input>
+            <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+    @endif
 
 </div>
 @each('partials.comment',$event->comments()->get(), 'comment')
