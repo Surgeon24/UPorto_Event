@@ -51,6 +51,8 @@ Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_eve
 Route::get('event_create', 'EventController@show_create')->name('event_create');
 Route::post('event_create', 'EventController@create')->name('create_event');
 Route::get('my_events', 'EventController@list_participations')->name('my_events');
+Route::get('event/{id}/join', 'EventController@join')->name('join_event');
+Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
 
 Route::get('search', 'EventController@search');
 
