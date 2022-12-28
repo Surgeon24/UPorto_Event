@@ -16,21 +16,6 @@ use App\Models\Comment;
 
 class EventController extends Controller{ 
 
-  // public function show($id){
-  //   $user = User::find($id);
-  //   if (Auth::check()) {
-  //     if ($user){
-  //       //$this->authorize('show', $user);
-  //       return view('pages.profile', ['user' => $user]);
-  //     } else {
-  //       abort('404');
-  //     }
-  //   } else {
-  //     return redirect('/login');
-  //   }
-  // }  
-
-
 
     public function show($id){
          dd(request()->tag);
@@ -150,12 +135,31 @@ class EventController extends Controller{
     public function search(){
       $search_text = $_GET['search'];
 
-      $event = Event::where(function ($event) use($search_text) {
-        $event->where('title', 'ilike', '%' . $search_text. '%')
-          ->orWhere('description', 'ilike', '%' . $search_text. '%');
-      })  ->get();
-    return view('pages.search',compact('event'));
-
+    $event = Event::where(function ($event) use($search_text) {
+      $event->where('title', 'ilike', '%' . $search_text. '%')
+         ->orWhere('description', 'ilike', '%' . $search_text. '%');
+    })  ->get();
+  return view('pages.search',compact('event'));
   }
+
+  public function join($id){
+    $user = Auth::id();
+    $event = Event::find($id);
+
+    User_event::create([
+      'event_id' => $event->id,
+      'user_id'  => $user,
+      'role' => 'Participant'
+    ]);
+    return redirect("/event/$id");
+  }
+
+  public function quit($id){
+    $user = Auth::id();
+    $event = Event::find($id);
+    $role = User_event::where('user_id', $user)->where('event_id', $id)->delete();
+    return redirect("/event/$id");
+  }
+
 }
 

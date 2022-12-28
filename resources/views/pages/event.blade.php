@@ -78,9 +78,9 @@ border: 1px #000 solid;
                 @endif
             @endif
             @if ($role === 'Guest')
-                <a class="btn btn-primary" href="/NOT_IMPLEMENTED_YET"> Join </a>
+                <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
             @elseif ($role !== 'Owner')
-                <a class="btn btn-primary" href="/NOT_IMPLEMENTED_YET"> Quit </a>
+                <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Quit </a>
             @endif
         </div>
     </div>
