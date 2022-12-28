@@ -105,11 +105,11 @@ CREATE TABLE IF NOT EXISTS event(
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
     start_date TIMESTAMP DEFAULT (
-        to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
+    to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
     ) NOT NULL,
     end_date date,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
-        owner_id INT NOT NULL,
+    owner_id INT NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL
 );
 
@@ -172,9 +172,8 @@ CREATE TABLE IF NOT EXISTS comment_votes(
 
 CREATE TABLE IF NOT EXISTS tag(
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    color TEXT NOT NULL,
     event_id INT,
+    name enum NOT NULL,
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
