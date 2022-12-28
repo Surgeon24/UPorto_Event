@@ -45,15 +45,16 @@
   .flash {
       position: fixed;
       top: 0%;
-      left: 41%;
-      height: 40px;
-      width: 350px;
+      text-align:center;
+      display: inline;
+  }
+  .red{
+    
       background-color: rgba(255, 0, 0, 0.8);
       border-style: solid;
       border-color: rgba(255, 255, 255, 0.753);
       border-width: 1px;
-      color: rgb(255, 255, 255);    
-      /* {{-- fixed top-0 left-1/2 transform -translate-x-1/2 bg-laravel text-white px-48 py-3 --}} */
+      color: rgb(255, 255, 255);  
   }
 </style>
 
