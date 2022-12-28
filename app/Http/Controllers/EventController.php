@@ -18,7 +18,6 @@ class EventController extends Controller{
 
 
     public function show($id){
-         dd(request()->tag);
         $user = Auth::id();
         $event = Event::find($id);
 

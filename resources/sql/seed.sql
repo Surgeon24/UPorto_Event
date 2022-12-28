@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS comment_votes(
 CREATE TABLE IF NOT EXISTS tag(
     id SERIAL PRIMARY KEY,
     event_id INT,
-    name enum NOT NULL,
+    name varchar NOT NULL,
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
