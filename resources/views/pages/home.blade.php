@@ -3,10 +3,10 @@
 @section('content')
 
 
-
-
     <section class="u-clearfix u-section-1" id="home section">
-      <div class="u-clearfix u-sheet u-sheet-1">
+      
+      <div class="gray">      
+      {{-- <div class="u-clearfix u-sheet u-sheet-1"> --}}
         <h2 class="u-text u-text-default u-text-1">Welcome to the UPorto Event</h2>
 
         <h4 class="u-text u-text-default u-text-2"> It's never to late to do LBAW!</h4>

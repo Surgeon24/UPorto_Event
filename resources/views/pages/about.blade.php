@@ -38,7 +38,7 @@
           <h2>Mikhail Ermolaev</h2>
           <p class="title">FEUP</p>
           <p>Erasmus student</p>
-          <p>up...@fe.up.pt</p>
+          <p>up202203498@fe.up.pt</p>
           <p><button class="button">Contact</button></p>
         </div>
       </div>

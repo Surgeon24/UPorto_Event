@@ -497,6 +497,19 @@ INSERT INTO event(title, description, start_date, location) VALUES (
     'Um sitio fixe'
 );  
 
+INSERT INTO user_event(user_id, event_id, role, accepted) VALUES (
+    1,
+    1,
+    'Owner',
+    TRUE
+);
+
+INSERT INTO user_event(user_id, event_id, role, accepted) VALUES (
+    1,
+    2,
+    'Owner',
+    TRUE
+);
 
 CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,

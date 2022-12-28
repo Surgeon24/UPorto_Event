@@ -19,6 +19,18 @@
   <!-- Styles -->
   <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
   
+  {{-- Added this style over there, because it should be in this file. You can shift it somewere elese in the file. (c) Michael --}}
+  <style>             
+    .gray{
+     position: relative;
+     padding: 50px;
+     text-align: center;
+     background-color: rgba(0, 0, 0, 0.8);
+     color: white;       
+   }
+  </style>
+
+
   <style>
     body {
       height: 100%;

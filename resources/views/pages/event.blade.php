@@ -32,14 +32,6 @@
     }
 
 
-    .gray{
-     position: relative;
-     padding: 50px;
-     text-align: center;
-     background-color: rgba(0, 0, 0, 0.8);
-     color: white;       
-   }
-
   .bar{
 background-color:#363230;
 color:white;
@@ -72,12 +64,13 @@ border: 1px #000 solid;
             {{ $event->location }}
         </h4>
         <div>
-            <a class="button" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
+            <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
+            <p></p>
             <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                 @csrf
                 @method("DELETE")
                 <input type='hidden' id='id' name='id' value='{{ $event->id }}'></input>
-                <button type="submit">
+                <button type="submit" class="btn btn-primary">
                     Delete
                 </button>
             </form>
