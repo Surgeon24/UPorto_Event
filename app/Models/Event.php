@@ -16,7 +16,7 @@ class Event extends Model
     protected $table = 'event';
 
     protected $fillable = [
-        'title', 'description', 'start_date', 'is_public', 'location'
+        'owner_id', 'title', 'description', 'start_date', 'is_public', 'location'
     ];
 
     public function comments(): HasMany
@@ -31,6 +31,7 @@ class Event extends Model
 
     public function toSearchableArray(){
         return [
+            'owner_id' => $this->owner_id,
             'title' => $this->title,
             'description' => $this->description,
             'location' => $this->location

@@ -64,16 +64,20 @@ border: 1px #000 solid;
             {{ $event->location }}
         </h4>
         <div>
-            <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
-            <p></p>
-            <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
-                @csrf
-                @method("DELETE")
-                <input type='hidden' id='id' name='id' value='{{ $event->id }}'></input>
-                <button type="submit" class="btn btn-primary">
-                    Delete
-                </button>
-            </form>
+            @if (TRUE) {{-- @if ($isModerator) --}}
+                <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
+                <p></p>
+                @if ($user === $event->owner_id)
+                    <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
+                        @csrf
+                        @method("DELETE")
+                        <input type='hidden' id='id' name='id' value='{{ $event->id }}'></input>
+                        <button type="submit" class="btn btn-primary">
+                            Delete
+                        </button>
+                    </form>
+                @endif
+            @endif
         </div>
     </div>
 </div>

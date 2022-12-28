@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS administrator(
 
 CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
+    owner_id INTEGER NOT NULL,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
     start_date TIMESTAMP DEFAULT (
@@ -483,42 +484,30 @@ INSERT INTO administrators VALUES (
     1
 );
 
-INSERT INTO event(title, description, start_date, location) VALUES (
+INSERT INTO event(owner_id, title, description, start_date, location) VALUES (
+    1,
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
     '05 Dec 2023 22:00',
     'AEFEUP'
 );
 
-INSERT INTO event(title, description, start_date, location) VALUES (
+INSERT INTO event(owner_id, title, description, start_date, location) VALUES (
+    1,
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
     '07 Jan 2023 22:30',
     'Um sitio fixe'
 );  
 
-INSERT INTO user_event(user_id, event_id, role, accepted) VALUES (
+INSERT INTO user_event(user_id, event_id, role) VALUES (
     1,
     1,
-    'Owner',
-    TRUE
+    'Owner'
 );
 
-INSERT INTO user_event(user_id, event_id, role, accepted) VALUES (
+INSERT INTO user_event(user_id, event_id, role) VALUES (
     1,
     2,
-    'Owner',
-    TRUE
-);
-
-CREATE TABLE IF NOT EXISTS event(
-    id SERIAL PRIMARY KEY,
-    title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
-    description TEXT DEFAULT('FEUP party') NOT NULL,
-    start_date TIMESTAMP DEFAULT (
-        to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
-    ) NOT NULL,
-    end_date date,
-    is_public BOOLEAN DEFAULT TRUE NOT NULL,
-    location TEXT DEFAULT 'Adega Leonor' NOT NULL
+    'Owner'
 );

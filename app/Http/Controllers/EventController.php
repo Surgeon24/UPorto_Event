@@ -9,17 +9,35 @@ use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Event;
+use App\Models\User;
+use App\Models\User_event;
 use App\Models\Comment;
 
 
 class EventController extends Controller{ 
 
-    
+  // public function show($id){
+  //   $user = User::find($id);
+  //   if (Auth::check()) {
+  //     if ($user){
+  //       //$this->authorize('show', $user);
+  //       return view('pages.profile', ['user' => $user]);
+  //     } else {
+  //       abort('404');
+  //     }
+  //   } else {
+  //     return redirect('/login');
+  //   }
+  // }  
+
+
+
     public function show($id){
+        $user = Auth::id();
         $event = Event::find($id);
         if (Auth::check()) {        // check, if user is loged in
           if ($event){              // check, if event is exist
-            return view('pages.event', ['event' => $event]);
+            return view('pages.event', ['event' => $event, 'user' => $user]);
           } else {
             abort('404');
           }
@@ -46,13 +64,19 @@ class EventController extends Controller{
 
       public function create(Request $request)
     {
-
-        Event::create([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'location' => $request->input('location'),
-        ]);
-        return redirect('home');
+      $userId = Auth::id(); 
+      $event = Event::create([
+          'owner_id' => $userId,
+          'title' => $request->input('title'),
+          'description' => $request->input('description'),
+          'location' => $request->input('location'),
+      ]);
+      User_event::create([
+        'user_id' => $userId,
+        'event_id' => $event->id,
+        'role' => 'Owner',
+      ]);
+      return redirect('home');
     }
 
     public function update(Request $request, $id)
