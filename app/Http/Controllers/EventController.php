@@ -42,12 +42,6 @@ class EventController extends Controller{
         } else {
           $role = $role->role;
         }
-        // $role = DB::select('select * from user_event where user_id = ? AND event_id = ?', [$user, $event->id]);
-
-        // $role = DB::table('user_event')
-        //   ->where('event_id', '=', $event)
-        //   ->where('user_id', '=', $user)
-        //   ->get();
 
         if (Auth::check()) {        // check, if user is loged in
           if ($event){              // check, if event is exist
@@ -63,7 +57,7 @@ class EventController extends Controller{
       public function show_edit($id){
         $event = Event::find($id);
         if (Auth::check()) {
-          if (TRUE){        //should be changed on veryfing the owner
+          if (User::id() === $event->owner_id){        //should be changed on veryfing the owner
             return view('pages.event_edit', ['event' => $event]);
           }
         } else {
@@ -101,6 +95,17 @@ class EventController extends Controller{
         //if (!Auth::check()) return redirect('/login');
         //$this->authorize('list', Card::class);
         $event = Event::orderBy('id')->get();
+        return view('pages.all_events', ['event' => $event]);
+    }
+
+
+    public function list_participations()
+    {
+        $event = Event::whereIn('id', function($query){
+          $query->select('event_id')
+            ->from(with(new User_event)->getTable())
+            ->where('user_id', Auth::id());
+        })->get();
         return view('pages.all_events', ['event' => $event]);
     }
 
