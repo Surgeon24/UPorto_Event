@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $path = 'resources/sql/seed1.sql';
+        $path = 'resources/sql/seed.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('Database seeded!');
     }

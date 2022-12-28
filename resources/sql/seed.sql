@@ -1,8 +1,8 @@
-
 -----------------------------------------
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
+create schema if not exists lbaw22122;
 
 set search_path=lbaw22122;
 
@@ -23,6 +23,9 @@ DROP TABLE IF EXISTS comment_notification CASCADE;
 DROP TABLE IF EXISTS poll_notification CASCADE;
 DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS comment_votes CASCADE;
+DROP TABLE IF EXISTS administrators CASCADE;
+DROP TABLE IF EXISTS faqs CASCADE;
 
 -----------------------------------------
 -- TYPES
@@ -40,19 +43,21 @@ CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
 drop type if exists TYPE_NOTIFICATION;
 CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 
+drop type if exists "comment_vote" CASCADE;
+CREATE TYPE "comment_vote" AS ENUM ('like', 'dislike');
 
 -----------------------------------------
 -- TABLES
 -----------------------------------------
 
-/*
 
-CREATE TABLE IF NOT EXISTS authorized_user(
-    ID SERIAL PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
+
+CREATE TABLE IF NOT EXISTS users(
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL,
     firstname TEXT DEFAULT 'Válter Ochôa de Spínola Catanho' NOT NULL,
     lastname TEXT DEFAULT 'Castro' NOT NULL,
-    password TEXT DEFAULT sha256('DEFAULT_password') NOT NULL,
+    password VARCHAR NOT NULL,
     email TEXT UNIQUE NOT NULL,
     date_registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     birth_date DATE DEFAULT (current_date - INTERVAL '18 YEAR') CHECK (
@@ -61,18 +66,39 @@ CREATE TABLE IF NOT EXISTS authorized_user(
     url TEXT UNIQUE,
     status TEXT,
     is_admin BOOLEAN DEFAULT false NOT NULL,
-    photo_path TEXT
+    photo_path TEXT DEFAULT ('/default-profile-photo.webp'),
+    remember_token VARCHAR
 );
+
+
+
+CREATE TABLE administrators(
+    user_id INTEGER, 
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE IF NOT EXISTS faqs(
+    id SERIAL PRIMARY KEY,
+    Q VARCHAR,
+    A VARCHAR
+);
+
 
 
 
 CREATE TABLE IF NOT EXISTS administrator(
     id SERIAL PRIMARY KEY,
     admin_id INTEGER,
-    FOREIGN KEY (admin_id) REFERENCES authorized_user(id)
+    FOREIGN KEY (admin_id) REFERENCES users(id)
 );
 
-*/
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
@@ -81,11 +107,13 @@ CREATE TABLE IF NOT EXISTS event(
     start_date TIMESTAMP DEFAULT (
         to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
     ) NOT NULL,
+    end_date date,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
+        owner_id INT NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL
 );
 
-/*
+
 CREATE TABLE IF NOT EXISTS report(
     id SERIAL PRIMARY KEY,
     reported_id INT,
@@ -95,8 +123,8 @@ CREATE TABLE IF NOT EXISTS report(
         report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
         report_type REPORT_TYPE,
     report_status REPORT_STATUS,
-    FOREIGN KEY (reported_id) REFERENCES authorized_user(id),
-    FOREIGN KEY (reporter_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (reported_id) REFERENCES users(id),
+    FOREIGN KEY (reporter_id) REFERENCES users(id),
     FOREIGN KEY (admin_id) REFERENCES administrator(id)
 );
 
@@ -109,43 +137,38 @@ CREATE TABLE IF NOT EXISTS user_event(
     role MEMBER_ROLE,
     accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
-    FOREIGN KEY (user_id) REFERENCES authorized_user(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
-*/
 
-CREATE TABLE users (
-  ID SERIAL PRIMARY KEY,
-  name TEXT UNIQUE NOT NULL,
-  firstname TEXT DEFAULT 'FIRSTNAME' NOT NULL,
-  lastname TEXT DEFAULT 'LASTNAME' NOT NULL,
-  password TEXT DEFAULT sha256('DEFAULT_password') NOT NULL,
-  email TEXT UNIQUE NOT NULL,
-  date_registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  birth_date DATE DEFAULT (current_date - INTERVAL '18 YEAR') CHECK (
-    birth_date <= (current_date - INTERVAL '18 YEAR')),
-  url TEXT UNIQUE,
-  status TEXT,
-  is_admin BOOLEAN DEFAULT false NOT NULL,
-  photo_path TEXT
 
-);
--- word "comments" was used because "comment" is a reserved word in PostgreSQL 
--- inspirations: https://stackoverflow.com/questions/55074867/posts-comments-replies-and-likes-database-schema
 CREATE TABLE IF NOT EXISTS comments(
-     id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     comment_text TEXT DEFAULT ('Great event!'),
     user_id INT,
     event_id INT,
-    --parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
+    parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
-        --FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
-        FOREIGN KEY (user_id) REFERENCES users(id),
-		FOREIGN KEY (event_id) REFERENCES event(id)
+        FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+        FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
 );
 
 
-/*
+
+
+
+CREATE TABLE IF NOT EXISTS comment_votes(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER, 
+    comment_id INTEGER,
+    type comment_vote NOT NULL DEFAULT ('like'),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
+);
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS tag(
     id SERIAL PRIMARY KEY,
@@ -170,7 +193,8 @@ CREATE TABLE IF NOT EXISTS poll(
     event_id INT NOT NULL,
     question TEXT DEFAULT('What is your favorite programming language?') NOT NULL,
     starts_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP check(starts_at <= CURRENT_TIMESTAMP) NOT NULL,
-    end_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(end_at > starts_at) NOT NULL,
+    ends_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(ends_at > starts_at) NOT NULL,
+    UNIQUE(id, event_id),
     FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
@@ -179,8 +203,20 @@ CREATE TABLE IF NOT EXISTS poll_choice(
     id SERIAL PRIMARY KEY,
     poll_id INT,
     choice TEXT NOT NULL,
-        UNIQUE(poll_id, id),
+    UNIQUE(poll_id, id),
     FOREIGN KEY (poll_id) REFERENCES poll(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS event_poll(
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    poll_id INT,
+    UNIQUE(user_id, poll_id),
+    UNIQUE(user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+    FOREIGN KEY (poll_id, event_id) REFERENCES poll (id, event_id) 
 );
 
 
@@ -191,11 +227,13 @@ CREATE TABLE IF NOT EXISTS poll_vote(
     poll_id INT,
     choice_id INT,
     date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
-    UNIQUE(poll_id, user_id),
-    UNIQUE(choice_id, poll_id),
-    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
-    FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice(id, poll_id)           -- double reference
+    UNIQUE (user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id),
+    FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice (id, poll_id)
+
 );
+
+
 
 
 CREATE TABLE IF NOT EXISTS notification(
@@ -205,12 +243,12 @@ CREATE TABLE IF NOT EXISTS notification(
     notification_title TEXT NOT NULL DEFAULT ('Main topic of the notification (header)'),
     body TEXT,  -- is not supposed to be filled for all types of notifications
     notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES authorized_user(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
 CREATE TABLE IF NOT EXISTS comment_notification(
-		id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
+        id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
     comment INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE
 );
 
@@ -218,13 +256,13 @@ CREATE TABLE IF NOT EXISTS comment_notification(
 CREATE TABLE IF NOT EXISTS poll_notification
 (
     id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    poll 		INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
+    poll        INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS event_notification
 (
     id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    event 	INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
+    event   INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS report_notification
@@ -243,7 +281,7 @@ CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS
 $BODY$
 
 DECLARE reply_username TEXT = (
-  SELECT username FROM authorized_user WHERE id = NEW.user_id
+  SELECT name FROM users WHERE id = NEW.user_id
 );
 
 DECLARE parent_id INT = (
@@ -251,7 +289,7 @@ DECLARE parent_id INT = (
 );
 
 DECLARE parent_username TEXT = (
-    select username from authorized_user where id = parent_id
+    select name from users where id = parent_id
 );
 
 DECLARE title_text TEXT = (
@@ -269,8 +307,8 @@ DECLARE title_text TEXT = (
                                 INSERT INTO 
                                         comment_notification(id, comment)
                                         select inserted.id, NEW.id from inserted;
-      RETURN new; 
              END IF;
+                         RETURN new;
         
 END;
 $BODY$
@@ -291,7 +329,7 @@ CREATE OR REPLACE FUNCTION event_join_notification() RETURNS trigger AS
 $BODY$
 
 DECLARE new_username TEXT = (
-    select username from authorized_user where id = NEW.user_id
+    select name from users where id = NEW.user_id
 );
 
 DECLARE event_name TEXT = (
@@ -327,62 +365,160 @@ CREATE TRIGGER trig_event_join
      EXECUTE PROCEDURE event_join_notification();
 
 
-*/
 
-DROP TABLE IF EXISTS cards CASCADE;
-DROP TABLE IF EXISTS items CASCADE;
 
-CREATE TABLE cards (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL,
-  user_id INTEGER REFERENCES users NOT NULL
+
+
+-- trigger that inserts data into user_event dable after event is created
+CREATE OR REPLACE FUNCTION event_creation() RETURNS trigger AS 
+$BODY$          
+        BEGIN
+        INSERT INTO user_event(user_id, event_id, role)
+        VALUES(NEW.owner_id, NEW.id, 'Owner');
+RETURN new;
+END;
+$BODY$
+language plpgsql;
+                
+DROP TRIGGER IF EXISTS trig_event_creation ON event;
+
+CREATE TRIGGER trig_event_creation
+     AFTER INSERT OR UPDATE ON event
+     FOR EACH ROW
+     EXECUTE PROCEDURE event_creation();
+
+
+
+-- -----------------------------------------
+-- -- Performance indexes
+-- -----------------------------------------
+
+-- IDX01 
+-- To make event search by date faster.
+DROP INDEX IF EXISTS idx_event_date CASCADE;
+CREATE INDEX idx_event_date ON "event" USING btree(start_date);
+
+-- IDX02
+DROP INDEX IF EXISTS idx_comment CASCADE;
+CREATE INDEX idx_comment ON comments USING btree(event_id, comment_text);
+
+
+
+-- -----------------------------------------
+-- -- FULL TEXT indexes
+-- ----------------------------------------- 
+ALTER TABLE event
+ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
+
+CREATE OR REPLACE FUNCTION event_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors = (
+         setweight(to_tsvector('english', NEW.title), 'A') ||
+         setweight(to_tsvector('english', NEW.description), 'B') ||
+             setweight(to_tsvector('english', NEW.location), 'C')
+        );
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
+           NEW.tsvectors = (
+             setweight(to_tsvector('english', NEW.title), 'A') ||
+             setweight(to_tsvector('english', NEW.description), 'B') ||
+                 setweight(to_tsvector('english', NEW.location), 'C')
+           );
+    END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+
+DROP TRIGGER IF EXISTS event_search_update ON event;
+
+CREATE TRIGGER event_search_update
+ BEFORE INSERT OR UPDATE ON event
+ FOR EACH ROW
+ EXECUTE PROCEDURE event_search_update();
+
+DROP INDEX IF EXISTS search_idx_event CASCADE;
+CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO faqs(Q, A) VALUES(
+    'What is UPorto Event made for?',
+    'For creating events'
 );
 
-CREATE TABLE items (
-  id SERIAL PRIMARY KEY,
-  card_id INTEGER NOT NULL REFERENCES cards ON DELETE CASCADE,
-  description VARCHAR NOT NULL,
-  done BOOLEAN NOT NULL DEFAULT FALSE
+INSERT INTO faqs(Q, A) VALUES(
+    'How much does it cost?',
+    'UPorto Event is free'
+);
+
+INSERT INTO faqs(Q, A) VALUES(
+    'When UPorto event was founded?',
+    '2022'
+);
+
+INSERT INTO faqs(Q, A) VALUES(
+    'How long did it take to create UPorto Event?',
+    '4 month'
 );
 
 
-INSERT INTO users VALUES (
-  DEFAULT,
-  'DafaultUser',
-  DEFAULT,
-  DEFAULT,
-  '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
-  'admin@example.com',
-  DEFAULT,
-  DEFAULT,
-  NULL,
-  NULL,
-  DEFAULT,
-  '/image.png'
+
+
+INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
+    'john_doe228',
+    'John',
+    'Doe',
+    '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
+    'admin@example.com',
+    '/image.png'
 ); -- Password is 1234. Generated using Hash::make('1234')
 
-INSERT INTO event VALUES (
-    DEFAULT,
+INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
+    'tvoya_mama',
+    'Alex',
+    'Ham',
+    '$2a$12$de8vO5hCTMjKQpHd.OE/R.atg/xpTmVheKs3rTcSIPVvzYjhRKBE6',
+    'user@example.com',
+    '/image.png'
+); -- Password is 123456
+
+INSERT INTO administrators VALUES (
+    1
+);
+
+INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
     '05 Dec 2023 22:00',
-    true,
+        1,
     'AEFEUP'
 );
 
-INSERT INTO event VALUES (
-    DEFAULT,
+INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
     '07 Jan 2023 22:30',
-    true,
+        1,
     'Um sitio fixe'
-);  
-
-INSERT INTO comments VALUES (
-    DEFAULT,
-    DEFAULT,
-    1,
-    1,
-    DEFAULT
-)
+);
