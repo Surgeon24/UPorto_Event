@@ -71,7 +71,21 @@
   right: 100px;
 }
 
+.gray{
+  position: relative;
+  padding: 50px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;    
+}
 
+body {
+  height: 100%;
+background-image: url("{{ asset('images/night.jpeg') }}");
+background-repeat: no-repeat;
+background-attachment: fixed;  
+background-size: cover;
+}
   
   @keyframes bounce-animation {
     16.65% {
@@ -155,14 +169,3 @@
   .page-title {
     opacity: .75 !important;
   }
-
-
-
-#footer {
-  position: relative;
-  margin-top: -180px;
-  /* negative value of footer height */
-  height: 180px;
-  clear: both;
-  background-color: red;
-}
