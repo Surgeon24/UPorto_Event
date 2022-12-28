@@ -20,28 +20,31 @@
   <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
   
   {{-- Added this style over there, because it should be in this file. You can shift it somewere elese in the file. (c) Michael --}}
-  <style>             
-    .gray{
-     position: relative;
-     padding: 50px;
-     text-align: center;
-     background-color: rgba(0, 0, 0, 0.8);
-     color: white;       
-   }
-  </style>
 
 
-  <style>
-    body {
-      height: 100%;
-  background-image: url("{{ asset('images/night.jpeg') }}");
-  background-repeat: no-repeat;
-  background-attachment: fixed;  
-  background-size: cover;
+<style>
+  body {
+    height: 100%;
+    background-image: url("{{ asset('images/night.jpeg') }}");
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    background-size: cover;
 }
-    </style>
-  
-  <script>
+    
+
+  footer {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background-color: rgb(0,0,0,0.4);
+    color: white;
+    text-align: center;
+
+}
+</style>
+
+<script>
   if (document.location.search.match(/type=embed/gi)) {
     window.parent.postMessage("resize", "*");
   }
@@ -51,6 +54,7 @@
 </head>
 
 <body translate="no" >
+  <main>
     <header>
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
@@ -87,16 +91,16 @@
       </ul>
     </div>
   </nav>
-
-  <main>
-    @yield('content')
+  <article>
+  <section id="content">
+        @yield('content') 
+    </section>   
+  </article>
+    <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
+      <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
+      </footer>
     
-</main>
-
-  <footer
-  class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
-  <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-  </footer>
+  </main>
 
 </body>
 
