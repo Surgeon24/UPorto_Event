@@ -71,11 +71,11 @@ class EventController extends Controller{
           'description' => $request->input('description'),
           'location' => $request->input('location'),
       ]);
-      User_event::create([
-        'user_id' => $userId,
-        'event_id' => $event->id,
-        'role' => 'Owner',
-      ]);
+      // User_event::create([
+      //   'user_id' => $userId,
+      //   'event_id' => $event->id,
+      //   'role' => 'Owner',
+      // ]);
       return redirect('home');
     }
 
