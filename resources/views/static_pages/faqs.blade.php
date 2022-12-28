@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 
 
 <style>
@@ -34,4 +32,4 @@
 
 @endunless
 
-@endsection
+</x-layout>

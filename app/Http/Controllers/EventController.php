@@ -18,6 +18,7 @@ class EventController extends Controller{
 
 
     public function show($id){
+         dd(request()->tag);
         $user = Auth::id();
         $event = Event::find($id);
 
@@ -64,7 +65,7 @@ class EventController extends Controller{
           'description' => $request->input('description'),
           'location' => $request->input('location'),
       ]);
-      return redirect('home');
+      return redirect('home')->with('message', 'Event created successfully!');
     }
 
     public function update(Request $request, $id)
@@ -115,6 +116,7 @@ class EventController extends Controller{
     }
 
     function index(Request $request) {
+      
       $events_query = Event::query();
 
       $search_param = $request->query('q');
@@ -127,9 +129,11 @@ class EventController extends Controller{
 
       return view('index', compact('events', 'search_param'));
   }
+  
 
-  public function search(){
-    $search_text = $_GET['search'];
+
+    public function search(){
+      $search_text = $_GET['search'];
 
     $event = Event::where(function ($event) use($search_text) {
       $event->where('title', 'ilike', '%' . $search_text. '%')

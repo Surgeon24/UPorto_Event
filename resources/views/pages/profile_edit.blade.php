@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 
 <style>
   .gray{
@@ -50,4 +48,4 @@ border: 1px #000 solid;
 
   </form>
 </div>
-@endsection
+</x-layout>

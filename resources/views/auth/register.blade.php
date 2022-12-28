@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <div class="login">
 	<h1>Register</h1>
@@ -39,4 +37,4 @@
     <a class="button button-outline" href="{{ route('login') }}">Login</a>
 </form>
 </div>
-@endsection
+</x-layout>
