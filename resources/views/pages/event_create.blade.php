@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-
+<x-layout>
 <style>
     .gray{
        position: relative;
@@ -26,7 +24,7 @@
         height:300px;
     }
      </style>
-@section('content')
+
      <div class="login"> 
     <div class="gray">
         
@@ -50,4 +48,4 @@
         </form>
     </div>
      </div>
-@endsection
+</x-layout>

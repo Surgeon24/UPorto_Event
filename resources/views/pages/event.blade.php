@@ -1,5 +1,4 @@
-@extends('layouts.layout')
-@section('content')
+<x-layout>
 
 <style>
     .card {
@@ -103,5 +102,4 @@ border: 1px #000 solid;
 
 </div>
 </div>
-
-@endsection
+</x-layout>

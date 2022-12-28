@@ -12,14 +12,18 @@
 |
 */
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Faq;
 
-// Home
+// Static Pages
 Route::get('home', 'HomeController@show');
+Route::get('about', [AboutController::class, 'index']);
+Route::get('faqs', [FaqController::class, 'index']);
 
 // Client
 Route::get('profile/{id}', 'ClientController@show')->name('user');
@@ -60,14 +64,3 @@ Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_co
 
 
 Route::get('index', [EventController::class, 'index'])->name('index');
-
-Route::get('about', function(){
-    return view('pages/about');
-});
-
-Route::get('faqs', function(){
-    return view('pages/faqs', [
-        'heading' => 'Frequently Asked Questions',
-        'faqs' => Faq::all()
-    ]);
-});

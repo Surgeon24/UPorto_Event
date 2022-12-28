@@ -1,6 +1,3 @@
-
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
     @include('partials.event_list', ['events' => $event])
-@endsection
+</x-layout>

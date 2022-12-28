@@ -1,6 +1,4 @@
-@extends('layouts.layout')
-
-@section('content')
+<x-layout>
   <!-- Styles 
   <link href="{{ asset('css/buttons.css') }}" rel="stylesheet"> -->
 <style>
@@ -35,6 +33,4 @@
           </form>      
         @endif    
   </div> 
-@endsection
-
-
+</x-layout>

@@ -21,7 +21,7 @@
   
   {{-- Added this style over there, because it should be in this file. You can shift it somewere elese in the file. (c) Michael --}}
 
-
+  <script src="//unpkg.com/alpinejs" defer></script>
 <style>
   body {
     height: 100%;
@@ -42,6 +42,19 @@
     text-align: center;
 
 }
+  .flash {
+      position: fixed;
+      top: 0%;
+      left: 41%;
+      height: 40px;
+      width: 350px;
+      background-color: rgba(255, 0, 0, 0.8);
+      border-style: solid;
+      border-color: rgba(255, 255, 255, 0.753);
+      border-width: 1px;
+      color: rgb(255, 255, 255);    
+      /* {{-- fixed top-0 left-1/2 transform -translate-x-1/2 bg-laravel text-white px-48 py-3 --}} */
+  }
 </style>
 
 <script>
@@ -54,7 +67,12 @@
 </head>
 
 <body translate="no" >
-  <main>
+
+    <x-flash-message/>
+
+
+
+  
     <header>
         <h1 id="len7" class="hoverable"  ><a style="color: rgb(201, 205, 248);" href="{{ url('home') }}">UPorto Event</a></h1>
     </header>
@@ -92,17 +110,15 @@
       </ul>
     </div>
   </nav>
-  <article>
-  <section id="content">
-        @yield('content') 
-    </section>   
-  </article>
-    <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
-      <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
-      </footer>
-    
-  </main>
+ 
+    <main>
+        {{$slot}} 
+    </main>
 
+  <footer class="fixed bottom-0 left-0 w-full flex items-center justify-start font-bold bg-laravel text-white h-24 mt-24 opacity-90 md:justify-center">
+    <p class="ml-2">Copyright &copy; 2022, All Rights reserved</p>
+  </footer>
+  
+  
 </body>
-
 </html>
