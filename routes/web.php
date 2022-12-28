@@ -50,8 +50,9 @@ Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
 Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_event');
 Route::get('event_create', 'EventController@show_create')->name('event_create');
 Route::post('event_create', 'EventController@create')->name('create_event');
+Route::get('my_events', 'EventController@list_participations')->name('my_events');
 
-Route::get('/search', 'EventController@search');
+Route::get('search', 'EventController@search');
 
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');
