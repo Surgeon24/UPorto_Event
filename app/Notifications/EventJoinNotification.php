@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskCompleted extends Notification
+class EventJoinNotification extends Notification
 {
     use Queueable;
 
@@ -29,7 +29,7 @@ class TaskCompleted extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -55,9 +55,7 @@ class TaskCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => '',
-            'email' => '',
-            'data' => 'New User Registered!'
+            //
         ];
     }
 }

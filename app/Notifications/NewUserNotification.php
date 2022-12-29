@@ -61,7 +61,9 @@ class NewUserNotification extends Notification
     
 
         return [
-            'data' => $this->user->name, $this->user->email 
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'data' => '' 
         ];
     }
 }

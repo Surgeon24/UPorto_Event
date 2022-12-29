@@ -16,9 +16,9 @@ class CommentNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        
+        $this->user = $user;
     }
 
     /**
@@ -55,7 +55,10 @@ class CommentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'data' => 'some data'
+            'name' => $this->user->name,
+            'email' => '',
+            'data' => 'Have just commented your Event'
+            
         ];
     }
 }
