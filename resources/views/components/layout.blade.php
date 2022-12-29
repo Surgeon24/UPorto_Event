@@ -16,6 +16,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  
+  
   <!-- Styles -->
   <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
   
@@ -56,6 +61,14 @@
       border-width: 1px;
       color: rgb(255, 255, 255);  
   }
+
+
+  
+  
+
+
+
+
 </style>
 
 <script>
@@ -101,8 +114,24 @@
         <li><a id="len5" class="hoverable" href="{{ url('/logout') }}" style="color: rgb(141, 74, 74);">Logout</a></li>
         <li><a id="len6" class="hoverable" href="{{ url('/profile/'. Auth::user()->id) }}" style="color: rgb(74, 141, 115);">{{ Auth::user()->name }} </a></li>
         
-       <li><a><i class="fa fa-bell"></i></a></li>
+        <li>
+        <div class="dropdown">
+          <a class="fa fa-bell" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="badge badge-light">{{auth()->user()->notifications->count()}}</span>
+          </a>
         
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+
+            @foreach (auth()->user()->notifications as $notification)
+
+            <li><a href="">{{$notification->data['data']}}</a></li>
+                
+            @endforeach
+
+          </ul>
+        </div>
+        </li>
+
         @elseif (Request::url() != url('/login'))
           <li><a id="len5" class="hoverable" href="{{ url('/login') }}" style="color: rgb(141, 74, 74);">Login</a></li>
         @endif
@@ -121,11 +150,14 @@
 
 
     </div>
-     
-   
+
+
+
 
 
   </nav>
+
+
 
     <main>
         {{$slot}} 
