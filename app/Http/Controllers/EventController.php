@@ -12,7 +12,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Models\User_event;
 use App\Models\Comment;
-
+use App\Notifications\EventJoinNotification;
 
 class EventController extends Controller{ 
 
@@ -142,15 +142,23 @@ class EventController extends Controller{
   }
 
   public function join($id){
-    $user = Auth::id();
-    $event = Event::find($id);
+      $user = Auth::id();
+      $event = Event::find($id);
 
-    User_event::create([
-      'event_id' => $event->id,
-      'user_id'  => $user,
-      'role' => 'Participant'
-    ]);
-    return redirect("/event/$id");
+      User_event::create([
+        'event_id' => $event->id,
+        'user_id'  => $user,
+        'role' => 'Participant'
+      ]);
+
+      // sending notification
+      $owner_id = $event->first()->owner_id;
+      $owner = User::where('id', $owner_id)->first();
+      $user = User::where('id', Auth::user()->id)->first();
+      
+      $owner->notify(new EventJoinNotification($user));
+
+      return redirect("/event/$id");
   }
 
   public function quit($id){
