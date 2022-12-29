@@ -42,7 +42,7 @@ class EventController extends Controller{
       public function show_edit($id){
         $event = Event::find($id);
         if (Auth::check()) {
-          if (User::id() === $event->owner_id){        //should be changed on veryfing the owner
+          if (Auth::id() === $event->owner_id){        //should be changed on veryfing the owner
             return view('pages.event_edit', ['event' => $event]);
           }
         } else {
@@ -69,9 +69,9 @@ class EventController extends Controller{
 
     public function update(Request $request, $id)
     {
-      $event = Event::find($id);
-      $event->title = $request->get('title');
-      $event->save();
+      $event = Event::find($id)->update(['title' => $request->get('title')]);
+      // $event->title = $request->get('title');
+      // $event->save();
       return redirect('event/' . $id)->withSuccess('Your profile was successfully updated!');
     }
 
