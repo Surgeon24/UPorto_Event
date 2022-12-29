@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Comment;
+use App\Models\CommentVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\Comment;
-use App\Models\CommentVote;
+use App\Notifications\CommentNotification;
 
 class CommentController extends Controller
 {
@@ -22,7 +22,6 @@ class CommentController extends Controller
             'event_id' => $request->input('event_id'),
             
         ]);
-
         return redirect()->back()->withSuccess('Your comment was successfully posted!');
     }
 

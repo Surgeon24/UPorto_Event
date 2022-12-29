@@ -514,12 +514,13 @@ INSERT INTO faqs(Q, A) VALUES(
 
 
 
-INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
+INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_path) VALUES (
     'john_doe228',
     'John',
     'Doe',
     '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
     'admin@example.com',
+    true,
     '/image.png'
 ); -- Password is 1234. Generated using Hash::make('1234')
 

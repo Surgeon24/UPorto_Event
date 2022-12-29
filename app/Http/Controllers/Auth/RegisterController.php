@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Notifications\TaskCompleted;
+use App\Notifications\NewUserNotification;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -77,6 +77,13 @@ class RegisterController extends Controller
             'photo_path' => 'image.png',   //after registration user has default photo
         ]);
 
+        $admins = User::where('is_admin', true)->get();
+        
+        foreach($admins as $admin){
+            $admin->notify(new NewUserNotification($user));
+        }
+
+        
         $user->notify(new WelcomeNotification());
         return $user;
         
