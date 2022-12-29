@@ -72,9 +72,10 @@ class EventController extends Controller{
 
     public function update(Request $request, $id)
     {
-      $event = Event::find($id)->update(['title' => $request->get('title')]);
-      // $event->title = $request->get('title');
-      // $event->save();
+      // $event = Event::find($id)->update(['title' => $request->get('title')]);
+      $event = Event::find($id);
+      $event->title = $request->get('title');
+      $event->save();
       return redirect('event/' . $id)->withSuccess('Your profile was successfully updated!');
     }
 
@@ -137,9 +138,13 @@ class EventController extends Controller{
     public function search(){
       $search_text = $_GET['search'];
 
+    // $event = Event::where(function ($event) use($search_text) {
+    //   $event->where('title', 'ilike', '%' . $search_text. '%')
+    //      ->orWhere('description', 'ilike', '%' . $search_text. '%');
+    // })  ->get();
+
     $event = Event::where(function ($event) use($search_text) {
-      $event->where('title', 'ilike', '%' . $search_text. '%')
-         ->orWhere('description', 'ilike', '%' . $search_text. '%');
+      $event->where('tsvectors', 'ilike', '%' . $search_text. '%');
     })  ->get();
   return view('pages.search',compact('event'));
   }

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User_event extends Model
 {
-    use Searchable;
     public $timestamps = false;
     protected $table = 'user_event';
     protected $fillable = ['role', 'event_id', 'user_id', 'accepted'];

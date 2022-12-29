@@ -368,7 +368,7 @@ CREATE TRIGGER trig_event_join
 
 
 
--- trigger that inserts data into user_event dable after event is created
+-- trigger that inserts data into user_event table after event is created
 CREATE OR REPLACE FUNCTION event_creation() RETURNS trigger AS 
 $BODY$          
         BEGIN
@@ -382,7 +382,7 @@ language plpgsql;
 DROP TRIGGER IF EXISTS trig_event_creation ON event;
 
 CREATE TRIGGER trig_event_creation
-     AFTER INSERT OR UPDATE ON event
+     AFTER INSERT ON event
      FOR EACH ROW
      EXECUTE PROCEDURE event_creation();
 
@@ -419,7 +419,7 @@ BEGIN
         );
  END IF;
  IF TG_OP = 'UPDATE' THEN
-         IF (NEW.name <> OLD.name OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
+         IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
            NEW.tsvectors = (
              setweight(to_tsvector('english', NEW.title), 'A') ||
              setweight(to_tsvector('english', NEW.description), 'B') ||
