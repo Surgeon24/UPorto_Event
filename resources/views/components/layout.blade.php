@@ -14,7 +14,7 @@
 
   <title>UPorto Event</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
   <!-- Styles -->
   <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
@@ -100,11 +100,14 @@
         @if (Auth::check())
         <li><a id="len5" class="hoverable" href="{{ url('/logout') }}" style="color: rgb(141, 74, 74);">Logout</a></li>
         <li><a id="len6" class="hoverable" href="{{ url('/profile/'. Auth::user()->id) }}" style="color: rgb(74, 141, 115);">{{ Auth::user()->name }} </a></li>
+        
+       <li><a><i class="fa fa-bell"></i></a></li>
+        
         @elseif (Request::url() != url('/login'))
           <li><a id="len5" class="hoverable" href="{{ url('/login') }}" style="color: rgb(141, 74, 74);">Login</a></li>
         @endif
       </ul>     
-      
+        
       
       <div class="search-parent">
         <div class="search-right">
@@ -123,7 +126,7 @@
 
 
   </nav>
- 
+
     <main>
         {{$slot}} 
     </main>
