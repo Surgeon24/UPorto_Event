@@ -236,6 +236,35 @@ CREATE TABLE IF NOT EXISTS poll_vote(
 
 
 
+
+
+create table IF NOT EXISTS "notifications" (
+    "id" uuid not null, 
+    "type" varchar(255) not null, 
+    "notifiable_type" varchar(255) not null, 
+    "notifiable_id" bigint not null, 
+    "data" text not null, 
+    "read_at" timestamp(0) without time zone null, 
+    "created_at" timestamp(0) without time zone null, 
+    "updated_at" timestamp(0) without time zone null);  
+
+DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
+  create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
+  ("notifiable_type", "notifiable_id");
+  alter table "notifications" add primary key ("id");
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS notification(
     id SERIAL PRIMARY KEY,
     user_id INT,
@@ -369,7 +398,7 @@ CREATE TRIGGER trig_event_join
 
 
 
--- trigger that inserts data into user_event dable after event is created
+-- trigger that inserts data into user_event table after event is created
 CREATE OR REPLACE FUNCTION event_creation() RETURNS trigger AS 
 $BODY$          
         BEGIN
