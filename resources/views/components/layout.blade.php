@@ -117,14 +117,25 @@
         <li>
         <div class="dropdown">
           <a class="fa fa-bell" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="badge badge-light">{{auth()->user()->notifications->count()}}</span>
+            
+            @if(auth()->user()->unreadnotifications->count())
+            <span class="badge badge-light">{{auth()->user()->unreadnotifications->count()}}</span>
+            @endif
           </a>
         
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
-            @foreach (auth()->user()->notifications as $notification)
+            <li><a style="color: blue" href="{{ route('markRead')}}">Mark all as Read</a></li>
+
+            @foreach (auth()->user()->unreadNotifications as $notification)
 
             <li><a href="">{{$notification->data['data']}}</a></li>
+                
+            @endforeach
+
+            @foreach (auth()->user()->readNotifications as $notification)
+
+            <li style="background-color: lightgray"><a href="">{{$notification->data['data']}}</a></li>
                 
             @endforeach
 

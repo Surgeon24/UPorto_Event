@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskCompleted extends Notification
+class WelcomeNotification extends Notification
 {
     use Queueable;
 
@@ -55,7 +55,7 @@ class TaskCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'data' => 'New User Registered!'
+            'data' => 'Welcome to UPorto Event!'
         ];
     }
 }

@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function show(){
 
-        User::find(1)->notify(new TaskCompleted);
+        // User::find(1)->notify(new TaskCompleted);
         return view('static_pages.home');
     }
 }

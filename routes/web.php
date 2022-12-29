@@ -66,3 +66,10 @@ Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_co
 
 
 Route::get('index', [EventController::class, 'index'])->name('index');
+
+
+Route::get('markAsRead', function(){
+    auth()->user()->unreadNotifications->markAsRead();
+
+    return redirect()->back();
+})->name('markRead');
