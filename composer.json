@@ -12,7 +12,6 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^3.0",
         "laravel/framework": "^9.0",
-        "laravel/scout": "^9.6",
         "laravel/ui": "^4.1"
     },
     "require-dev": {
