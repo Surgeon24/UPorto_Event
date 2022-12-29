@@ -138,14 +138,11 @@ class EventController extends Controller{
     public function search(){
       $search_text = $_GET['search'];
 
-    // $event = Event::where(function ($event) use($search_text) {
-    //   $event->where('title', 'ilike', '%' . $search_text. '%')
-    //      ->orWhere('description', 'ilike', '%' . $search_text. '%');
-    // })  ->get();
+    $event = DB::select("SELECT * FROM event WHERE tsvectors @@ plainto_tsquery('english',:search) 
+    ORDER BY ts_rank(tsvectors,plainto_tsquery('english',:search)) 
+    DESC;",['search' => $search_text]);
 
-    $event = Event::where(function ($event) use($search_text) {
-      $event->where('tsvectors', 'ilike', '%' . $search_text. '%');
-    })  ->get();
+
   return view('pages.search',compact('event'));
   }
 

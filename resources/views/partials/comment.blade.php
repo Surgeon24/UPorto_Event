@@ -51,14 +51,14 @@
         }
     }
 
-    ul {
+    /* ul {
     columns: 2;
-  }
+  } */
 
 </style>
 
 
-<div class="gray">
+{{-- <div class="gray">
     <article class="card">
     <ul>
         <div>
@@ -85,12 +85,12 @@
         </div>
     </ul>
     </article>
-</div>   
+</div>    --}}
 
                 
 {{--------------------old version -----------------------}}
 
-{{-- <div>
+<div>
     <div style="display:inline-block;">
         <article class="card">
             <h1 class="">{{ $comment->comment_text }}</h1>
@@ -113,4 +113,4 @@
             </div>
         </article>
     </div>
-</div> --}}
+</div>
