@@ -57,6 +57,7 @@ Route::post('event_create', 'EventController@create')->name('create_event');
 Route::get('my_events', 'EventController@list_participations')->name('my_events');
 Route::get('event/{id}/join', 'EventController@join')->name('join_event');
 Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
+Route::get('event/{id}/all_participants', 'EventController@show_participants')->name('all_participants');
 
 Route::get('search', 'EventController@search');
 

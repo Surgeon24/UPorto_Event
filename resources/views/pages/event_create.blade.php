@@ -50,7 +50,7 @@
             <label for="end_date">End Date</label>
             <input class="form-control" type="date" id="end_date" name="end_date">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
         </form>
     </div>
     </div>

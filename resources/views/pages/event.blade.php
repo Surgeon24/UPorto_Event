@@ -46,6 +46,11 @@ border: 1px #000 solid;
       width:300px;
       height:300px;
   }
+
+  article {
+    columns: 3;
+
+  }
 </style>
 
 <div class="gray">
@@ -63,20 +68,35 @@ border: 1px #000 solid;
             {{ $event->location }}
         </h4>
         <div>
+            <article>
             @if ($role === 'Owner' or $role === 'Moderator')
-                <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
-                <p></p>
+                <div>
+                    <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
+                </div>
                 @if ($role === 'Owner')
+                    <div>
                     <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                         @csrf
                         @method("DELETE")
-                        <input type='hidden' id='id' name='id' value='{{ $event->id }}'></input>
+                        <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
                         <button type="submit" class="btn btn-primary">
                             Delete
                         </button>
                     </form>
+                    </div>
                 @endif
+                <div>
+                    <div>
+                        <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
+                            <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
+                            <button type="submit" class="btn btn-primary">
+                                All participants
+                            </button>
+                        </form>
+                    </div>
+                </div>
             @endif
+            </article>
             @if ($role === 'Guest')
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
             @elseif ($role !== 'Owner')

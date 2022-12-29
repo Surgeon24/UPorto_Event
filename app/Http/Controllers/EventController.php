@@ -58,6 +58,9 @@ class EventController extends Controller{
       public function create(Request $request)
     {
       $userId = Auth::id(); 
+      if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null){
+        return redirect('event_create')->with('message', 'fill empty fields!');
+      }
       $event = Event::create([
           'owner_id' => $userId,
           'title' => $request->input('title'),
@@ -160,5 +163,17 @@ class EventController extends Controller{
     return redirect("/event/$id");
   }
 
+
+
+  public function show_participants($id)
+  {
+      $list = User::whereIn('id', function($query){
+        $query->select('user_id')
+          ->from(with(new User_event)->getTable()) 
+          ->where('event_id', Event::find($id));
+      })->get();
+
+      return view('pages.all_participants', ['participants' => $list]);
+  }
 }
 
