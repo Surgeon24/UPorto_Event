@@ -58,7 +58,12 @@
   left: 10px;
   background-color:#363230;
 }
-
+.error{
+  color: red;
+  text-emphasis: xs;
+  margin-top: 1;
+  /* text-red-500 text-xs mt-1 */
+}
 
 .search-parent{
   position: relative;

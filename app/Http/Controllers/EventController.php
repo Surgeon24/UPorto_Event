@@ -75,7 +75,7 @@ class EventController extends Controller{
       $userId = Auth::id(); 
 
       $validated = $request->validate([
-        'title' => 'required|max:20',
+        'title' => 'required|max:20|unique:event',
         'description' => 'required|max:100',
         'location' => 'required|max:50',
         'start_date' => 'required',
