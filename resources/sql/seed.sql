@@ -105,8 +105,8 @@ CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
-    start_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
-    end_date date,
+    start_date DATE DEFAULT (current_date) CHECK (current_date <= start_date) NOT NULL,
+    end_date DATE DEFAULT (current_date + INTERVAL '1 DAY') CHECK (start_date <= end_date) NOT NULL,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
     owner_id INT NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS comments(
     user_id INT,
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
-    comment_date DATE DEFAULT (current_date) CHECK (comment_date <= current_date),
+    comment_date DATE DEFAULT (current_date) CHECK (current_date <= comment_date),
         FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
         FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
 );
@@ -538,7 +538,7 @@ INSERT INTO administrators VALUES (
 INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
-    '05 Dec 2023 22:00',
+    current_date,
         1,
     'AEFEUP'
 );
@@ -546,7 +546,7 @@ INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
 INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
-    '07 Jan 2023 22:30',
+    current_date,
         1,
     'Um sitio fixe'
 );

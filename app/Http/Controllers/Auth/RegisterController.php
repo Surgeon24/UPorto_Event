@@ -77,6 +77,8 @@ class RegisterController extends Controller
             'photo_path' => 'image.png',   //after registration user has default photo
         ]);
 
+
+        // send notifications to admins when a new user register
         $admins = User::where('is_admin', true)->get();
         
         foreach($admins as $admin){

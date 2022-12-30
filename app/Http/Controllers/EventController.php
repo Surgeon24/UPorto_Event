@@ -58,7 +58,8 @@ class EventController extends Controller{
       public function create(Request $request)
     {
       $userId = Auth::id(); 
-      if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null){
+      if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null
+       or $request->input('start_date') === null or $request->input('end_date') === null){
         return redirect('event_create')->with('message', 'fill empty fields!');
       }
       $event = Event::create([
@@ -66,6 +67,8 @@ class EventController extends Controller{
           'title' => $request->input('title'),
           'description' => $request->input('description'),
           'location' => $request->input('location'),
+          'start_date' => $request->input('start_date'),
+          'end_date' => $request->input('end_date'),
       ]);
       return redirect('home')->with('message', 'Event created successfully!');
     }
