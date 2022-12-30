@@ -1,4 +1,8 @@
 <x-layout>
+
+  <style>
+
+    </style>
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <div class="login">
 	<h1>Register</h1>
@@ -17,7 +21,7 @@
     <input id="email" type="text" name="email" required>
     @if ($errors->has('email'))
       <span class="error">
-          {{ $errors->first('email') }}
+          <p>{{ $errors->first('email') }}</p>
       </span>
     @endif
 
@@ -28,7 +32,7 @@
           {{ $errors->first('password') }}
       </span>
     @endif
-
+      <p></p>
     <label for="password-confirm">Confirm Password</label>
     <input id="password-confirm" type="password" name="password_confirmation" required>
     <button type="submit"  class="btn btn-primary btn-block btn-large" >

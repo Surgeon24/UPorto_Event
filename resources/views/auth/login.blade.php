@@ -13,18 +13,19 @@
     <label for="email">E-mail</label>
     <input name="email" type="text" value="{{ old('email') }}"
     @if ($errors->has('email'))
-        <span class="error">
-          {{ $errors->first('email') }}
+        <span>
+          <p class="error">{{ $errors->first('email') }}</p>
         </span>
     @endif
 
+    <p></p>
     <label for="password" >Password</label>
     <input
-                    name="password"
-                    id="password-input"
-                    type="password"
-                    class=""
-                    required
+    name="password"
+    id="password-input"
+    type="password"
+    class=""
+    required
     >
     @if ($errors->has('password'))
         <span class="error">

@@ -136,8 +136,12 @@ CREATE TABLE IF NOT EXISTS user_event(
     role MEMBER_ROLE,
     accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (event_id) REFERENCES event(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) 
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES event(id) 
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
 );
 
 

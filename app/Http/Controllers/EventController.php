@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Event;
+
+
+use App\Models\Comment;
+use App\Models\User_event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-
-use App\Models\Event;
-use App\Models\User;
-use App\Models\User_event;
-use App\Models\Comment;
+use Illuminate\Support\Facades\Validator;
 use App\Notifications\EventJoinNotification;
 
 class EventController extends Controller{ 
@@ -55,13 +57,47 @@ class EventController extends Controller{
       }
 
 
+
+      protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'title' => 'required|string|max:1',
+            'description' => 'required|string|email|max:255',
+            'location' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            
+        ]);
+    }
+
       public function create(Request $request)
     {
       $userId = Auth::id(); 
+
+      $validated = $request->validate([
+        'title' => 'required|max:20|unique:event',
+        'description' => 'required|max:100',
+        'location' => 'required|max:50',
+        'start_date' => 'required',
+        'end_date' => 'required'
+      ]);
+
       if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null
        or $request->input('start_date') === null or $request->input('end_date') === null){
-        return redirect('event_create')->with('message', 'fill empty fields!');
+          return redirect('event_create')->with('message', 'fill empty fields!');
       }
+
+
+      if($request->input('end_date') <= $request->input('start_date')){
+        return redirect('event_create')->with('message', 'end date cannot be later than start date!');
+      }
+
+
+      if($request->input('start_date') <= Carbon::now()){
+        return redirect('event_create')->with('message', 'Event cannot start in the past!');
+      }
+      
+
       $event = Event::create([
           'owner_id' => $userId,
           'title' => $request->input('title'),
@@ -71,7 +107,10 @@ class EventController extends Controller{
           'end_date' => $request->input('end_date'),
       ]);
       return redirect('home')->with('message', 'Event created successfully!');
+
     }
+
+
 
     public function update(Request $request, $id)
     {

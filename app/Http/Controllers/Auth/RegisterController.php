@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Rules\IsValidPassword;
 use App\Http\Controllers\Controller;
-use App\Notifications\NewUserNotification;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\NewUserNotification;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -57,7 +58,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => ['required','string','confirmed', new IsValidPassword()],
         ]);
     }
 
@@ -78,6 +79,7 @@ class RegisterController extends Controller
         ]);
 
 
+        
         // send notifications to admins when a new user register
         $admins = User::where('is_admin', true)->get();
         
