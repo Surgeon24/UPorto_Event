@@ -3,8 +3,8 @@
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
 create schema if not exists lbaw22122;
-CREATE DOMAIN email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
-CREATE DOMAIN timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
+--CREATE DOMAIN  email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
+--CREATE DOMAIN  timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
 
 set search_path=lbaw22122;
 
@@ -304,6 +304,7 @@ CREATE TABLE IF NOT EXISTS report_notification
     report INTEGER NOT NULL REFERENCES report (id) ON DELETE CASCADE
 );
 
+/*
 CREATE TABLE password_resets
 (
     id               SERIAL PRIMARY KEY,
@@ -313,6 +314,7 @@ CREATE TABLE password_resets
     updated_at       timestamp_t,
     CONSTRAINT ck_updated_after_created CHECK ( updated_at >= created_at )
 );
+*/
 -----------------------------------------
 -- TRIGGERS
 -----------------------------------------
