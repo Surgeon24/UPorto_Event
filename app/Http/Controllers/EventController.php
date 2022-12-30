@@ -195,7 +195,7 @@ class EventController extends Controller{
             'role' => 'Participant'
           ]);
           // sending notification
-          $owner_id = $event->first()->owner_id;
+          $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
           $user = User::where('id', Auth::user()->id)->first();
           $owner->notify(new EventJoinNotification($user));
@@ -207,7 +207,7 @@ class EventController extends Controller{
           ]);
 
 
-          $owner_id = $event->first()->owner_id;
+          $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
           $user = User::where('id', Auth::user()->id)->first();
           $owner->notify(new JoinRequestNotification($user));
