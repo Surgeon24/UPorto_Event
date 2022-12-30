@@ -138,17 +138,6 @@ class EventController extends Controller{
   
 
 
-    public function search(){
-      $search_text = $_GET['search'];
-
-    $event = DB::select("SELECT * FROM event WHERE tsvectors @@ plainto_tsquery('english',:search) 
-    ORDER BY ts_rank(tsvectors,plainto_tsquery('english',:search)) 
-    DESC;",['search' => $search_text]);
-
-
-  return view('pages.search',compact('event'));
-  }
-
   public function join($id){
       $user = Auth::id();
       $event = Event::find($id);
