@@ -54,6 +54,7 @@
       </section>
       <section id="reset-password">
         @yield('reset-password')
+      </section>
     </main>
   </body>
 </html>
