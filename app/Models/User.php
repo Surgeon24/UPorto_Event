@@ -69,4 +69,9 @@ class User extends Authenticatable
     public function isStaff(): bool {
         return $this->isAdministrator();
     }
+
+    public function email(): HasOne
+    {
+        return $this->hasOne(User::class, 'email');
+    }
 }
