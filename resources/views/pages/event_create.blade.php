@@ -23,6 +23,13 @@
             width:400px;
             height:300px;
         }
+        .error{
+            color: red;
+            text-emphasis: xs;
+            margin-top: 1;
+            
+            /* text-red-500 text-xs mt-1 */
+        }
     </style>
     
     <div class="login"> 
@@ -35,7 +42,7 @@
             <input class="form-control" type="text" id="title" name="title">
 
             @error('title')
-            <p>{{$message}}</p>
+            <p class="error">{{$message}}</p>
             @enderror
 
         </div>
@@ -44,7 +51,7 @@
             <input class="form-control" type="text" id="description" name="description">
 
             @error('description')
-            <p>{{$message}}</p>
+            <p class="error">{{$message}}</p>
             @enderror
 
 
@@ -54,7 +61,7 @@
             <input class="form-control" type="text" id="location" name="location">
 
             @error('location')
-            <p>{{$message}}</p>
+            <p class="error">{{$message}}</p> 
             @enderror
 
 
@@ -64,7 +71,7 @@
             <input class="form-control" type="date" id="start_date" name="start_date">
 
             @error('start_date')
-            <p>{{$message}}</p>
+            <p class="error">{{$message}}</p>
             @enderror
 
 
@@ -74,7 +81,7 @@
             <input class="form-control" type="date" id="end_date" name="end_date">
 
             @error('end_date')
-            <p>{{$message}}</p>
+            <p class="error">{{$message}}</p>
             @enderror
 
 
