@@ -482,6 +482,49 @@ CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 
 
 
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
+
+CREATE OR REPLACE FUNCTION user_search_update() RETURNS TRIGGER AS $$
+BEGIN
+ IF TG_OP = 'INSERT' THEN
+        NEW.tsvectors = (
+         setweight(to_tsvector('english', NEW.name), 'A') ||
+         setweight(to_tsvector('english', NEW.lastname), 'B') ||
+             setweight(to_tsvector('english', NEW.firstname), 'C')
+        );
+ END IF;
+ IF TG_OP = 'UPDATE' THEN
+         IF (NEW.name <> OLD.name OR NEW.lastname <> OLD.lastname OR NEW.firstname <> OLD.firstname) THEN
+           NEW.tsvectors = (
+             setweight(to_tsvector('english', NEW.name), 'A') ||
+             setweight(to_tsvector('english', NEW.lastname), 'B') ||
+                 setweight(to_tsvector('english', NEW.firstname), 'C')
+           );
+    END IF;
+ END IF;
+ RETURN NEW;
+END $$
+LANGUAGE plpgsql;
+
+
+DROP TRIGGER IF EXISTS user_search_update ON users;
+
+CREATE TRIGGER user_search_update
+ BEFORE INSERT OR UPDATE ON users
+ FOR EACH ROW
+ EXECUTE PROCEDURE user_search_update();
+
+DROP INDEX IF EXISTS search_user_idx CASCADE;
+CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
+
+
+
+
+
+
+
+
 
 
 
