@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Notifications\NewUserNotification;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -53,7 +55,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -67,11 +69,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        return User::create([
+        
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'photo_path' => 'image.png',   //after registration user has default photo
         ]);
+
+        $admins = User::where('is_admin', true)->get();
+        
+        foreach($admins as $admin){
+            $admin->notify(new NewUserNotification($user));
+        }
+
+        
+        $user->notify(new WelcomeNotification());
+        return $user;
+        
     }
 }

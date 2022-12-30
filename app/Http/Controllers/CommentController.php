@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+use App\Models\Event;
 use App\Models\Comment;
 use App\Models\CommentVote;
+use App\Notifications\CommentNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\WelcomeNotification;
 
 class CommentController extends Controller
 {
@@ -23,6 +25,13 @@ class CommentController extends Controller
             
         ]);
 
+        // sending notification 
+        $owner_id = Event::where('id', $request->input('event_id'))->first()->owner_id;
+        $user = User::where('id', Auth::user()->id)->first();
+        $owner = User::where('id', $owner_id)->first();
+        
+        $owner->notify(new CommentNotification($user));
+        
         return redirect()->back()->withSuccess('Your comment was successfully posted!');
     }
 

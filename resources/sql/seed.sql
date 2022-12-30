@@ -23,6 +23,7 @@ DROP TABLE IF EXISTS comment_notification CASCADE;
 DROP TABLE IF EXISTS poll_notification CASCADE;
 DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
 DROP TABLE IF EXISTS administrators CASCADE;
 DROP TABLE IF EXISTS faqs CASCADE;
@@ -104,9 +105,7 @@ CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
-    start_date TIMESTAMP DEFAULT (
-    to_timestamp('05 Dec 2023 22:00', 'DD Mon YYYY HH24:MI')
-    ) NOT NULL,
+    start_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
     end_date date,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
     owner_id INT NOT NULL,
@@ -231,6 +230,35 @@ CREATE TABLE IF NOT EXISTS poll_vote(
     FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice (id, poll_id)
 
 );
+
+
+
+
+
+
+create table IF NOT EXISTS "notifications" (
+    "id" uuid not null, 
+    "type" varchar(255) not null, 
+    "notifiable_type" varchar(255) not null, 
+    "notifiable_id" bigint not null, 
+    "data" text not null, 
+    "read_at" timestamp(0) without time zone null, 
+    "created_at" timestamp(0) without time zone null, 
+    "updated_at" timestamp(0) without time zone null);  
+
+DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
+  create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
+  ("notifiable_type", "notifiable_id");
+  alter table "notifications" add primary key ("id");
+
+
+
+
+
+
+
+
+
 
 
 
@@ -484,12 +512,13 @@ INSERT INTO faqs(Q, A) VALUES(
 
 
 
-INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
+INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_path) VALUES (
     'john_doe228',
     'John',
     'Doe',
     '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
     'admin@example.com',
+    true,
     '/image.png'
 ); -- Password is 1234. Generated using Hash::make('1234')
 
@@ -521,3 +550,82 @@ INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
         1,
     'Um sitio fixe'
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+-- EVENT
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+insert into event (id, title, description, owner_id, location) values (30, 'And Then There Were None', 'Crime|Mystery', 1, '29 Sachs Way');
+insert into event (id, title, description, owner_id, location) values (31, 'Misérables, Les', 'Drama|Romance', 1, '54762 Maryland Terrace');
+insert into event (id, title, description, owner_id, location) values (32, 'Marriage of Maria Braun, The (Ehe der Maria Braun, Die)', 'Drama', 1, '1117 Esker Terrace');
+insert into event (id, title, description, owner_id, location) values (33, 'Mad Dogs & Englishmen', 'Documentary|Musical', 1, '37 Arrowood Point');
+insert into event (id, title, description, owner_id, location) values (34, 'Wedding in Blood (Noces rouges, Les)', 'Crime|Drama', 1, '5779 Homewood Lane');
+insert into event (id, title, description, owner_id, location) values (35, 'Ballroom, The (Chega de Saudade)', 'Drama|Musical|Romance', 1, '8 Randy Junction');
+insert into event (id, title, description, owner_id, location) values (36, 'Elite Squad: The Enemy Within (Tropa de Elite 2 - O Inimigo Agora É Outro)', 'Action|Crime|Drama', 1, '8206 Erie Lane');
+insert into event (id, title, description, owner_id, location) values (37, 'To Kill a Mockingbird', 'Drama', 1, '946 South Road');
+insert into event (id, title, description, owner_id, location) values (38, 'So Normal (Normais, Os)', 'Comedy', 1, '8 Gateway Center');
+insert into event (id, title, description, owner_id, location) values (39, 'Murder, My Sweet', 'Crime|Film-Noir|Thriller', 1, '052 Holmberg Street');
+insert into event (id, title, description, owner_id, location) values (40, 'Primal Fear', 'Crime|Drama|Mystery|Thriller', 1, '60756 Chinook Road');
+insert into event (id, title, description, owner_id, location) values (41, 'Informant', 'Documentary', 1, '66856 Talmadge Crossing');
+insert into event (id, title, description, owner_id, location) values (42, 'Amy', 'Comedy|Drama', 1, '3 Summerview Street');
+insert into event (id, title, description, owner_id, location) values (43, 'Are We There Yet?', 'Children|Comedy', 1, '9171 Green Ridge Junction');
+insert into event (id, title, description, owner_id, location) values (44, 'Kapitalism: Our Improved Formula (Kapitalism - Reteta noastra secreta)', 'Documentary', 1, '6139 Fuller Parkway');
+insert into event (id, title, description, owner_id, location) values (45, 'Rally ''Round the Flag, Boys!', 'Comedy', 1, '163 Sundown Alley');
+insert into event (id, title, description, owner_id, location) values (46, 'Big Deal on Madonna Street (I Soliti Ignoti)', 'Comedy|Crime', 1, '530 Lunder Junction');
+insert into event (id, title, description, owner_id, location) values (47, 'Toothless', 'Children|Comedy', 1, '72 Melody Place');
+insert into event (id, title, description, owner_id, location) values (48, 'Thérèse: The Story of Saint Thérèse of Lisieux', 'Drama', 1, '2032 Iowa Place');
+insert into event (id, title, description, owner_id, location) values (49, 'Pride and Prejudice', 'Comedy|Drama|Romance', 1, '2762 Havey Road');
+insert into event (id, title, description, owner_id, location) values (50, 'Dream Home (Wai dor lei ah yut ho)', 'Horror', 1, '9255 Harper Alley');
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+-- USERS
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+
+insert into users (id, name, firstname, lastname, password, email, url) values (29, 'cvasyutochkins', 'Chance', 'Vasyutochkin', '4EGiGxZ', 'cvasyutochkins@fda.gov', 'http://dummyimage.com/187x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (30, 'mknollesgreent', 'Margette', 'Knolles-Green', 'JqsLny9', 'mknollesgreent@hhs.gov', 'http://dummyimage.com/137x100.png/cc0000/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (31, 'ethroughtonu', 'Elvina', 'Throughton', 'cgiSwMZnL2', 'ethroughtonu@baidu.com', 'http://dummyimage.com/142x100.png/cc0000/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (32, 'scastellanv', 'Sigismund', 'Castellan', '4bJcPk4BnW0Z', 'scastellanv@cafepress.com', 'http://dummyimage.com/133x100.png/5fa2dd/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (33, 'nblumw', 'Nat', 'Blum', 'PEMVtY', 'nblumw@weebly.com', 'http://dummyimage.com/102x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (34, 'mrussanx', 'Meghan', 'Russan', 'UNTXfXkUi80R', 'mrussanx@foxnews.com', 'http://dummyimage.com/212x100.png/dddddd/000000');
+insert into users (id, name, firstname, lastname, password, email, url) values (35, 'jsidawayy', 'Jaymee', 'Sidaway', 'Xpuu0Mzfh', 'jsidawayy@comsenz.com', 'http://dummyimage.com/159x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (36, 'ppendellz', 'Petronia', 'Pendell', 'Qo0jMe6V50wp', 'ppendellz@meetup.com', 'http://dummyimage.com/143x100.png/dddddd/000000');
+insert into users (id, name, firstname, lastname, password, email, url) values (37, 'ogood10', 'Oliy', 'Good', 'C897qRxF', 'ogood10@1688.com', 'http://dummyimage.com/222x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (38, 'ccorderoy11', 'Christi', 'Corderoy', 'TG4vr9CPoxX', 'ccorderoy11@blogger.com', 'http://dummyimage.com/145x100.png/5fa2dd/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (39, 'xdemetz12', 'Xylina', 'De Metz', 'Ckd68y7w', 'xdemetz12@comcast.net', 'http://dummyimage.com/178x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (40, 'mjohnke13', 'Minette', 'Johnke', 'oC8ior', 'mjohnke13@dagondesign.com', 'http://dummyimage.com/203x100.png/cc0000/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (41, 'fglaysher14', 'Freddy', 'Glaysher', 'SgOQKP', 'fglaysher14@gizmodo.com', 'http://dummyimage.com/125x100.png/ff4444/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (42, 'hranaghan15', 'Husein', 'Ranaghan', 'JSihzete8LM', 'hranaghan15@barnesandnoble.com', 'http://dummyimage.com/153x100.png/dddddd/000000');
+insert into users (id, name, firstname, lastname, password, email, url) values (43, 'cmacginney16', 'Cleve', 'MacGinney', 'ErASWtt', 'cmacginney16@ebay.com', 'http://dummyimage.com/178x100.png/5fa2dd/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (44, 'mconaboy17', 'Marabel', 'Conaboy', 'TCvRIcXrqbiB', 'mconaboy17@rakuten.co.jp', 'http://dummyimage.com/116x100.png/dddddd/000000');
+insert into users (id, name, firstname, lastname, password, email, url) values (45, 'cmcmeekin18', 'Carleen', 'McMeekin', 'a0nx5F', 'cmcmeekin18@sphinn.com', 'http://dummyimage.com/215x100.png/dddddd/000000');
+insert into users (id, name, firstname, lastname, password, email, url) values (46, 'lpiggen19', 'Linn', 'Piggen', 'EWi3WN5BzDc', 'lpiggen19@etsy.com', 'http://dummyimage.com/167x100.png/5fa2dd/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (47, 'dgopsall1a', 'Devon', 'Gopsall', 'KWj1Bbs4', 'dgopsall1a@imdb.com', 'http://dummyimage.com/111x100.png/cc0000/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (48, 'kburditt1b', 'Keeley', 'Burditt', 'AAqZWWfdvT', 'kburditt1b@nature.com', 'http://dummyimage.com/249x100.png/5fa2dd/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (49, 'dkowal1c', 'Dayle', 'Kowal', 'DGX6bHwp', 'dkowal1c@wordpress.org', 'http://dummyimage.com/155x100.png/cc0000/ffffff');
+insert into users (id, name, firstname, lastname, password, email, url) values (50, 'hannand1d', 'Horatio', 'Annand', 'Dob8QtCZU', 'hannand1d@lulu.com', 'http://dummyimage.com/165x100.png/5fa2dd/ffffff');
