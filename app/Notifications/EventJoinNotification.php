@@ -56,8 +56,8 @@ class EventJoinNotification extends Notification
     {
         return [
             'name' => $this->user->name,
-            'email' => $this->user->email,
-            'data' => 'Have just joined your Event'
+            'email' => '',
+            'data' => 'Have joined your Event'
         ];
     }
 }

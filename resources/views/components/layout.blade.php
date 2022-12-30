@@ -129,13 +129,15 @@
 
             @foreach (auth()->user()->unreadNotifications as $notification)
 
-            <li><a href="">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}</a></li>
-                
+            <li><a href="/notifications">{{$notification->data['name']}} {{$notification->data['data']}}</a></li>
+            
+
+
             @endforeach
 
             @foreach (auth()->user()->readNotifications as $notification)
 
-            <li style="background-color: lightgray"><a href="">{{$notification->data['data']}}</a></li>
+            <li style="background-color: lightgray"><a href="/notifications">{{$notification->data['name']}} {{$notification->data['data']}}</a></li>
                 
             @endforeach
 

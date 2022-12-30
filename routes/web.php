@@ -19,6 +19,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Faq;
+use Illuminate\Notifications\Notification;
 
 // Static Pages
 Route::get('home', 'HomeController@show');
@@ -73,3 +74,16 @@ Route::get('markAsRead', function(){
 
     return redirect()->back();
 })->name('markRead');
+
+
+Route::get('markOne', function(){
+    $id = auth()->user()->unreadNotifications[0]->id;
+
+    auth()->user()->unreadNotifications->where('id', $id)->markAsRead();
+
+    return redirect()->back();
+})->name('markOne');
+
+Route::get('notifications', function(){
+    return view('pages.notifications');
+});

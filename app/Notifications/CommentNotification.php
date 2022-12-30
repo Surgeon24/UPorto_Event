@@ -57,7 +57,7 @@ class CommentNotification extends Notification
         return [
             'name' => $this->user->name,
             'email' => '',
-            'data' => 'Have just commented your Event'
+            'data' => 'Have commented your Event'
             
         ];
     }
