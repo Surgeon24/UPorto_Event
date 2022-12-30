@@ -86,6 +86,11 @@
 
 
         </div>
+        <div>
+            <label for="private">
+            <input type="checkbox" name="private" {{ old('private') ? 'checked' : '' }}> create private event
+            </label>
+        </div>
         <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
         </form>
     </div>

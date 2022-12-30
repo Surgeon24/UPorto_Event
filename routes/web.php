@@ -62,7 +62,10 @@ Route::get('event/{id}/join', 'EventController@join')->name('join_event');
 Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
 Route::get('event/{id}/all_participants', 'EventController@show_participants')->name('all_participants');
 
-Route::get('search', 'EventController@search');
+
+//Search
+Route::get('search', 'SearchController@eventSearch');
+Route::get('search_user', 'SearchController@userSearch');
 
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');

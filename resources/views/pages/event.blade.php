@@ -58,6 +58,7 @@ border: 1px #000 solid;
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
 
         <h2 class="">{{ $event->description }} </h2>
+        @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
         <h3 class="">
             <label style=display:inline;>Date:</label>
             {{ $event->start_date }}
@@ -67,6 +68,7 @@ border: 1px #000 solid;
             <label style=display:inline;>Location: </label>
             {{ $event->location }}
         </h4>
+        @endif
         <div>
             <article>
             @if ($role === 'Owner' or $role === 'Moderator')
@@ -99,6 +101,8 @@ border: 1px #000 solid;
             </article>
             @if ($role === 'Guest')
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
+            @elseif ($role === 'Unconfirmed')
+            <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Remove request</a>
             @elseif ($role !== 'Owner')
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Quit </a>
             @endif
@@ -106,7 +110,7 @@ border: 1px #000 solid;
     </div>
 </div>
 <div class="gray">
-    @if ($role !== 'Guest')
+    @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
         <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
             @csrf
             <label> New comment </label>
