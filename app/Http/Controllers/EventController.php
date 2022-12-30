@@ -69,6 +69,7 @@ class EventController extends Controller{
           'location' => $request->input('location'),
           'start_date' => $request->input('start_date'),
           'end_date' => $request->input('end_date'),
+          'is_public' => !$request->input('private'),
       ]);
       return redirect('home')->with('message', 'Event created successfully!');
     }
@@ -141,27 +142,43 @@ class EventController extends Controller{
   public function join($id){
       $user = Auth::id();
       $event = Event::find($id);
-
-      User_event::create([
-        'event_id' => $event->id,
-        'user_id'  => $user,
-        'role' => 'Participant'
-      ]);
-
-      // sending notification
-      $owner_id = $event->first()->owner_id;
-      $owner = User::where('id', $owner_id)->first();
-      $user = User::where('id', Auth::user()->id)->first();
-      
-      $owner->notify(new EventJoinNotification($user));
-
+      //backend protection
+      $check = User_event::where('event_id', $event->id)->where('user_id', $user)->first();
+      if ($check != null){
+        return redirect("/event/$id");
+      } else {
+        if ($event->is_public){
+          User_event::create([
+            'event_id' => $event->id,
+            'user_id'  => $user,
+            'role' => 'Participant'
+          ]);
+          // sending notification
+          $owner_id = $event->first()->owner_id;
+          $owner = User::where('id', $owner_id)->first();
+          $user = User::where('id', Auth::user()->id)->first();
+          $owner->notify(new EventJoinNotification($user));
+        } else {
+          User_event::create([
+            'event_id' => $event->id,
+            'user_id'  => $user,
+            'role' => 'Unconfirmed'
+          ]);
+        }
+      }
       return redirect("/event/$id");
   }
 
   public function quit($id){
     $user = Auth::id();
     $event = Event::find($id);
-    $role = User_event::where('user_id', $user)->where('event_id', $id)->delete();
+    //backend protection
+    $check = User_event::where('event_id', $event->id)->where('user_id', $user)->first();
+    if ($check != null and $check->role == 'Owner'){
+      return redirect("/event/$id");
+    } else{
+      $role = User_event::where('user_id', $user)->where('event_id', $id)->delete();
+    }
     return redirect("/event/$id");
   }
 

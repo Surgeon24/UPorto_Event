@@ -38,7 +38,7 @@ drop type if exists REPORT_STATUS;
 CREATE TYPE REPORT_STATUS AS ENUM('Waiting', 'Ignored', 'Sanctioned');
 
 drop type if exists MEMBER_ROLE;
-CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant');
+CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed');
 
 
 drop type if exists TYPE_NOTIFICATION;
@@ -605,7 +605,7 @@ insert into event (id, title, description, owner_id, location) values (50, 'Drea
 
 
 
-
+insert into users (id, name, firstname, lastname, password, email, url) values (3, 'Surgeon', 'Michael', 'Ermolaev', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ermol24@icloud.com', '/etc/public/images/mike.jpg');
 
 insert into users (id, name, firstname, lastname, password, email, url) values (29, 'cvasyutochkins', 'Chance', 'Vasyutochkin', '4EGiGxZ', 'cvasyutochkins@fda.gov', 'http://dummyimage.com/187x100.png/ff4444/ffffff');
 insert into users (id, name, firstname, lastname, password, email, url) values (30, 'mknollesgreent', 'Margette', 'Knolles-Green', 'JqsLny9', 'mknollesgreent@hhs.gov', 'http://dummyimage.com/137x100.png/cc0000/ffffff');
