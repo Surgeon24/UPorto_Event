@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\EventJoinNotification;
+use App\Notifications\JoinRequestNotification;
 
 class EventController extends Controller{ 
 
@@ -107,6 +108,7 @@ class EventController extends Controller{
           'end_date' => $request->input('end_date'),
           'is_public' => !$request->input('private'),
       ]);
+
       return redirect('home')->with('message', 'Event created successfully!');
 
     }
@@ -203,8 +205,17 @@ class EventController extends Controller{
             'user_id'  => $user,
             'role' => 'Unconfirmed'
           ]);
+
+
+          $owner_id = $event->first()->owner_id;
+          $owner = User::where('id', $owner_id)->first();
+          $user = User::where('id', Auth::user()->id)->first();
+          $owner->notify(new JoinRequestNotification($user));
+
         }
       }
+
+
       return redirect("/event/$id");
   }
 

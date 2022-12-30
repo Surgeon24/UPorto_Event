@@ -53,7 +53,7 @@
       text-align:center;
       display: inline;
   }
-  .red{
+  .green-flash-message{
     
       background-color: rgba(0, 255, 34, 0.8);
       border-style: solid;
