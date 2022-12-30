@@ -51,10 +51,32 @@
         }
     }
 
-    /* ul {
-    columns: 2;
-  } */
 
+
+
+    .g{
+    padding: 50px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    height: 300px;
+  }
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    /* Create two equal columns that floats next to each other */
+    .column1 {
+      float: left;
+      width: 30%;
+      padding: 20px;
+    }
+    .column2 {
+      float: left;
+      width: 70%;
+      padding: 20px;
+    }
 </style>
 
 
@@ -90,7 +112,7 @@
                 
 {{--------------------old version -----------------------}}
 
-<div>
+{{-- <div>
     <div style="display:inline-block;">
         <article class="card">
             <h1 class="">{{ $comment->comment_text }}</h1>
@@ -112,5 +134,75 @@
                 </button>
             </div>
         </article>
+    </div>
+</div> --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@php
+    $user= \App\Models\User::where('id', $comment->user_id)->first();
+    $role= \App\Models\User_event::where('event_id', $comment->event_id)->where('user_id', $user->id)->first()->role;
+@endphp
+
+<p></p>
+<div class="g">
+    <div class="column1">
+    <td>
+        <a id="74996282"></a>
+        
+        
+                <p class="nick " title="Go to the profile">
+            <a href="{{ url('profile?', [$user->id])}}">{{ $user->name }}</a>
+        </p>
+        <p class="avatar"><img src="{{ url('assets/profileImages?', [$user->photo_path])}}" alt="/default-profile-photo.webp"></p>		
+        <p></p>
+        @if ($user->is_admin == true)
+        <p class="admin" style="color:rgb(217, 60, 60);">Admin</p>		
+        @elseif ($role != null)
+        <p class="admin" style="color:rgb(255, 255, 255);">{{$role}}</p>	
+        @endif
+    </td>
+    </div>
+    <div class="column2">
+    <td class="column" rowspan="2">
+        <div class="post_head">
+            <p class="post-time">
+                                <span class="hl-scrolled-to-wrap">
+                    <div>{{$comment->comment_date}}</div>
+                </span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="text">
+            {{$comment->comment_text}}
+        </div>
+        @if(Auth::user()->isStaff() || Auth::user()->id === $comment->user_id)
+            <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}" method="post">
+                @csrf
+                @method('DELETE')
+                <input type='hidden' id='id' name='id' value='{{ $comment->id }}'></input>
+                <button type="submit" style="color:rgb(211, 19, 19);">
+                    Delete
+                </button>
+            </form>
+            @endif
+            <button  class="like" data-id="{{$comment->id}}">
+                <i class="fa fa-thumbs-up"></i>
+                <span class="icon" style="color:rgb(29, 42, 177);">Like</span>
+            </button>
+    </td>
     </div>
 </div>

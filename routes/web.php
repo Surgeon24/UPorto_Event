@@ -99,3 +99,7 @@ Route::get('markOne', function(){
 Route::get('notifications', function(){
     return view('pages.notifications');
 });
+
+
+
+
