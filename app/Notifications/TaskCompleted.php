@@ -57,7 +57,8 @@ class TaskCompleted extends Notification
         return [
             'name' => '',
             'email' => '',
-            'data' => 'New User Registered!'
+            'data' => 'New User Registered!',
+            'action' => ''
         ];
     }
 }

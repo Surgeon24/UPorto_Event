@@ -57,7 +57,8 @@ class JoinRequestNotification extends Notification
         return [
             'name' => $this->user->name,
             'email' => '',
-            'data' => 'has made a request to join your Private Event'
+            'data' => 'has made a request to join your Private Event',
+            'action' => 'Click to approve'
             
         ];
     }

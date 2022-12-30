@@ -57,7 +57,8 @@ class WelcomeNotification extends Notification
         return [
             'name' => '',
             'email' => '',
-            'data' => 'Welcome to UPorto Event!'
+            'data' => 'Welcome to UPorto Event!',
+            'action' => ''
         ];
     }
 }
