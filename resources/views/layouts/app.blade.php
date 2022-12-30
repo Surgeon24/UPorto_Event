@@ -49,6 +49,11 @@
       <section id="event_create">
         @yield('event_create')
       </section>
+      <section id="forgot-password">
+        @yield('forgot-password')
+      </section>
+      <section id="reset-password">
+        @yield('reset-password')
     </main>
   </body>
 </html>
