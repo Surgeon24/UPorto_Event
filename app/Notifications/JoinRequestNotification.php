@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TaskCompleted extends Notification
+class JoinRequestNotification extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,9 @@ class TaskCompleted extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user=$user;
     }
 
     /**
@@ -55,10 +55,11 @@ class TaskCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => '',
+            'name' => $this->user->name,
             'email' => '',
-            'data' => 'New User Registered!',
-            'action' => ''
+            'data' => 'has made a request to join your Private Event',
+            'action' => 'Click to approve'
+            
         ];
     }
 }

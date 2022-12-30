@@ -8,7 +8,7 @@
         position: relative;
         
         text-align: center;
-        background-color: rgb(145, 165, 140);
+        background-color: rgb(142, 163, 165);
         color: white; 
     } 
 
@@ -32,9 +32,18 @@
             
             
             <div class="darker">
+            @if($notification->data['action'] == null)
+
+            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}  <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>
                            
-            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}} <a style="color: green" href="{{ route('markOne')}}">Mark as read</a></p>
-            
+            @else
+                    {{-- "Click here" находится здесь -> --}}
+            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}  
+            <button style="color: rgb(1, 92, 28)" onclick="window.location.href='https://w3docs.com';">{{$notification->data['action']}}</button> 
+            <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>        
+
+            @endif
+
             </div>
             
             
@@ -45,7 +54,7 @@
 
 
             <div>
-                <p style="padding:10px" class="lighter">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p style="padding:10px" class="lighter">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}} (seen)</p>
             </div>
                 
             @endforeach
