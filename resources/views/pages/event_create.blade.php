@@ -33,22 +33,51 @@
         <div class="form-group">
             <label for="title">Title</label>
             <input class="form-control" type="text" id="title" name="title">
+
+            @error('title')
+            <p>{{$message}}</p>
+            @enderror
+
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <input class="form-control" type="text" id="description" name="description">
+
+            @error('description')
+            <p>{{$message}}</p>
+            @enderror
+
+
         </div>
         <div class="form-group">
             <label for="location">Location</label>
             <input class="form-control" type="text" id="location" name="location">
+
+            @error('location')
+            <p>{{$message}}</p>
+            @enderror
+
+
         </div>
         <div class="form-group">
             <label for="start_date">Start Date</label>
             <input class="form-control" type="date" id="start_date" name="start_date">
+
+            @error('start_date')
+            <p>{{$message}}</p>
+            @enderror
+
+
         </div>
         <div class="form-group">
             <label for="end_date">End Date</label>
             <input class="form-control" type="date" id="end_date" name="end_date">
+
+            @error('end_date')
+            <p>{{$message}}</p>
+            @enderror
+
+
         </div>
         <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
         </form>
