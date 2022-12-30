@@ -39,6 +39,12 @@ Route::get('api/like/{id}', 'CommentController@like');
 
 
 // Authentication
+Route::get('/forgot-password', 'Auth\RecoverPasswordController@show')->middleware('guest')->name('password.request');
+Route::post('/forgot-password', 'Auth\RecoverPasswordController@sendEmail')->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', 'Auth\RecoverPasswordController@showResetPassword')->middleware('guest')->name('password.reset');
+Route::post('/reset-password', 'Auth\RecoverPasswordController@resetPassword')->middleware('guest')->name('password.update');
+
 Route::get('/', 'Auth\LoginController@home')->name('login_home');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
