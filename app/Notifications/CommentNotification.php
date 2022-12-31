@@ -55,9 +55,11 @@ class CommentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => $this->user->id,
             'name' => $this->user->name,
             'email' => '',
-            'data' => 'Have commented your Event'
+            'data' => 'Have commented your Event',
+            'action' => ''
             
         ];
     }

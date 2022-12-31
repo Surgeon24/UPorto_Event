@@ -55,9 +55,11 @@ class EventJoinNotification extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => $this->user->id,
             'name' => $this->user->name,
             'email' => '',
-            'data' => 'Have joined your Event'
+            'data' => 'Have joined your Event',
+            'action' => ''
         ];
     }
 }

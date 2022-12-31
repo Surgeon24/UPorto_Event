@@ -100,6 +100,7 @@
                 @endif
                 <div>
                     <div>
+                        {{ $event->id }}
                         <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
                             <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
                             <button type="submit" class="btn btn-primary">

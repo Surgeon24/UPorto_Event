@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class WelcomeNotification extends Notification
+class JoinRequestNotification extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,9 @@ class WelcomeNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user=$user;
     }
 
     /**
@@ -55,11 +55,14 @@ class WelcomeNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => '',
-            'name' => '',
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            // 'event_id' => '',
+            // 'receiver_id' => '',
             'email' => '',
-            'data' => 'Welcome to UPorto Event!',
-            'action' => ''
+            'data' => 'has made a request to join your Private Event',
+            'action' => 'Click to approve'
+            
         ];
     }
 }

@@ -55,9 +55,11 @@ class TaskCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => '',
             'name' => '',
             'email' => '',
-            'data' => 'New User Registered!'
+            'data' => 'New User Registered!',
+            'action' => ''
         ];
     }
 }
