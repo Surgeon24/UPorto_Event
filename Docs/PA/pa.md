@@ -32,11 +32,18 @@
 
 ### 3. Application Help
 
-> Describe where help has been implemented, pointing to working examples.  
+Help has been implemented in forms, giving the user a real time feedback about the inputs he typed, if they were wrong, and displaying a message on what was supposed to be submitted.
+
+There is also a FAQ (Frequently Asked Questions) page where the user can see a couple of questions that would help him use the app.
 
 ### 4. Input Validation
 
-> Describe how input data was validated, and provide examples to scenarios using both client-side and server-side validation.  
+
+Input data validation was used in the forms, adding the pattern attribute which displays an error message in case the input was not according to what was expected (Validation Rule). 
+
+
+For example: when a user is creating an account he has to create a password that contain special characters, numbers, lower and upper case letters. In the server side, there is a verification if the input received is correct by using validators or checking if it is null.
+
 
 ### 5. Check Accessibility and Usability
 
