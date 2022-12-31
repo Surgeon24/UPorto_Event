@@ -1,0 +1,1 @@
+<h4 class="">{{ $event->tags }} </h4>

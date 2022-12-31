@@ -53,6 +53,10 @@
               <label style=display:inline;>Location: </label>
               {{ $event->location }}
             </h4>
+            <img src="" alt="">
+
+
+            
       </a>
     </article>
     @endforeach

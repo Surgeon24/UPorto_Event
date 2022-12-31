@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
+    tags VARCHAR, -- Comma separated
     start_date DATE DEFAULT (current_date) CHECK (current_date <= start_date) NOT NULL,
     end_date DATE DEFAULT (current_date + INTERVAL '1 DAY') CHECK (start_date <= end_date) NOT NULL,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
@@ -524,11 +525,12 @@ INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
     'AEFEUP'
 );
 
-INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
+INSERT INTO event(title, description,tags, start_date, owner_id, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
+    'Porto, Lisabon',
     current_date,
-        1,
+    1,
     'Um sitio fixe'
 );
 
@@ -552,27 +554,6 @@ INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
 
 
 
-insert into event (id, title, description, owner_id, location) values (30, 'And Then There Were None', 'Crime|Mystery', 1, '29 Sachs Way');
-insert into event (id, title, description, owner_id, location) values (31, 'Misérables, Les', 'Drama|Romance', 1, '54762 Maryland Terrace');
-insert into event (id, title, description, owner_id, location) values (32, 'Marriage of Maria Braun, The (Ehe der Maria Braun, Die)', 'Drama', 1, '1117 Esker Terrace');
-insert into event (id, title, description, owner_id, location) values (33, 'Mad Dogs & Englishmen', 'Documentary|Musical', 1, '37 Arrowood Point');
-insert into event (id, title, description, owner_id, location) values (34, 'Wedding in Blood (Noces rouges, Les)', 'Crime|Drama', 1, '5779 Homewood Lane');
-insert into event (id, title, description, owner_id, location) values (35, 'Ballroom, The (Chega de Saudade)', 'Drama|Musical|Romance', 1, '8 Randy Junction');
-insert into event (id, title, description, owner_id, location) values (36, 'Elite Squad: The Enemy Within (Tropa de Elite 2 - O Inimigo Agora É Outro)', 'Action|Crime|Drama', 1, '8206 Erie Lane');
-insert into event (id, title, description, owner_id, location) values (37, 'To Kill a Mockingbird', 'Drama', 1, '946 South Road');
-insert into event (id, title, description, owner_id, location) values (38, 'So Normal (Normais, Os)', 'Comedy', 1, '8 Gateway Center');
-insert into event (id, title, description, owner_id, location) values (39, 'Murder, My Sweet', 'Crime|Film-Noir|Thriller', 1, '052 Holmberg Street');
-insert into event (id, title, description, owner_id, location) values (40, 'Primal Fear', 'Crime|Drama|Mystery|Thriller', 1, '60756 Chinook Road');
-insert into event (id, title, description, owner_id, location) values (41, 'Informant', 'Documentary', 1, '66856 Talmadge Crossing');
-insert into event (id, title, description, owner_id, location) values (42, 'Amy', 'Comedy|Drama', 1, '3 Summerview Street');
-insert into event (id, title, description, owner_id, location) values (43, 'Are We There Yet?', 'Children|Comedy', 1, '9171 Green Ridge Junction');
-insert into event (id, title, description, owner_id, location) values (44, 'Kapitalism: Our Improved Formula (Kapitalism - Reteta noastra secreta)', 'Documentary', 1, '6139 Fuller Parkway');
-insert into event (id, title, description, owner_id, location) values (45, 'Rally ''Round the Flag, Boys!', 'Comedy', 1, '163 Sundown Alley');
-insert into event (id, title, description, owner_id, location) values (46, 'Big Deal on Madonna Street (I Soliti Ignoti)', 'Comedy|Crime', 1, '530 Lunder Junction');
-insert into event (id, title, description, owner_id, location) values (47, 'Toothless', 'Children|Comedy', 1, '72 Melody Place');
-insert into event (id, title, description, owner_id, location) values (48, 'Thérèse: The Story of Saint Thérèse of Lisieux', 'Drama', 1, '2032 Iowa Place');
-insert into event (id, title, description, owner_id, location) values (49, 'Pride and Prejudice', 'Comedy|Drama|Romance', 1, '2762 Havey Road');
-insert into event (id, title, description, owner_id, location) values (50, 'Dream Home (Wai dor lei ah yut ho)', 'Horror', 1, '9255 Harper Alley');
 
 
 
