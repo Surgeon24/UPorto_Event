@@ -14,7 +14,7 @@ class Event extends Model
     protected $table = 'event';
 
     protected $fillable = [
-        'owner_id', 'title', 'description', 'start_date', 'end_date', 'is_public', 'location'
+        'owner_id', 'title', 'description', 'tags', 'start_date', 'end_date', 'is_public', 'location'
     ];
 
     public function comments(): HasMany
@@ -32,7 +32,8 @@ class Event extends Model
             'owner_id' => $this->owner_id,
             'title' => $this->title,
             'description' => $this->description,
-            'location' => $this->location
+            'location' => $this->location,
+            'tags' => $this->tags
         ];
     }
 
