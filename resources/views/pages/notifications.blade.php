@@ -35,11 +35,11 @@
             @if($notification->data['action'] == null)
 
             <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}  <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>
-                           
+                    
             @else
-                    {{-- "Click here" находится здесь -> --}}
+                    {{-- event/{{$notification->data['event_id']}}/all_participants --}}
             <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}  
-            <button style="color: rgb(1, 92, 28)" onclick="window.location.href='https://w3docs.com';">{{$notification->data['action']}}</button> 
+            <button style="color: rgb(1, 92, 28)" onclick="window.location.href='https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg2.joyreactor.cc%2Fpics%2Fpost%2F%25D0%25BF%25D0%25B5%25D1%2581%25D0%25BE%25D1%2587%25D0%25BD%25D0%25B8%25D1%2586%25D0%25B0-%25D1%2582%25D1%258B-%25D0%25BF%25D0%25B8%25D0%25B4%25D0%25BE%25D1%2580-%25D1%2582%25D1%258B-%25D0%25BF%25D0%25B8%25D0%25B4%25D0%25BE%25D1%2580-5224080.jpeg&imgrefurl=https%3A%2F%2Fjoyreactor.cc%2Fpost%2F3949721&tbnid=CbJhw_DQvEwl7M&vet=12ahUKEwjzn-Tr1aL8AhXIUKQEHSNsApUQMygCegUIARCUAQ..i&docid=T85ZLEpeQyYemM&w=400&h=400&q=%D1%82%D1%8B%20%D0%BF%D0%B8%D0%B4%D0%BE%D1%80&ved=2ahUKEwjzn-Tr1aL8AhXIUKQEHSNsApUQMygCegUIARCUAQ';">{{$notification->data['action']}}</button> 
             <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>        
 
             @endif

@@ -55,6 +55,7 @@ class WelcomeNotification extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => '',
             'name' => '',
             'email' => '',
             'data' => 'Welcome to UPorto Event!',

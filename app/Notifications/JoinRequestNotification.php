@@ -55,7 +55,10 @@ class JoinRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => $this->user->id,
             'name' => $this->user->name,
+            // 'event_id' => '',
+            // 'receiver_id' => '',
             'email' => '',
             'data' => 'has made a request to join your Private Event',
             'action' => 'Click to approve'

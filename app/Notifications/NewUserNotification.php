@@ -61,6 +61,7 @@ class NewUserNotification extends Notification
     
 
         return [
+            'id' => '',
             'name' => $this->user->name,
             'email' => '('.$this->user->email.')',
             'data' => 'Have registered to UPorto Event',

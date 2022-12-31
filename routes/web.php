@@ -68,7 +68,6 @@ Route::get('event/{id}/join', 'EventController@join')->name('join_event');
 Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
 Route::get('event/{id}/all_participants', 'EventController@show_participants')->name('all_participants');
 
-
 //Search
 Route::get('search', 'SearchController@eventSearch');
 Route::get('search_user', 'SearchController@userSearch');

@@ -234,15 +234,18 @@ class EventController extends Controller{
 
 
 
+
   public function show_participants($id)
   {
-      $list = User::whereIn('id', function($query){
-        $query->select('user_id')
-          ->from(with(new User_event)->getTable()) 
-          ->where('event_id', Event::find($id));
-      })->get();
+    $event = Event::find($id);
+    $query = DB::table('user_event')->select('user_id')
+      ->from(with(new User_event)->getTable())
+      ->where('event_id', $id);
 
-      return view('pages.all_participants', ['participants' => $list]);
+    $list = User::whereIn('id', $query)->get();
+
+      return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
   }
+
 }
 
