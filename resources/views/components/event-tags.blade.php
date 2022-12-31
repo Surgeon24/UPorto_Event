@@ -14,8 +14,7 @@ $tags = explode(',', $tagsCsv);
     width: 100px;
     height: 35px;
 }
-
-        </style>
+</style>
 
 
 

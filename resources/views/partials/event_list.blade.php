@@ -3,11 +3,15 @@
 
 
 @include('partials._search')
-<p><a href="">qlwken</a></p>
+
+<div style="display: flex;justify-content: center">
+<ul>
+
     @foreach($events as $event)
     
+    <li style="background-color: rgba(0, 0, 0, 0.95); width: 100%; margin-top:20px;" >
       
-      <div class="gray">
+      
       <a href="{{ route('event', ['id' => $event->id]) }}">
         <h1 class="">{{ $event->title }}
           <h1>
@@ -23,7 +27,10 @@
               {{ $event->location }}
             </h4>
             <img src="" alt="">
-            </div>
+         
       </a>
+    </li>
+
     @endforeach
 
+  </ul></div>

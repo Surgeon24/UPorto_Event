@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
-    tags VARCHAR, -- Comma separated
+    tags VARCHAR DEFAULT(''), -- Comma separated
     start_date DATE DEFAULT (current_date) CHECK (current_date <= start_date) NOT NULL,
     end_date DATE DEFAULT (current_date + INTERVAL '1 DAY') CHECK (start_date <= end_date) NOT NULL,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
@@ -381,7 +381,7 @@ BEGIN
  IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
          setweight(to_tsvector('english', NEW.title), 'A') ||
-         setweight(to_tsvector('english', NEW.tags), 'A') ||
+         setweight(to_tsvector('english', NEW.tags), 'B') ||
          setweight(to_tsvector('english', NEW.description), 'C') ||
              setweight(to_tsvector('english', NEW.location), 'D')
         );
@@ -390,7 +390,7 @@ BEGIN
     IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location OR NEW.tags <> OLD.tags) THEN
         NEW.tsvectors = (
             setweight(to_tsvector('english', NEW.title), 'A') ||
-            setweight(to_tsvector('english', NEW.tags), 'A') ||
+            setweight(to_tsvector('english', NEW.tags), 'B') ||
             setweight(to_tsvector('english', NEW.description), 'C') ||
             setweight(to_tsvector('english', NEW.location), 'D')
            );
@@ -557,7 +557,31 @@ INSERT INTO event(title, description, tags, start_date, owner_id, location) VALU
 
 
 
-
+insert into event (title, description, tags, owner_id, location) values ('To Live and Die in L.A.', 'Action|Crime|Drama|Thriller', 'Syria', 1, '1 David Road');
+insert into event (title, description, tags, owner_id, location) values ('Bonhoeffer: Agent of Grace', 'Drama', 'Russia', 1, '5171 Esch Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Toy Story 2', 'Adventure|Animation|Children|Comedy|Fantasy', 'Kyrgyzstan', 1, '81 Porter Point');
+insert into event (title, description, tags, owner_id, location) values ('Hiding Out', 'Comedy', 'China', 1, '50 Ridge Oak Terrace');
+insert into event (title, description, tags, owner_id, location) values ('Barber of Siberia, The (Sibirskij tsiryulnik)', 'Drama|Romance', 'Indonesia', 1, '483 Cambridge Avenue');
+insert into event (title, description, tags, owner_id, location) values ('Wesley Willis: The Daddy of Rock ''n'' Roll', 'Documentary', 'Russia', 1, '51655 Prentice Plaza');
+insert into event (title, description, tags, owner_id, location) values ('Apocalypto', 'Adventure|Drama|Thriller', 'Ethiopia', 1, '25108 Sunbrook Lane');
+insert into event (title, description, tags, owner_id, location) values ('Lilian''s Story', 'Drama', 'Russia', 1, '7904 Bobwhite Trail');
+insert into event (title, description, tags, owner_id, location) values ('Che: Part Two', 'Drama|War', 'Macedonia', 1, '33 Lyons Junction');
+insert into event (title, description, tags, owner_id, location) values ('Agenda: Grinding America Down', 'Documentary', 'China', 1, '9289 3rd Road');
+insert into event (title, description, tags, owner_id, location) values ('Polar Express, The', 'Adventure|Animation|Children|Fantasy|IMAX', 'China', 1, '75 Rieder Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Song to Remember, A', 'Drama', 'Malaysia', 1, '5 Arapahoe Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Revenge of the Nerds III: The Next Generation', 'Comedy', 'Tanzania', 1, '4 Center Street');
+insert into event (title, description, tags, owner_id, location) values ('Carancho', 'Crime|Drama|Romance', 'Portugal', 1, '5 Portage Plaza');
+insert into event (title, description, tags, owner_id, location) values ('All I Desire', 'Drama|Romance', 'Czech Republic', 1, '58073 Oneill Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Garfield: A Tail of Two Kitties', 'Animation|Children|Comedy', 'Portugal', 1, '43108 Vidon Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Jodhaa Akbar', 'Drama|Musical|Romance|War', 'China', 1, '57 Cardinal Park');
+insert into event (title, description, tags, owner_id, location) values ('Birthday Girl', 'Drama|Romance', 'Germany', 1, '019 Sheridan Drive');
+insert into event (title, description, tags, owner_id, location) values ('Immigrant, The', 'Drama|Romance', 'Argentina', 1, '4 Orin Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Cat People', 'Drama|Horror|Romance|Thriller', 'Nigeria', 1, '57 Oak Valley Terrace');
+insert into event (title, description, tags, owner_id, location) values ('Project X', 'Comedy', 'China', 1, '86 Sullivan Trail');
+insert into event (title, description, tags, owner_id, location) values ('Patton Oswalt: Werewolves and Lollipops', 'Comedy', 'Portugal', 1, '26 Petterle Hill');
+insert into event (title, description, tags, owner_id, location) values ('Dark, The', 'Horror|Mystery|Thriller', 'Mongolia', 1, '7030 Victoria Center');
+insert into event (title, description, tags, owner_id, location) values ('Midnight Movies: From the Margin to the Mainstream', 'Documentary', 'China', 1, '05 Kennedy Court');
+insert into event (title, description, tags, owner_id, location) values ('Devil''s Playground', 'Documentary', 'Indonesia', 1, '53 Waywood Parkway');
 
 
 
