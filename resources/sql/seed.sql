@@ -48,8 +48,6 @@ drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed');
 
 
-drop type if exists TYPE_NOTIFICATION;
-CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 
 drop type if exists "comment_vote" CASCADE;
 CREATE TYPE "comment_vote" AS ENUM ('like', 'dislike');
@@ -180,13 +178,6 @@ CREATE TABLE IF NOT EXISTS comment_votes(
 
 
 
-CREATE TABLE IF NOT EXISTS tag(
-    id SERIAL PRIMARY KEY,
-    event_id INT,
-    name varchar NOT NULL,
-    FOREIGN KEY (event_id) REFERENCES event(id)
-);
-
 
 CREATE TABLE IF NOT EXISTS photo(
     id SERIAL PRIMARY KEY,
@@ -273,43 +264,6 @@ DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE
 
 
 
-
-CREATE TABLE IF NOT EXISTS notification(
-    id SERIAL PRIMARY KEY,
-    user_id INT,
-    notification_type type_notification NOT NULL,
-    notification_title TEXT NOT NULL DEFAULT ('Main topic of the notification (header)'),
-    body TEXT,  -- is not supposed to be filled for all types of notifications
-    notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-
-CREATE TABLE IF NOT EXISTS comment_notification(
-        id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    comment INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE IF NOT EXISTS poll_notification
-(
-    id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    poll        INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS event_notification
-(
-    id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    event   INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS report_notification
-(
-    id     INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    report INTEGER NOT NULL REFERENCES report (id) ON DELETE CASCADE
-);
-
-
 CREATE TABLE password_resets
 (
     id               SERIAL PRIMARY KEY,
@@ -326,92 +280,54 @@ CREATE TABLE password_resets
 
 -- Trigger to create a notification when a comment is replied 
 
-CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS 
-$BODY$
+-- CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS 
+-- $BODY$
 
-DECLARE reply_username TEXT = (
-  SELECT name FROM users WHERE id = NEW.user_id
-);
+-- DECLARE reply_username TEXT = (
+--   SELECT name FROM users WHERE id = NEW.user_id
+-- );
 
-DECLARE parent_id INT = (
-    select user_id from comments where NEW.parent_comment_id = id
-);
+-- DECLARE parent_id INT = (
+--     select user_id from comments where NEW.parent_comment_id = id
+-- );
 
-DECLARE parent_username TEXT = (
-    select name from users where id = parent_id
-);
+-- DECLARE parent_username TEXT = (
+--     select name from users where id = parent_id
+-- );
 
-DECLARE title_text TEXT = (
-        select concat(reply_username, ' replied to your comment!')
-);
+-- DECLARE title_text TEXT = (
+--         select concat(reply_username, ' replied to your comment!')
+-- );
 
-        BEGIN
-        IF (NEW.parent_comment_id IS NOT NULL)
-            THEN
-                WITH INSERTED AS (
-                                        INSERT INTO 
-                    notification(notification_title,notification_date, notification_type, user_id, body)
-                    VALUES(title_text, CURRENT_TIMESTAMP, 'comment', parent_id, NEW.comment_text)
-                                        RETURNING id)
-                                INSERT INTO 
-                                        comment_notification(id, comment)
-                                        select inserted.id, NEW.id from inserted;
-             END IF;
-                         RETURN new;
+--         BEGIN
+--         IF (NEW.parent_comment_id IS NOT NULL)
+--             THEN
+--                 WITH INSERTED AS (
+--                                         INSERT INTO 
+--                     notification(notification_title,notification_date, notification_type, user_id, body)
+--                     VALUES(title_text, CURRENT_TIMESTAMP, 'comment', parent_id, NEW.comment_text)
+--                                         RETURNING id)
+--                                 INSERT INTO 
+--                                         comment_notification(id, comment)
+--                                         select inserted.id, NEW.id from inserted;
+--              END IF;
+--                          RETURN new;
         
-END;
-$BODY$
-language plpgsql;
+-- END;
+-- $BODY$
+-- language plpgsql;
                 
 
 
-DROP TRIGGER IF EXISTS trig_comment ON comments;
+-- DROP TRIGGER IF EXISTS trig_comment ON comments;
 
-CREATE TRIGGER trig_comment
-     AFTER INSERT OR UPDATE ON comments
-     FOR EACH ROW
-     EXECUTE PROCEDURE comment_notification();
+-- CREATE TRIGGER trig_comment
+--      AFTER INSERT OR UPDATE ON comments
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE comment_notification();
          
          
--- trigger that welcomes new users after they join an event
-CREATE OR REPLACE FUNCTION event_join_notification() RETURNS trigger AS 
-$BODY$
 
-DECLARE new_username TEXT = (
-    select name from users where id = NEW.user_id
-);
-
-DECLARE event_name TEXT = (
-    select title from event where id = NEW.event_id
-);
-
-DECLARE welcome_title TEXT = (
-    select concat(event_name ,' Event joined!')
-);
-
-DECLARE welcome_body TEXT = (
-    select concat('Welcome, ', new_username, ' ! You have just joined ', event_name, ' !')
-);
-                
-                BEGIN
-                WITH INSERTED AS (
-               INSERT INTO 
-                notification(user_id,notification_type,notification_title, body,  notification_date)
-                VALUES(NEW.user_id, 'event', welcome_title ,welcome_body ,CURRENT_TIMESTAMP)
-                                        RETURNING id)
-                             INSERT INTO event_notification(id, event)
-                                                     select inserted.id, NEW.event_id from inserted;
-        RETURN new;
-END;
-$BODY$
-language plpgsql;
-                
-DROP TRIGGER IF EXISTS trig_event_join ON user_event;
-
-CREATE TRIGGER trig_event_join
-     AFTER INSERT OR UPDATE ON user_event
-     FOR EACH ROW
-     EXECUTE PROCEDURE event_join_notification();
 
 
 
