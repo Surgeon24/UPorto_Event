@@ -247,5 +247,32 @@ class EventController extends Controller{
       return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
   }
 
+  
+  public function add_participant($event_id, $user_id)
+  {
+    $moderator = Auth::id();
+    if(User_event::where('user_id', $moderator)->where('event_id', $event_id)->where('role', 'Owner')->first() == null and
+    User_event::where('user_id', $moderator)->where('event_id', $event_id)->where('role', 'Moderator')->first() == null){
+      // permission denied!
+      return view('/');
+    }
+    $user_event = User_event::where('user_id', $user_id)->where('event_id', $event_id)->first();
+    if($user_event == null){
+      // wrong person!
+      return view('/');
+    }
+    $user_event->role = 'Participant';
+    $user_event->save();
+    
+    
+    $event = Event::find($event_id);
+    $query = DB::table('user_event')->select('user_id')
+      ->from(with(new User_event)->getTable())
+      ->where('event_id', $event_id);
+
+    $list = User::whereIn('id', $query)->get();
+
+      return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
+  }
 }
 
