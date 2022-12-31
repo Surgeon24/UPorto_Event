@@ -48,6 +48,7 @@
               <label style=display:inline;>Date:</label>
               {{ $event->start_date }}
 
+              <x-event-tags :tagsCsv="$event->tags" />
             </h3>
             <h4 class="">
               <label style=display:inline;>Location: </label>
