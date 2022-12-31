@@ -117,6 +117,14 @@ class EventController extends Controller{
 
     public function update(Request $request, $id)
     {
+      $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
+      ]);
+      
       //checks the values of all parameters
       $userId = Auth::id(); 
       if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null){
@@ -131,13 +139,6 @@ class EventController extends Controller{
         return redirect("event_edit/$id")->with('message', 'Event cannot start in the past!');
       }
 
-      $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'location' => 'required|string|max:255',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date',
-      ]);
       
       $event = Event::find($id); // Find the event with the given id
       $event->update([
