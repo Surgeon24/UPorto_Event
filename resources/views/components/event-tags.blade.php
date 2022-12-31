@@ -7,11 +7,10 @@ $tags = explode(',', $tagsCsv);
 
 
 <style>
-.rcorners {
-    border-radius: 25px;
-    background: #e7acac;
+.round {
+    border-radius: 40%;
+    background: #000000;
     margin: 20px;
-
     width: 100px;
     height: 35px;
 }
@@ -23,11 +22,9 @@ $tags = explode(',', $tagsCsv);
 <ul class="">
     @if($tags != [null])
     @foreach($tags as $tag)
-  <li class="rcorners">
-    <a href="/?tag={{$tag}}">{{$tag}}</a>
-  </li>
+  <button class="round">
+    <a style="color: aliceblue" href="/search?search={{$tag}}">{{$tag}}</a>
+  </button>
   @endforeach
   @endif
 </ul>
-
-{{-- <h4 class="">{{ $event->tags }} </h4> --}}

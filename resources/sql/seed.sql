@@ -381,16 +381,18 @@ BEGIN
  IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
          setweight(to_tsvector('english', NEW.title), 'A') ||
-         setweight(to_tsvector('english', NEW.description), 'B') ||
-             setweight(to_tsvector('english', NEW.location), 'C')
+         setweight(to_tsvector('english', NEW.tags), 'A') ||
+         setweight(to_tsvector('english', NEW.description), 'C') ||
+             setweight(to_tsvector('english', NEW.location), 'D')
         );
  END IF;
  IF TG_OP = 'UPDATE' THEN
-         IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
-           NEW.tsvectors = (
-             setweight(to_tsvector('english', NEW.title), 'A') ||
-             setweight(to_tsvector('english', NEW.description), 'B') ||
-                 setweight(to_tsvector('english', NEW.location), 'C')
+    IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location OR NEW.tags <> OLD.tags) THEN
+        NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.tags), 'A') ||
+            setweight(to_tsvector('english', NEW.description), 'C') ||
+            setweight(to_tsvector('english', NEW.location), 'D')
            );
     END IF;
  END IF;
@@ -517,18 +519,19 @@ INSERT INTO administrators VALUES (
     1
 );
 
-INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
+INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
+    'Food, Lisbon',
     current_date,
         1,
     'AEFEUP'
 );
 
-INSERT INTO event(title, description,tags, start_date, owner_id, location) VALUES (
+INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
-    'Porto, Lisabon',
+    'Porto, Food',
     current_date,
     1,
     'Um sitio fixe'
