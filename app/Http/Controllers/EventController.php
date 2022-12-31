@@ -115,11 +115,39 @@ class EventController extends Controller{
 
     public function update(Request $request, $id)
     {
-      // $event = Event::find($id)->update(['title' => $request->get('title')]);
-      $event = Event::find($id);
-      $event->title = $request->get('title');
+      //checks the values of all parameters
+      $userId = Auth::id(); 
+      if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null){
+        return redirect("event_edit/$id")->with('message', 'fill empty fields!');
+      }
+
+      if($request->input('end_date') <= $request->input('start_date')){
+        return redirect("event_edit/$id")->with('message', 'end date cannot be later than start date!');
+      }
+
+      if($request->input('start_date') <= Carbon::now()){
+        return redirect("event_edit/$id")->with('message', 'Event cannot start in the past!');
+      }
+
+      $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
+      ]);
+      
+      $event = Event::find($id); // Find the event with the given id
+      $event->update([
+          'title' => $request->input('title'),
+          'description' => $request->input('description'),
+          'location' => $request->input('location'),
+          'start_date' => $request->input('start_date'),
+          'end_date' => $request->input('end_date'),
+          'is_public' => !$request->input('private'),
+      ]);      
       $event->save();
-      return redirect('event/' . $id)->withSuccess('Your profile was successfully updated!');
+      return redirect('event/' . $id)->withSuccess('Your event was successfully updated!');
     }
 
     public function list()
