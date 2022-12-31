@@ -89,7 +89,7 @@ All actors that are implemented in “UPorto Event” web service are represente
 
 |ID | Actor | Name | Priority | Description | Plan Release|
 | ------ | ------ | ------ | ----- | ----- | ----- |
-| ee01 | Organizer | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it, to keep all information up to date. | v1.0 |
+| ee01 | Organizer (Owner) | Event Changes| Medium | As an organizer of an event, I want to be able to edit the details of the event and delete it, to keep all information up to date. | v1.0 |
 
 #### 2.6. Event Participant
 
