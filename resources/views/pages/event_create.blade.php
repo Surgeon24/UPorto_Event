@@ -39,7 +39,7 @@
         {{ csrf_field() }}
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" type="text" id="title" name="title">
+            <input class="form-control" type="text" id="title" name="title" placeholder="New Year's Eve">
 
             @error('title')
             <p class="error">{{$message}}</p>
@@ -48,7 +48,7 @@
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input class="form-control" type="text" id="description" name="description">
+            <input class="form-control" type="text" id="description" name="description" placeholder="Farewell to 2022">
 
             @error('description')
             <p class="error">{{$message}}</p>
@@ -58,7 +58,7 @@
         </div>
         <div class="form-group">
             <label for="location">Location</label>
-            <input class="form-control" type="text" id="location" name="location">
+            <input class="form-control" type="text" id="location" name="location" placeholder="Porto, Portugal">
 
             @error('location')
             <p class="error">{{$message}}</p> 

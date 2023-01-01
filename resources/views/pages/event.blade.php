@@ -1,69 +1,80 @@
+@php
+    use Carbon\Carbon;
+    $now = Carbon::now();
+    $startDate = new Carbon($event->start_date);
+    $endDate = new Carbon($event->end_date);
+    $duration = $endDate->diffInDays($startDate);
+    $timeLeft = $startDate->diffInDays($now);
+@endphp
+
 <x-layout>
+    <style>
+        .card {
+            /* Add shadows to create the "card" effect */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
 
-<style>
-    .card {
-        /* Add shadows to create the "card" effect */
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container {
+            padding: 2px 16px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 5px;
+            /* 5px rounded corners */
+        }
+
+        /* Add rounded corners to the top left and the top right corner of the image 
+        */
+        img {
+            border-radius: 5px 5px 0 0;
+        }
+
+
+    .bar{
+    background-color:#363230;
+    color:white;
+    border-radius: 15px;
+    border: 1px #000 solid;
     }
 
-    /* On mouse-over, add a deeper shadow */
-    .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    .login{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -150px 0 0 -150px;
+        width:300px;
+        height:300px;
     }
 
-    /* Add some padding inside the card container */
-    .container {
-        padding: 2px 16px;
+    article {
+        columns: 3;
+
     }
+    </style>
 
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
-        border-radius: 5px;
-        /* 5px rounded corners */
-    }
-
-    /* Add rounded corners to the top left and the top right corner of the image 
-    */
-    img {
-        border-radius: 5px 5px 0 0;
-    }
-
-
-  .bar{
-background-color:#363230;
-color:white;
-border-radius: 15px;
-border: 1px #000 solid;
-  }
-
-  .login{
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin: -150px 0 0 -150px;
-      width:300px;
-      height:300px;
-  }
-
-  article {
-    columns: 3;
-
-  }
-</style>
 
 <div class="gray">
-    <div >
+    <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
 
         <h2 class="">{{ $event->description }} </h2>
         @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
-        <h3 class="">
-            <label style=display:inline;>Date:</label>
-            {{ $event->start_date }}
-
-        </h3>
+      <h3 class="">
+        <label style=display:inline;>Date:</label>
+        {{ $event->start_date }} ({{ $timeLeft }} days until start, duration: {{ $duration }} days)
+      </h3>
+      <h3>
+        <label style="display:inline;">End date:</label> {{ $event->end_date }}
+      </h3>
         <h4 class="">
             <label style=display:inline;>Location: </label>
             {{ $event->location }}

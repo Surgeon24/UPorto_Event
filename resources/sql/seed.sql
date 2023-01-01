@@ -48,8 +48,6 @@ drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed');
 
 
-drop type if exists TYPE_NOTIFICATION;
-CREATE TYPE TYPE_NOTIFICATION AS ENUM('comment', 'event', 'poll', 'report');
 
 drop type if exists "comment_vote" CASCADE;
 CREATE TYPE "comment_vote" AS ENUM ('like', 'dislike');
@@ -112,6 +110,7 @@ CREATE TABLE IF NOT EXISTS event(
     id SERIAL PRIMARY KEY,
     title TEXT DEFAULT 'Adega Leonor Party' NOT NULL,
     description TEXT DEFAULT('FEUP party') NOT NULL,
+    tags VARCHAR DEFAULT(''), -- Comma separated
     start_date DATE DEFAULT (current_date) CHECK (current_date <= start_date) NOT NULL,
     end_date DATE DEFAULT (current_date + INTERVAL '1 DAY') CHECK (start_date <= end_date) NOT NULL,
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
@@ -179,13 +178,6 @@ CREATE TABLE IF NOT EXISTS comment_votes(
 
 
 
-
-CREATE TABLE IF NOT EXISTS tag(
-    id SERIAL PRIMARY KEY,
-    event_id INT,
-    name varchar NOT NULL,
-    FOREIGN KEY (event_id) REFERENCES event(id)
-);
 
 
 CREATE TABLE IF NOT EXISTS photo(
@@ -273,43 +265,6 @@ DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE
 
 
 
-
-CREATE TABLE IF NOT EXISTS notification(
-    id SERIAL PRIMARY KEY,
-    user_id INT,
-    notification_type type_notification NOT NULL,
-    notification_title TEXT NOT NULL DEFAULT ('Main topic of the notification (header)'),
-    body TEXT,  -- is not supposed to be filled for all types of notifications
-    notification_date DATE NOT NULL DEFAULT (current_date) CHECK (notification_date <= current_date),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
-
-CREATE TABLE IF NOT EXISTS comment_notification(
-        id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    comment INTEGER NOT NULL REFERENCES comments (id) ON DELETE CASCADE
-);
-
-
-CREATE TABLE IF NOT EXISTS poll_notification
-(
-    id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    poll        INTEGER NOT NULL REFERENCES poll (id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS event_notification
-(
-    id      INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    event   INTEGER NOT NULL REFERENCES event (id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS report_notification
-(
-    id     INTEGER NOT NULL REFERENCES notification (id) ON DELETE CASCADE,
-    report INTEGER NOT NULL REFERENCES report (id) ON DELETE CASCADE
-);
-
-
 CREATE TABLE password_resets
 (
     id               SERIAL PRIMARY KEY,
@@ -326,92 +281,54 @@ CREATE TABLE password_resets
 
 -- Trigger to create a notification when a comment is replied 
 
-CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS 
-$BODY$
+-- CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS 
+-- $BODY$
 
-DECLARE reply_username TEXT = (
-  SELECT name FROM users WHERE id = NEW.user_id
-);
+-- DECLARE reply_username TEXT = (
+--   SELECT name FROM users WHERE id = NEW.user_id
+-- );
 
-DECLARE parent_id INT = (
-    select user_id from comments where NEW.parent_comment_id = id
-);
+-- DECLARE parent_id INT = (
+--     select user_id from comments where NEW.parent_comment_id = id
+-- );
 
-DECLARE parent_username TEXT = (
-    select name from users where id = parent_id
-);
+-- DECLARE parent_username TEXT = (
+--     select name from users where id = parent_id
+-- );
 
-DECLARE title_text TEXT = (
-        select concat(reply_username, ' replied to your comment!')
-);
+-- DECLARE title_text TEXT = (
+--         select concat(reply_username, ' replied to your comment!')
+-- );
 
-        BEGIN
-        IF (NEW.parent_comment_id IS NOT NULL)
-            THEN
-                WITH INSERTED AS (
-                                        INSERT INTO 
-                    notification(notification_title,notification_date, notification_type, user_id, body)
-                    VALUES(title_text, CURRENT_TIMESTAMP, 'comment', parent_id, NEW.comment_text)
-                                        RETURNING id)
-                                INSERT INTO 
-                                        comment_notification(id, comment)
-                                        select inserted.id, NEW.id from inserted;
-             END IF;
-                         RETURN new;
+--         BEGIN
+--         IF (NEW.parent_comment_id IS NOT NULL)
+--             THEN
+--                 WITH INSERTED AS (
+--                                         INSERT INTO 
+--                     notification(notification_title,notification_date, notification_type, user_id, body)
+--                     VALUES(title_text, CURRENT_TIMESTAMP, 'comment', parent_id, NEW.comment_text)
+--                                         RETURNING id)
+--                                 INSERT INTO 
+--                                         comment_notification(id, comment)
+--                                         select inserted.id, NEW.id from inserted;
+--              END IF;
+--                          RETURN new;
         
-END;
-$BODY$
-language plpgsql;
+-- END;
+-- $BODY$
+-- language plpgsql;
                 
 
 
-DROP TRIGGER IF EXISTS trig_comment ON comments;
+-- DROP TRIGGER IF EXISTS trig_comment ON comments;
 
-CREATE TRIGGER trig_comment
-     AFTER INSERT OR UPDATE ON comments
-     FOR EACH ROW
-     EXECUTE PROCEDURE comment_notification();
+-- CREATE TRIGGER trig_comment
+--      AFTER INSERT OR UPDATE ON comments
+--      FOR EACH ROW
+--      EXECUTE PROCEDURE comment_notification();
          
          
--- trigger that welcomes new users after they join an event
-CREATE OR REPLACE FUNCTION event_join_notification() RETURNS trigger AS 
-$BODY$
 
-DECLARE new_username TEXT = (
-    select name from users where id = NEW.user_id
-);
-
-DECLARE event_name TEXT = (
-    select title from event where id = NEW.event_id
-);
-
-DECLARE welcome_title TEXT = (
-    select concat(event_name ,' Event joined!')
-);
-
-DECLARE welcome_body TEXT = (
-    select concat('Welcome, ', new_username, ' ! You have just joined ', event_name, ' !')
-);
-                
-                BEGIN
-                WITH INSERTED AS (
-               INSERT INTO 
-                notification(user_id,notification_type,notification_title, body,  notification_date)
-                VALUES(NEW.user_id, 'event', welcome_title ,welcome_body ,CURRENT_TIMESTAMP)
-                                        RETURNING id)
-                             INSERT INTO event_notification(id, event)
-                                                     select inserted.id, NEW.event_id from inserted;
-        RETURN new;
-END;
-$BODY$
-language plpgsql;
-                
-DROP TRIGGER IF EXISTS trig_event_join ON user_event;
-
-CREATE TRIGGER trig_event_join
-     AFTER INSERT OR UPDATE ON user_event
-     FOR EACH ROW
-     EXECUTE PROCEDURE event_join_notification();
 
 
 
@@ -464,16 +381,18 @@ BEGIN
  IF TG_OP = 'INSERT' THEN
         NEW.tsvectors = (
          setweight(to_tsvector('english', NEW.title), 'A') ||
-         setweight(to_tsvector('english', NEW.description), 'B') ||
-             setweight(to_tsvector('english', NEW.location), 'C')
+         setweight(to_tsvector('english', NEW.tags), 'B') ||
+         setweight(to_tsvector('english', NEW.description), 'C') ||
+             setweight(to_tsvector('english', NEW.location), 'D')
         );
  END IF;
  IF TG_OP = 'UPDATE' THEN
-         IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location) THEN
-           NEW.tsvectors = (
-             setweight(to_tsvector('english', NEW.title), 'A') ||
-             setweight(to_tsvector('english', NEW.description), 'B') ||
-                 setweight(to_tsvector('english', NEW.location), 'C')
+    IF (NEW.title <> OLD.title OR NEW.description <> OLD.description OR NEW.location <> OLD.location OR NEW.tags <> OLD.tags) THEN
+        NEW.tsvectors = (
+            setweight(to_tsvector('english', NEW.title), 'A') ||
+            setweight(to_tsvector('english', NEW.tags), 'B') ||
+            setweight(to_tsvector('english', NEW.description), 'C') ||
+            setweight(to_tsvector('english', NEW.location), 'D')
            );
     END IF;
  END IF;
@@ -600,19 +519,21 @@ INSERT INTO administrators VALUES (
     1
 );
 
-INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
+INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
+    'Food, Lisbon',
     current_date,
         1,
     'AEFEUP'
 );
 
-INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
+INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'Jantar Curso LEIC',
     'Convivio entre estudantes do LEIC',
+    'Porto, Food',
     current_date,
-        1,
+    1,
     'Um sitio fixe'
 );
 
@@ -636,28 +557,31 @@ INSERT INTO event(title, description, start_date, owner_id, location) VALUES (
 
 
 
-insert into event (id, title, description, owner_id, location) values (30, 'And Then There Were None', 'Crime|Mystery', 1, '29 Sachs Way');
-insert into event (id, title, description, owner_id, location) values (31, 'Misérables, Les', 'Drama|Romance', 1, '54762 Maryland Terrace');
-insert into event (id, title, description, owner_id, location) values (32, 'Marriage of Maria Braun, The (Ehe der Maria Braun, Die)', 'Drama', 1, '1117 Esker Terrace');
-insert into event (id, title, description, owner_id, location) values (33, 'Mad Dogs & Englishmen', 'Documentary|Musical', 1, '37 Arrowood Point');
-insert into event (id, title, description, owner_id, location) values (34, 'Wedding in Blood (Noces rouges, Les)', 'Crime|Drama', 1, '5779 Homewood Lane');
-insert into event (id, title, description, owner_id, location) values (35, 'Ballroom, The (Chega de Saudade)', 'Drama|Musical|Romance', 1, '8 Randy Junction');
-insert into event (id, title, description, owner_id, location) values (36, 'Elite Squad: The Enemy Within (Tropa de Elite 2 - O Inimigo Agora É Outro)', 'Action|Crime|Drama', 1, '8206 Erie Lane');
-insert into event (id, title, description, owner_id, location) values (37, 'To Kill a Mockingbird', 'Drama', 1, '946 South Road');
-insert into event (id, title, description, owner_id, location) values (38, 'So Normal (Normais, Os)', 'Comedy', 1, '8 Gateway Center');
-insert into event (id, title, description, owner_id, location) values (39, 'Murder, My Sweet', 'Crime|Film-Noir|Thriller', 1, '052 Holmberg Street');
-insert into event (id, title, description, owner_id, location) values (40, 'Primal Fear', 'Crime|Drama|Mystery|Thriller', 1, '60756 Chinook Road');
-insert into event (id, title, description, owner_id, location) values (41, 'Informant', 'Documentary', 1, '66856 Talmadge Crossing');
-insert into event (id, title, description, owner_id, location) values (42, 'Amy', 'Comedy|Drama', 1, '3 Summerview Street');
-insert into event (id, title, description, owner_id, location) values (43, 'Are We There Yet?', 'Children|Comedy', 1, '9171 Green Ridge Junction');
-insert into event (id, title, description, owner_id, location) values (44, 'Kapitalism: Our Improved Formula (Kapitalism - Reteta noastra secreta)', 'Documentary', 1, '6139 Fuller Parkway');
-insert into event (id, title, description, owner_id, location) values (45, 'Rally ''Round the Flag, Boys!', 'Comedy', 1, '163 Sundown Alley');
-insert into event (id, title, description, owner_id, location) values (46, 'Big Deal on Madonna Street (I Soliti Ignoti)', 'Comedy|Crime', 1, '530 Lunder Junction');
-insert into event (id, title, description, owner_id, location) values (47, 'Toothless', 'Children|Comedy', 1, '72 Melody Place');
-insert into event (id, title, description, owner_id, location) values (48, 'Thérèse: The Story of Saint Thérèse of Lisieux', 'Drama', 1, '2032 Iowa Place');
-insert into event (id, title, description, owner_id, location) values (49, 'Pride and Prejudice', 'Comedy|Drama|Romance', 1, '2762 Havey Road');
-insert into event (id, title, description, owner_id, location) values (50, 'Dream Home (Wai dor lei ah yut ho)', 'Horror', 1, '9255 Harper Alley');
-
+insert into event (title, description, tags, owner_id, location) values ('To Live and Die in L.A.', 'Action|Crime|Drama|Thriller', 'Syria', 1, '1 David Road');
+insert into event (title, description, tags, owner_id, location) values ('Bonhoeffer: Agent of Grace', 'Drama', 'Russia', 1, '5171 Esch Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Toy Story 2', 'Adventure|Animation|Children|Comedy|Fantasy', 'Kyrgyzstan', 1, '81 Porter Point');
+insert into event (title, description, tags, owner_id, location) values ('Hiding Out', 'Comedy', 'China', 1, '50 Ridge Oak Terrace');
+insert into event (title, description, tags, owner_id, location) values ('Barber of Siberia, The (Sibirskij tsiryulnik)', 'Drama|Romance', 'Indonesia', 1, '483 Cambridge Avenue');
+insert into event (title, description, tags, owner_id, location) values ('Wesley Willis: The Daddy of Rock ''n'' Roll', 'Documentary', 'Russia', 1, '51655 Prentice Plaza');
+insert into event (title, description, tags, owner_id, location) values ('Apocalypto', 'Adventure|Drama|Thriller', 'Ethiopia', 1, '25108 Sunbrook Lane');
+insert into event (title, description, tags, owner_id, location) values ('Lilian''s Story', 'Drama', 'Russia', 1, '7904 Bobwhite Trail');
+insert into event (title, description, tags, owner_id, location) values ('Che: Part Two', 'Drama|War', 'Macedonia', 1, '33 Lyons Junction');
+insert into event (title, description, tags, owner_id, location) values ('Agenda: Grinding America Down', 'Documentary', 'China', 1, '9289 3rd Road');
+insert into event (title, description, tags, owner_id, location) values ('Polar Express, The', 'Adventure|Animation|Children|Fantasy|IMAX', 'China', 1, '75 Rieder Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Song to Remember, A', 'Drama', 'Malaysia', 1, '5 Arapahoe Crossing');
+insert into event (title, description, tags, owner_id, location) values ('Revenge of the Nerds III: The Next Generation', 'Comedy', 'Tanzania', 1, '4 Center Street');
+insert into event (title, description, tags, owner_id, location) values ('Carancho', 'Crime|Drama|Romance', 'Portugal', 1, '5 Portage Plaza');
+insert into event (title, description, tags, owner_id, location) values ('All I Desire', 'Drama|Romance', 'Czech Republic', 1, '58073 Oneill Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Garfield: A Tail of Two Kitties', 'Animation|Children|Comedy', 'Portugal', 1, '43108 Vidon Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Jodhaa Akbar', 'Drama|Musical|Romance|War', 'China', 1, '57 Cardinal Park');
+insert into event (title, description, tags, owner_id, location) values ('Birthday Girl', 'Drama|Romance', 'Germany', 1, '019 Sheridan Drive');
+insert into event (title, description, tags, owner_id, location) values ('Immigrant, The', 'Drama|Romance', 'Argentina', 1, '4 Orin Parkway');
+insert into event (title, description, tags, owner_id, location) values ('Cat People', 'Drama|Horror|Romance|Thriller', 'Nigeria', 1, '57 Oak Valley Terrace');
+insert into event (title, description, tags, owner_id, location) values ('Project X', 'Comedy', 'China', 1, '86 Sullivan Trail');
+insert into event (title, description, tags, owner_id, location) values ('Patton Oswalt: Werewolves and Lollipops', 'Comedy', 'Portugal', 1, '26 Petterle Hill');
+insert into event (title, description, tags, owner_id, location) values ('Dark, The', 'Horror|Mystery|Thriller', 'Mongolia', 1, '7030 Victoria Center');
+insert into event (title, description, tags, owner_id, location) values ('Midnight Movies: From the Margin to the Mainstream', 'Documentary', 'China', 1, '05 Kennedy Court');
+insert into event (title, description, tags, owner_id, location) values ('Devil''s Playground', 'Documentary', 'Indonesia', 1, '53 Waywood Parkway');
 
 
 
