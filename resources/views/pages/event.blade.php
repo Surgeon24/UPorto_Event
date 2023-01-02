@@ -116,8 +116,11 @@
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
             @elseif ($role === 'Unconfirmed')
             <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Remove request</a>
-            @elseif ($role !== 'Owner')
+            @elseif ($role !== 'Owner' and $role !== 'Blocked')
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Quit </a>
+            @endif
+            @if ($role === 'Blocked')
+                <h2 style="color: rgb(230, 58, 10)"> You was banned by moderator! </h2>
             @endif
         </div>
     </div>
