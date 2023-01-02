@@ -70,6 +70,7 @@ Route::get('event/{id}/all_participants', 'EventController@show_participants')->
 Route::get('event/{id}/add_participant/{user}', 'EventController@add_participant')->name('add_participant');
 //Search
 Route::get('search', 'SearchController@eventSearch');
+Route::post('search', 'SearchController@searchByDate')->name('searchByDate');
 Route::get('search_user', 'SearchController@userSearch');
 
 //Comment
