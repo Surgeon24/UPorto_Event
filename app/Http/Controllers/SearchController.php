@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,17 +29,20 @@ class SearchController extends Controller
       $fromDate = $request->input('fromDate');
       $toDate   = $request->input('toDate');
       $checkPrivate = $request->input('checkPrivate');
-      
+      $checkRelevance = $request->input('checkRelevance');
 
-      if($toDate == null){
+      if($toDate == null && $fromDate != null){
         $event = DB::table('event')->select()
         ->where('start_date', '>=', $fromDate)
         ->get();
       }
-      elseif($fromDate == null){
+      elseif($fromDate == null && $toDate != null){
         $event = DB::table('event')->select()
         ->where('end_date', '<=', $toDate) 
         ->get();
+      }
+      elseif($fromDate == null && $toDate == null){
+        $event = DB::table('event')->select()->get();
       }
       else{
         $event = DB::table('event')->select()
@@ -49,6 +53,10 @@ class SearchController extends Controller
 
       if($checkPrivate == true){
         $event = $event->where('is_public', false);
+      }
+      
+      if($checkRelevance == true){
+        $event = $event->where('end_date','>=', Carbon::now());
       }
 
       return view('pages.search',compact('event'));
