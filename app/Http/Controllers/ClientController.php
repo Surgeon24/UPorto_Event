@@ -35,10 +35,26 @@ class ClientController extends Controller{
 
     public function update(Request $request, $id)
     {
-      $user = User::find($id);
-      $user->name = $request->get('name');
-      $user->email = $request->get('email');
-      $user->save();
+      $request->validate([
+          'name' => 'required|min:3',
+          'email' => 'required|email'
+      ]);
+      $input = $request->all();
+      if($request->file('photo_path') != null){
+        $image = $request->file('photo_path');
+        $image_name = $image->getClientOriginalName();
+        $image->move('assets/profileImages/', $id.".{$image->getClientOriginalExtension()}");
+        $path = $id.".{$image->getClientOriginalExtension()}";
+
+        $user = User::find($id);
+        $user->photo_path = $path;
+        $user->save();
+      }
+        $user = User::find($id);
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->save();
+
       return redirect('profile/' . $id)->withSuccess('Your profile was successfully updated!');
     }
 

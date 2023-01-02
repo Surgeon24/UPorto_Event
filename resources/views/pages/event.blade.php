@@ -65,7 +65,17 @@
 <div class="gray">
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
-
+        @php
+            $photo = App\Models\Photo::where('event_id', $event->id)->first();
+            if($photo != null){
+                $image_path = App\Models\Photo::where('event_id', $event->id)->first()->image_path;
+            } else {
+                $image_path = "party.png";
+            }
+        @endphp
+        <div>
+            <img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Profile Picture">
+        </div>
         <h2 class="">{{ $event->description }} </h2>
         @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
       <h3 class="">
@@ -100,7 +110,6 @@
                 @endif
                 <div>
                     <div>
-                        {{ $event->id }}
                         <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
                             <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
                             <button type="submit" class="btn btn-primary">

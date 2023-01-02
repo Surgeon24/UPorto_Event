@@ -35,7 +35,7 @@
   <div class="login"> 
   <div class="gray">
       <h1>Edit Event</h1>
-      <form class="mx-auto" method="post" action="{{ route('event_update', ['id' => $event->id]) }}" accept-charset="UTF-8">
+      <form class="mx-auto" method="post" action="{{ route('event_update', ['id' => $event->id]) }}" accept-charset="UTF-8" enctype="multipart/form-data">
       {{ csrf_field() }}
       <div class="form-group">
           <label for="title">Title</label>
@@ -90,7 +90,11 @@
         <input type="checkbox" name="private" {{ !$event->is_public ? 'checked' : '' }}> create private event
         </label>
       </div>
-      
+      <div>
+        <label for="exampleFormControlFile1">Event image</label>
+        <input type="file" name="image_path" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+      <p></p>
       <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
       </form>
   </div>
