@@ -1,58 +1,5 @@
-<style>
-    .dropbtn {
-      background-color: #045aaa;
-      color: white;
-      padding: 16px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-    
-    .dropbtn:hover, .dropbtn:focus {
-      background-color: #4d669c;
-    }
-    
-    #myInput {
-      box-sizing: border-box;
-      background-image: url('searchicon.png');
-      background-position: 14px 12px;
-      background-repeat: no-repeat;
-      font-size: 16px;
-      padding: 14px 20px 12px 45px;
-      border: none;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    #myInput:focus {outline: 3px solid #ddd;}
-    
-    .dropdown {
-      color: black;
-      position: relative;
-      display: inline-block;
-      right: 25%;
-    }
-    
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f6f6f6;
-      min-width: 230px;
-      overflow: auto;
-      border: 1px solid #ddd;
-      z-index: 1;
-    }
-    
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .dropdown a:hover {background-color: #ddd;}
-    
-    .show {display: block;}
-    </style>
+<link href="{{ asset('css/dropdown.css') }}" rel="stylesheet">
+
 {{-- {{route('seach')}} --}}
 <form action="{{route('searchByDate')}}" method="POST">
 @csrf   
@@ -60,21 +7,26 @@
     <button onclick="myFunction()" class="dropbtn">Advanced Search</button>
     
     <div id="myDropdown" class="dropdown-content">
-      <p >start date: <input type="date" class="form-label input-sm" id="from" name="fromDate" value="leave empty" required></p> 
-     
-      <p>end date: <input type="date" class="form-label input-sm" id="to" name="toDate" required></p> 
-      <p>private: <input type="checkbox" name="checkPrivate"></p>
-      <input type="submit" value="search"></button>
+
+      <p >start date: <input type="date" class="form-label input-sm" id="from" name="fromDate" value="leave empty" required style="background: #ebf8fc"></p> 
+      <p>end date: <input type="date" class="form-label input-sm" id="to" name="toDate" required style="background: #ebf8fc"></p> 
+      <p>private: <input type="checkbox" name="checkPrivate" required style="background: #ebf8fc"></p>
+      <p>current events: <input type="checkbox" name="checkRelevance" required style="background: #ebf8fc"></p>
+      <input type="submit" value="search" style="background: #3df9ff; border-radius: 10px 10px;"></button>
+
     </div>
 
   </div>
+
 </form>
 
 
+
   <script>
+    // at least one input should be made in the Advanced Search Filter dropdown
     document.addEventListener('DOMContentLoaded', function() {
   const inputs = Array.from(
-    document.querySelectorAll('input[name=fromDate], input[name=toDate]')
+    document.querySelectorAll('input[name=fromDate], input[name=toDate], input[name=checkPrivate], input[name=checkRelevance]')
   );
 
   const inputListener = e => {
