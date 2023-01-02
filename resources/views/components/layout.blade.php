@@ -108,6 +108,7 @@
         <li><a id="len2" class="hoverable" href="{{ url('/about') }}" style="color: rgb(164, 224, 243);">About</a></li>
         <li><a id="len3" class="hoverable" href="{{ url('/all_events') }}" style="color: rgb(164, 224, 243);">Browse events</a></li>
         <li><a id="len3" class="hoverable" href="{{ url('/my_events') }}" style="color: rgb(164, 224, 243);">My events</a></li>
+        <li><a id="len3" class="hoverable" href="{{ url('/all_users') }}" style="color: rgb(240, 123, 123);">Search users</a></li>
         <li><a id="len4" class="hoverable" href="{{ url('/faqs') }}" style="color: rgb(164, 224, 243);">FAQ</a></li>
 
         @if (Auth::check())
