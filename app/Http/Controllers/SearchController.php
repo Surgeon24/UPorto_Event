@@ -17,7 +17,7 @@ class SearchController extends Controller
 
     public function userSearch(){
       $search_text = $_GET['search'];
-      $event = DB::select("SELECT * FROM users WHERE tsvectors @@ plainto_tsquery('english',:search) 
+      $user = DB::select("SELECT * FROM users WHERE tsvectors @@ plainto_tsquery('english',:search) 
       ORDER BY ts_rank(tsvectors,plainto_tsquery('english',:search)) 
       DESC;",['search' => $search_text]);
       return view('pages.search_user',compact('user'));

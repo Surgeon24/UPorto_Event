@@ -29,9 +29,9 @@ Route::get('faqs', [FaqController::class, 'index']);
 // Client
 Route::get('profile/{id}', 'ClientController@show')->name('user');
 Route::get('profile_edit/{id}', [ClientController::class, 'show_edit']);
-//Route::post('profile_edit/{id}', 'ClientController@update');
 Route::post('profile_edit/{id}', 'ClientController@update')->name('user-update')->middleware('auth');
 Route::delete('profile/{id}', 'ClientController@delete')->name('delete_user')->middleware('auth');
+
 
 // API
 Route::patch('api/like/{id}', 'CommentController@like');
@@ -69,15 +69,16 @@ Route::get('event/{id}/add_participant/{user}', 'EventController@add_participant
 Route::get('event/{id}/create_poll', 'EventController@show_create_poll')->name('show_create_poll');
 Route::post('event/{id}/create_poll', 'EventController@create_poll')->name('create_poll');
 Route::get('event/{event_id}/vote/{poll_id}/{choice_id}', 'EventController@vote_in_poll')->name('vote_in_poll');
-//Search
-Route::get('search', 'SearchController@eventSearch');
-Route::post('search', 'SearchController@searchByDate')->name('searchByDate');
-Route::get('search_user', 'SearchController@userSearch');
 
 //Comment
 Route::post('event/{id}', 'CommentController@create')->name('new_comment');
 Route::delete('event/{id}/comment', 'CommentController@delete')->name('delete_comment')->middleware('auth');
 
+//Search
+Route::get('search', 'SearchController@eventSearch');
+Route::post('search', 'SearchController@searchByDate')->name('searchByDate');
+Route::get('search_user', 'SearchController@userSearch');
+Route::get('all_users', 'ClientController@list')->name('user_list');
 
 Route::get('index', [EventController::class, 'index'])->name('index');
 
