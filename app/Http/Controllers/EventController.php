@@ -269,7 +269,7 @@ class EventController extends Controller{
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
           $user = User::where('id', Auth::user()->id)->first();
-          $owner->notify(new JoinRequestNotification($user));
+          $owner->notify(new JoinRequestNotification($user, $event));
 
         }
       }
