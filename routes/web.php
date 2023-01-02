@@ -71,6 +71,7 @@ Route::post('event/{id}/create_poll', 'EventController@create_poll')->name('crea
 Route::get('event/{event_id}/vote/{poll_id}/{choice_id}', 'EventController@vote_in_poll')->name('vote_in_poll');
 //Search
 Route::get('search', 'SearchController@eventSearch');
+Route::post('search', 'SearchController@searchByDate')->name('searchByDate');
 Route::get('search_user', 'SearchController@userSearch');
 
 //Comment
