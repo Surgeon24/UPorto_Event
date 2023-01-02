@@ -62,7 +62,7 @@ Route::get('event_create', 'EventController@show_create')->name('event_create');
 Route::post('event_create', 'EventController@create')->name('create_event');
 Route::get('my_events', 'EventController@list_participations')->name('my_events');
 Route::get('event/{id}/join', 'EventController@join')->name('join_event');
-Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
+Route::get('event/{id}/quit', 'EventController@quit')->name('quit_event');
 Route::get('event/{id}/all_participants', 'EventController@show_participants')->name('all_participants');
 Route::get('event/{id}/add_participant/{user}', 'EventController@add_participant')->name('add_participant');
 //Polls, but still in EventController

@@ -2,15 +2,15 @@
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
-create schema if not exists lbaw22122;
+create schema if not exists lbaw;
+set search_path=lbaw;
 
 drop type if exists email_t CASCADE;
-CREATE DOMAIN  email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
+CREATE DOMAIN email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
 
 drop type if exists timestamp_t CASCADE;
-CREATE DOMAIN  timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
+CREATE DOMAIN timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
 
-set search_path=lbaw22122;
 
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS authorized_user CASCADE;
@@ -158,8 +158,12 @@ CREATE TABLE IF NOT EXISTS comments(
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (current_date <= comment_date),
-        FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+        FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id)
+                                            ON DELETE CASCADE
+                                            ON UPDATE CASCADE,
         FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+                                            ON DELETE CASCADE
+                                            ON UPDATE CASCADE
 );
 
 
@@ -172,7 +176,8 @@ CREATE TABLE IF NOT EXISTS comment_votes(
     comment_id INTEGER,
     type comment_vote NOT NULL DEFAULT ('like'),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
+    FOREIGN KEY (comment_id) REFERENCES comments(id) 
+                                ON DELETE CASCADE
 );
 
 
@@ -186,6 +191,8 @@ CREATE TABLE IF NOT EXISTS photo(
     image_path TEXT UNIQUE,
     event_id INT,
     FOREIGN KEY (event_id) REFERENCES event(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
 );
 
 
@@ -197,6 +204,9 @@ CREATE TABLE IF NOT EXISTS poll(
     ends_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(ends_at > starts_at) NOT NULL,
     UNIQUE(id, event_id),
     FOREIGN KEY (event_id) REFERENCES event(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
+    
 );
 
 
@@ -206,6 +216,8 @@ CREATE TABLE IF NOT EXISTS poll_choice(
     choice TEXT NOT NULL,
     UNIQUE(poll_id, id),
     FOREIGN KEY (poll_id) REFERENCES poll(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
 );
 
 
@@ -216,8 +228,12 @@ CREATE TABLE IF NOT EXISTS event_poll(
     poll_id INT,
     UNIQUE(user_id, poll_id),
     UNIQUE(user_id, event_id, poll_id),
-    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id)
+                                     ON DELETE CASCADE
+                                     ON UPDATE CASCADE,
     FOREIGN KEY (poll_id, event_id) REFERENCES poll (id, event_id) 
+                                     ON DELETE CASCADE
+                                     ON UPDATE CASCADE
 );
 
 
@@ -229,8 +245,12 @@ CREATE TABLE IF NOT EXISTS poll_vote(
     choice_id INT,
     date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
     UNIQUE (user_id, event_id, poll_id),
-    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id)
+                                                ON DELETE CASCADE
+                                                ON UPDATE CASCADE,
     FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice (id, poll_id)
+                                                ON DELETE CASCADE
+                                                ON UPDATE CASCADE
 
 );
 
@@ -240,23 +260,22 @@ CREATE TABLE IF NOT EXISTS poll_vote(
 
 
 create table IF NOT EXISTS "notifications" (
-    "id" uuid not null, 
-    "type" varchar(255) not null, 
-    "notifiable_type" varchar(255) not null, 
-    "notifiable_id" bigint not null, 
-    "data" text not null, 
-    "read_at" timestamp(0) without time zone null, 
-    "created_at" timestamp(0) without time zone null, 
-    "updated_at" timestamp(0) without time zone null);  
+    id uuid not null PRIMARY KEY, 
+    type varchar(255) not null, 
+    notifiable_type varchar(255) not null, 
+    notifiable_id bigint not null, 
+    data text not null, 
+    read_at timestamp(0) without time zone null, 
+    created_at timestamp(0) without time zone null, 
+    updated_at timestamp(0) without time zone null,
+    FOREIGN KEY (notifiable_id) REFERENCES users(id)
+                                    ON DELETE CASCADE
+                                    ON UPDATE CASCADE
+    );  
 
-DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
-  create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
-  ("notifiable_type", "notifiable_id");
-  alter table "notifications" add primary key ("id");
-
-
-
-
+    DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
+    create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
+                                                ("notifiable_type", "notifiable_id");
 
 
 
@@ -267,11 +286,11 @@ DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE
 
 CREATE TABLE password_resets
 (
-    id               SERIAL PRIMARY KEY,
-    email            email_t,
-    token            VARCHAR(100),
-    created_at       timestamp_t,
-    updated_at       timestamp_t,
+    id SERIAL PRIMARY KEY,
+    email email_t,
+    token VARCHAR(100),
+    created_at timestamp_t,
+    updated_at timestamp_t,
     CONSTRAINT ck_updated_after_created CHECK ( updated_at >= created_at )
 );
 
