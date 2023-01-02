@@ -78,37 +78,6 @@
       padding: 20px;
     }
 </style>
-
-
-{{-- <div class="gray">
-    <article class="card">
-    <ul>
-        <div>
-            <p class="nick"><a title="go to profile" href="profile/{{$comment->user_id}}">{{App\Models\User::where('id', $comment->user_id)->first()->name;}}</a></p>
-            <p class="avatar"><img src="{{ asset('assets/profileImages/image.png') }}" alt="Profile Picture"></p>
-        </div>
-        <div>
-            <p class="post-time">{{$comment->comment_date}}</p>
-            <p class="comment">{{$comment->comment_text}}</p>
-            @if(Auth::user()->isStaff() || Auth::user()->id === $comment->user_id)
-                <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <input type='hidden' id='id' name='id' value='{{ $comment->id }}'>
-                    <button type="submit">
-                        Delete
-                    </button>
-                </form>
-            @endif
-            <button  class="like" data-id="{{$comment->id}}">
-                <i class="fa fa-thumbs-up"></i>
-                <span class="icon">Like</span>
-            </button>
-        </div>
-    </ul>
-    </article>
-</div>    --}}
-
                 
 {{--------------------old version -----------------------}}
 
