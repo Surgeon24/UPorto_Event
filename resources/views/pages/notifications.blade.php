@@ -41,7 +41,7 @@
             @else
                     {{-- event/{{$notification->data['event_id']}}/all_participants --}}
             <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} event_id={{$notification->data['event_id']}}, notifiable_id={{$notification->notifiable_id}} {{$notification->created_at}}  
-            <button style="color: rgb(1, 92, 28)" onclick="window.location.href='">{{$notification->data['action']}}</button> 
+            <button style="color: rgb(1, 92, 28)" onclick="window.location.href='event/{{$notification->data['event_id']}}/all_participants'">{{$notification->data['action']}}</button> 
             <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>        
 
             @endif

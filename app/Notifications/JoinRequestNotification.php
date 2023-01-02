@@ -62,7 +62,7 @@ class JoinRequestNotification extends Notification
             // 'receiver_id' => '',
             'email' => '',
             'data' => 'has made a request to join your Private Event',
-            'action' => 'Click to approve'
+            'action' => 'Go to approve'
             
         ];
     }

@@ -244,35 +244,33 @@ class EventController extends Controller{
 
 
   public function join($id){
-      $user = Auth::id();
+      $user = User::find(Auth::id());
       $event = Event::find($id);
       //backend protection
-      $check = User_event::where('event_id', $event->id)->where('user_id', $user)->first();
+      $check = User_event::where('event_id', $event->id)->where('user_id', $user->id)->first();
       if ($check != null){
         return redirect("/event/$id");
       } else {
-        if ($event->is_public){
+        if ($event->is_public or $user->is_admin){
           User_event::create([
             'event_id' => $event->id,
-            'user_id'  => $user,
+            'user_id'  => $user->id,
             'role' => 'Participant'
           ]);
           // sending notification
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
-          $user = User::where('id', Auth::user()->id)->first();
           $owner->notify(new EventJoinNotification($user));
         } else {
           User_event::create([
             'event_id' => $event->id,
-            'user_id'  => $user,
+            'user_id'  => $user->id,
             'role' => 'Unconfirmed'
           ]);
 
 
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
-          $user = User::where('id', Auth::user()->id)->first();
           $owner->notify(new JoinRequestNotification($user, $event));
 
         }

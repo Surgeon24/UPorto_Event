@@ -57,7 +57,7 @@ Route::get('event/{id}', 'EventController@show')->name('event');
 Route::get('all_events', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
 Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
-Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_event');
+Route::delete('event_edit/{id}',[EventController::class, 'delete'])->name('delete_event');
 Route::get('event_create', 'EventController@show_create')->name('event_create');
 Route::post('event_create', 'EventController@create')->name('create_event');
 Route::get('my_events', 'EventController@list_participations')->name('my_events');

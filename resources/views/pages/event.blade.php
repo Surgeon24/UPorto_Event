@@ -66,6 +66,7 @@
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
         @php
+            $user = App\Models\User::where('id', Auth::id())->first();
             $photo = App\Models\Photo::where('event_id', $event->id)->first();
             if($photo != null){
                 $image_path = App\Models\Photo::where('event_id', $event->id)->first()->image_path;
@@ -92,25 +93,13 @@
         @endif
         <div>
             <article>
-            @if ($role === 'Owner' or $role === 'Moderator')
+            @if ($role === 'Owner' or $role === 'Moderator' or $user->is_admin)
                 <div>
                     <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
                 </div>
                 <div>
                     <a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a>
                 </div>
-                @if ($role === 'Owner')
-                    <div>
-                    <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
-                        @csrf
-                        @method("DELETE")
-                        <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
-                        <button type="submit" class="btn btn-primary">
-                            Delete
-                        </button>
-                    </form>
-                    </div>
-                @endif
                 <div>
                     <div>
                         <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
