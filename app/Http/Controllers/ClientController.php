@@ -72,4 +72,15 @@ class ClientController extends Controller{
 
       return redirect('home')->withSuccess('Your account was successfully deleted!');
     }
+
+
+    public function list()
+    {
+      $user = User::find(Auth::id());
+      if($user->is_admin){
+        $all_users = User::orderBy('id')->get();
+        return view('pages.all_users', ['user' => $all_users]);
+      }
+      return redirect('home');
+    }
 }
