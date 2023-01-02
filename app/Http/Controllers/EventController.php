@@ -158,10 +158,12 @@ class EventController extends Controller{
       ]);      
       $event->save();
 
-
-
-
+      //and $request->file('image_path')->size < 2048
       if($request->file('image_path') != null){
+        $request->validate([
+          'image_path' => 'max:2047',
+        ]);
+
         $image = $request->file('image_path');
         $image_name = $image->getClientOriginalName();
         $image->move('assets/eventImages/', $event->id.".{$image->getClientOriginalExtension()}");

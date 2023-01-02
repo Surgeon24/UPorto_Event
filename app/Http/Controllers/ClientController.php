@@ -41,6 +41,9 @@ class ClientController extends Controller{
       ]);
       $input = $request->all();
       if($request->file('photo_path') != null){
+        $request->validate([
+          'image_path' => 'max:2047',
+        ]);
         $image = $request->file('photo_path');
         $image_name = $image->getClientOriginalName();
         $image->move('assets/profileImages/', $id.".{$image->getClientOriginalExtension()}");
