@@ -72,7 +72,7 @@ class SearchController extends Controller
         }
       }
 
-      dd($event);
+      // dd($event);
       return view('pages.search',compact('event'));
     } 
 
