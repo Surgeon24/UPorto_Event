@@ -161,13 +161,10 @@
 <div class="g">
     <div class="column1">
     <td>
-        <a id="74996282"></a>
-        
-        
-                <p class="nick " title="Go to the profile">
+        <p class="nick " title="Go to the profile">
             <a href="{{ url('profile?', [$user->id])}}">{{ $user->name }}</a>
         </p>
-        <p class="avatar"><img src="{{ url('assets/profileImages?', [$user->photo_path])}}" alt="/default-profile-photo.webp"></p>		
+        <p class="avatar"><img src="{{ url('assets/profileImages?', [$user->photo_path])}}" style="max-height:100px; max-width:100px;" alt="/default-profile-photo.webp"></p>		
         <p></p>
         @if ($user->is_admin == true)
         <p class="admin" style="color:rgb(217, 60, 60);">Admin</p>		
