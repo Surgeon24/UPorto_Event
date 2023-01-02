@@ -96,6 +96,9 @@
                 <div>
                     <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
                 </div>
+                <div>
+                    <a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a>
+                </div>
                 @if ($role === 'Owner')
                     <div>
                     <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
@@ -139,11 +142,10 @@
             <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>
+        @each('partials.poll',$event->polls()->get(), 'poll')
+        @each('partials.comment',$event->comments()->get(), 'comment')
     @endif
-
 </div>
-@each('partials.comment',$event->comments()->get(), 'comment')
-
 
 </div>
 </div>

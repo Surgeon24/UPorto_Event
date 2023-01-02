@@ -54,20 +54,21 @@ Route::post('/register', 'Auth\RegisterController@register')->name('register_sub
 
 //Event
 Route::get('event/{id}', 'EventController@show')->name('event');
-
 Route::get('all_events', 'EventController@list')->name('event_list');
 Route::get('event_edit/{id}', [EventController::class, 'show_edit'])->name('event_edit');
 Route::post('event_edit/{id}', 'EventController@update')->name('event_update');
 Route::delete('event/{id}',[EventController::class, 'delete'])->name('delete_event');
-
 Route::get('event_create', 'EventController@show_create')->name('event_create');
-
 Route::post('event_create', 'EventController@create')->name('create_event');
 Route::get('my_events', 'EventController@list_participations')->name('my_events');
 Route::get('event/{id}/join', 'EventController@join')->name('join_event');
 Route::get('event/{id}/quit', 'EventController@quit')->name('join_event');
 Route::get('event/{id}/all_participants', 'EventController@show_participants')->name('all_participants');
 Route::get('event/{id}/add_participant/{user}', 'EventController@add_participant')->name('add_participant');
+//Polls, but still in EventController
+Route::get('event/{id}/create_poll', 'EventController@show_create_poll')->name('show_create_poll');
+Route::post('event/{id}/create_poll', 'EventController@create_poll')->name('create_poll');
+Route::get('event/{event_id}/vote/{poll_id}/{choice_id}', 'EventController@vote_in_poll')->name('vote_in_poll');
 //Search
 Route::get('search', 'SearchController@eventSearch');
 Route::get('search_user', 'SearchController@userSearch');
