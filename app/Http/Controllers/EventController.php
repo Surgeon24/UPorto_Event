@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Photo;
 
 
 use App\Models\Comment;
@@ -83,22 +84,16 @@ class EventController extends Controller{
         'end_date' => 'required'
       ]);
 
-      if ($request->input('title') === null or $request->input('description') === null or $request->input('location') === null
-       or $request->input('start_date') === null or $request->input('end_date') === null){
-          return redirect('event_create')->with('message', 'fill empty fields!');
-      }
 
-
-      if($request->input('end_date') <= $request->input('start_date')){
+      if($request->input('end_date') < $request->input('start_date')){
         return redirect('event_create')->with('message', 'end date cannot be later than start date!');
       }
 
 
-      if($request->input('start_date') <= Carbon::now()){
+      if($request->input('start_date') < Carbon::now()){
         return redirect('event_create')->with('message', 'Event cannot start in the past!');
       }
       
-
       $event = Event::create([
           'owner_id' => $userId,
           'title' => $request->input('title'),
@@ -108,6 +103,19 @@ class EventController extends Controller{
           'end_date' => $request->input('end_date'),
           'is_public' => !$request->input('private'),
       ]);
+
+      if($request->file('image_path') != null){
+        $image = $request->file('image_path');
+        $image_name = $image->getClientOriginalName();
+        $image->move('assets/eventImages/', $event->id.".{$image->getClientOriginalExtension()}");
+        $path = $event->id.".{$image->getClientOriginalExtension()}";
+        if(Photo::where('event_id', $event->id)->first() == null){
+          $photo = Photo::create([
+            'image_path' => $path,
+            'event_id' => $event->id,
+          ]);
+        }
+      }
 
       return redirect('home')->with('message', 'Event created successfully!');
 
@@ -138,7 +146,6 @@ class EventController extends Controller{
       if($request->input('start_date') <= Carbon::now()){
         return redirect("event_edit/$id")->with('message', 'Event cannot start in the past!');
       }
-
       
       $event = Event::find($id); // Find the event with the given id
       $event->update([
@@ -150,6 +157,27 @@ class EventController extends Controller{
           'is_public' => !$request->input('private'),
       ]);      
       $event->save();
+
+
+
+
+      if($request->file('image_path') != null){
+        $image = $request->file('image_path');
+        $image_name = $image->getClientOriginalName();
+        $image->move('assets/eventImages/', $event->id.".{$image->getClientOriginalExtension()}");
+        $path = $event->id.".{$image->getClientOriginalExtension()}";
+        if(Photo::where('event_id', $event->id)->first() == null){
+          $photo = Photo::create([
+            'image_path' => $path,
+            'event_id' => $event->id,
+          ]);
+        }else {
+          $photo = Photo::where('event_id', $event->id)->first();
+          $photo->update([
+            'image_path' => $path,
+          ]);
+        }
+      }
       return redirect('event/' . $id)->withSuccess('Your event was successfully updated!');
     }
 
@@ -276,5 +304,32 @@ class EventController extends Controller{
       return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
   }
 
+  
+  public function add_participant($event_id, $user_id)
+  {
+    $moderator = Auth::id();
+    if(User_event::where('user_id', $moderator)->where('event_id', $event_id)->where('role', 'Owner')->first() == null and
+    User_event::where('user_id', $moderator)->where('event_id', $event_id)->where('role', 'Moderator')->first() == null){
+      // permission denied!
+      return view('/');
+    }
+    $user_event = User_event::where('user_id', $user_id)->where('event_id', $event_id)->first();
+    if($user_event == null){
+      // wrong person!
+      return view('/');
+    }
+    $user_event->role = 'Participant';
+    $user_event->save();
+    
+    
+    $event = Event::find($event_id);
+    $query = DB::table('user_event')->select('user_id')
+      ->from(with(new User_event)->getTable())
+      ->where('event_id', $event_id);
+
+    $list = User::whereIn('id', $query)->get();
+
+      return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
+  }
 }
 

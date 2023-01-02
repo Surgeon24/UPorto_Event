@@ -30,7 +30,7 @@ border: 1px #000 solid;
 
 <div class="login">
 <div class="gray">
-  <form method="post" action="{{ route('user-update', ['id' => $user->id]) }}" accept-charset="UTF-8">
+  <form method="post" action="{{ route('user-update', ['id' => $user->id]) }}" accept-charset="UTF-8" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div>
       <label for="name">Username</label>
@@ -42,7 +42,9 @@ border: 1px #000 solid;
       <input class="bar" type="text" id="email" name="email" value="{{$user['email']}}">
       </input>
       <p></p>
-    <button type="submit" class="btn btn-danger">submit</button>
+      <label for="exampleFormControlFile1">Profile image</label>
+      <input type="file" name="photo_path" class="form-control-file" id="exampleFormControlFile1">
+      <button type="submit" name="submit" class="btn btn-danger">submit</button>
     </div>
   </div>
 

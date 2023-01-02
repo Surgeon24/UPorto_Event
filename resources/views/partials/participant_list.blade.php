@@ -10,7 +10,12 @@
             ->where('event_id', $event->id)->first()->role;
       @endphp
       <article class="card">
-      <h2 class="">{{$user->name}}  :  {{$role}}<h2>
+      <h2 class="">{{$user->name}}  :  {{$role}}
+        @if($role === 'Unconfirmed')  
+            <a class="button" href="{{ route('add_participant', ['id'=>$event->id, 'user'=>$user->id]) }}"> Accept </a>
+            
+        @endif
+      <h2>
       </article>
       @endforeach
     </div>

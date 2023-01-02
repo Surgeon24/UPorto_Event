@@ -35,7 +35,7 @@
     <div class="login"> 
     <div class="gray">
         <h1>Create Event</h1>
-        <form method="post" action="{{ route('create_event') }}" accept-charset="UTF-8">
+        <form method="post" action="{{ route('create_event') }}" accept-charset="UTF-8" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="title">Title</label>
@@ -85,6 +85,10 @@
             @enderror
 
 
+        </div>
+        <div>
+            <label for="exampleFormControlFile1">Event image</label>
+            <input type="file" name="image_path" class="form-control-file" id="exampleFormControlFile1">
         </div>
         <div>
             <label for="private">
