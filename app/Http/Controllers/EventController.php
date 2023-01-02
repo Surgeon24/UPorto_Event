@@ -405,5 +405,19 @@ class EventController extends Controller{
     }
     return redirect('event/'.$event_id)->with('message', 'You vote was counted!');
   }
+
+  public function change_status($id, $user, $role)
+  {
+    $event = Event::find($id);
+    $isAdmin = User::where('id', Auth::id())->where('is_admin', true)->first();
+    if ($isAdmin != null or $event->owner_id == Auth::id()){
+      $user_event = User_event::where('event_id', $id)->where('user_id', $user)->first();
+      $user_event->update([
+        'role' => $role,
+      ]);      
+      $user_event->save();
+    }
+    return redirect('event/'.$id.'/all_participants');
+  }
 }
 

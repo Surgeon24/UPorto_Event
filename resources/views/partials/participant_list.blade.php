@@ -58,19 +58,20 @@
             ->where('event_id', $event->id)->first()->role;
       @endphp
       <article class="card">
-        <div class="dropdown">
-          <h2 class="">{{$user->name}} <button class="dropbtn">{{$role}}</button>
-            <div class="dropdown-content">
-              <a style="color: rgb(81, 246, 10)" href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>'Moderator']) }}">Moderator</a>
-              <a href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>'Participant']) }}">Participant</a>
-              <a style="color: rgb(239, 14, 14)" href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>'Block']) }}">Block user</a>
-            </div>
+        <div class="dropdown"> 
+            @if ($user->id != $event->owner_id)
+              <h2 class="">{{$user->name}}
+                <button class="dropbtn">{{$role}}</button>
+                <div class="dropdown-content">
+                  <a style="color: rgb(81, 246, 10)" href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>"Moderator"]) }}">Moderator</a>
+                  <a href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>"Participant"]) }}">Participant</a>
+                  <a style="color: rgb(239, 14, 14)" href="{{ route('change_status', ['id'=>$event->id, 'user'=>$user->id, 'role'=>"Blocked"]) }}">Block user</a>
+                </div>
+              <h2>
+            @else
+            <h2>{{$user->name}}  (owner)</h2>
+            @endif
         </div> 
-        @if($role === 'Unconfirmed')  
-            <a class="button" href="{{ route('add_participant', ['id'=>$event->id, 'user'=>$user->id]) }}"> Accept </a>
-            
-        @endif
-      <h2>
       </article>
       @endforeach
     </div>
