@@ -31,6 +31,10 @@
           /* text-red-500 text-xs mt-1 */
       }
   </style>
+  @php
+      $user = App\Models\User::where('id', Auth::id())->first();
+      $role = App\Models\User_event::where('user_id', $user->id)->where('event_id', $event->id)->first()->role;
+  @endphp
   
   <div class="login"> 
   <div class="gray">
@@ -94,6 +98,18 @@
         <label for="exampleFormControlFile1">Event image</label>
         <input type="file" name="image_path" class="form-control-file" id="exampleFormControlFile1">
       </div>
+      @if ($role === 'Owner' or $user->is_admin)
+      <div>
+      <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
+          @csrf
+          @method("DELETE")
+          <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
+          <button type="submit" class="btn btn-primary">
+              Delete
+          </button>
+      </form>
+      </div>
+  @endif
       <p></p>
       <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
       </form>

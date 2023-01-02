@@ -29,50 +29,28 @@ class SearchController extends Controller
       $toDate   = $request->input('toDate');
       $checkPrivate = $request->input('checkPrivate');
       
-      if($checkPrivate == null){
-        if($toDate == null){
-          $event = DB::table('event')->select()
-          ->where('start_date', '>=', $fromDate)
-          ->where('is_public', '=', true) 
-          ->get();
-        }
-        elseif($fromDate == null){
-          $event = DB::table('event')->select()
-          ->where('end_date', '<=', $toDate)
-          ->where('is_public', '=', true) 
-          ->get();
-        }
-        else{
-          $event = DB::table('event')->select()
-          ->where('start_date', '>=', $fromDate)
-          ->where('end_date', '<=', $toDate)
-          ->where('is_public', '=', true) 
-          ->get();
-        }
+
+      if($toDate == null){
+        $event = DB::table('event')->select()
+        ->where('start_date', '>=', $fromDate)
+        ->get();
+      }
+      elseif($fromDate == null){
+        $event = DB::table('event')->select()
+        ->where('end_date', '<=', $toDate) 
+        ->get();
       }
       else{
-        if($toDate == null){
-          $event = DB::table('event')->select()
-          ->where('start_date', '>=', $fromDate)
-          ->where('is_public', '=', false) 
-          ->get();
-        }
-        elseif($fromDate == null){
-          $event = DB::table('event')->select()
-          ->where('end_date', '<=', $toDate)
-          ->where('is_public', '=', false) 
-          ->get();
-        }
-        else{
-          $event = DB::table('event')->select()
-          ->where('start_date', '>=', $fromDate)
-          ->where('end_date', '<=', $toDate)
-          ->where('is_public', '=', false) 
-          ->get();
-        }
+        $event = DB::table('event')->select()
+        ->where('start_date', '>=', $fromDate)
+        ->where('end_date', '<=', $toDate)
+        ->get();
       }
 
-      // dd($event);
+      if($checkPrivate == true){
+        $event = $event->where('is_public', false);
+      }
+
       return view('pages.search',compact('event'));
     } 
 
