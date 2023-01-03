@@ -4,7 +4,7 @@
     vertical-align: middle;
     position:relative;
     box-shadow: 0 0 1px rgba(241, 239, 239, 0);
-    tranform: translateZ(0);
+    transform: translateZ(0);
     transition-duration: .3s;
     transition-property:transform;
   }
@@ -70,11 +70,19 @@
   width: 100%;
 }
 
-.search-right{
+/* .search-right{
   position: absolute;
   top:0;
   right: -500px;
+} */
+
+.searcg-right{
+  float: right;
+width: 20%;
+padding: 20px;
 }
+
+
 
 .gray{
   position: relative;

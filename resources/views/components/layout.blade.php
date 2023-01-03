@@ -152,7 +152,7 @@
         @endif
       </ul>     
         
-      
+    </nav>
       <div>
         <div class="search-right">
           <form action="/search">
@@ -162,7 +162,6 @@
         </div>
       </div>
     </div>
-  </nav>
 
 
 
