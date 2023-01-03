@@ -65,7 +65,7 @@ For example: when a user is creating an account he has to create a password that
 > Describe the revisions made to the project since the requirements specification stage.  
 
 
-Some Priorities were changed when we learned about product requirements(features in A9 checklist). User Stories were implemented by order of importance. During production we have had realised that some of the User Stories are unnecessary or of less importance. Giving up some of the User Stories allowed us to focus on more important ones, resulting in have more User Stories (_35_) than initially planned (_29_ see ER component)
+Some Priorities were changed when we learned about product requirements(features in A9 checklist). User Stories were implemented by order of importance. During production we have had realised that some of the User Stories are unnecessary or of less importance. Giving up some of the User Stories allowed us to focus on more important ones, resulting in having more User Stories (_35_) than initially planned (_29_ see ER component)
 
 _**Rejected User Stories:**_
 
@@ -121,7 +121,7 @@ Libraries used:
 | vi02          | Sign Up                                        | Visitor                 | High     | **Valter, David**          | 100%  |
 | au01          | Home                                           | Authenticated User      | High     | **Michael**                | 100%  |
 | au02          | Events                                         | Authenticated User      | High     | **Michael**                | 100%  |
-| au03          | Create Event                                   | Authenticated User      | High     | **Valter, Joao **          | 100%  |
+| au03          | Create Event                                   | Authenticated User      | High     | **Valter, Joao**          | 100%  |
 | au04          | Log Out                                        | Authenticated User      | High     | **Valter**                 | 100%  |
 | au05          | Participate                                    | Authenticated User      | High     | **Michael**                | 100%  |
 | au06          | Edit Profile                                   | Authenticated User      | High     | **Valter**                 | 100%  |
@@ -187,7 +187,7 @@ Changes made to the first submission:
 1. ..
 
 ***
-GROUP21gg, DD/MM/2021
+GROUP22122, DD/MM/2021
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
