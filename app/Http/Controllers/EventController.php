@@ -348,27 +348,29 @@ class EventController extends Controller{
   {
     $data = $request->all();
     $event = Event::find($id);
-    foreach ($data as $i => $line){
-      if ($i > 0) {
+    $counter = 0;
+    foreach ($data as $line){
+      if ($counter > 0) {
         Validator::make(
           ['name' => $line],
           ['name' => 'required'|'min:3'|'max:120']);
       }
+      $counter++;
     }
 
     $poll = Poll::create([
         'event_id' => $id,
         'question' => $request->input('question'),
     ]);
-    
-    foreach ($data as $z => $option){
-      if ($z > 1) {
-        dd($z);
+    $counter = 0;
+    foreach ($data as $option){
+      if ($counter > 1) {
         Poll_choice::create([
           'poll_id' => $poll->id,
           'choice'  => $option,
         ]);
       }
+      $counter++;
     }
     return redirect('event/'.$id)->with('message', 'Poll created successfully!');
   }
