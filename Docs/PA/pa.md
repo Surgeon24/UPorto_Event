@@ -127,7 +127,7 @@ Libraries used:
 | au06          | Edit Profile                                   | Authenticated User      | High     | **Valter**                 | 100%  |
 | au07          | Delete Profile                                 | Authenticated User      | High     | **Valter**                 | 100%  |
 | au08          | View Profile                                   | Authenticated User      | High     | **Valter, David, Mikhail** | 100%  |
-| au09          | Recover Password                               | Authenticated User      | High     | **Valter**                 | 100%  |
+| au09          | Recover Password                               | Authenticated User      | High     | **Valter**                 | 50%  |
 | au10          | Change Password                                | Authenticated User      | High     | **David**                  | 100%  |
 | au11          | Notifications                                  | Authenticated User      | High     | **David**                  | 100%  |
 | au12          | Advanced search using filters                  | Authenticated User      | High     | **David**                  | 100%  |
