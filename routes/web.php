@@ -32,7 +32,7 @@ Route::get('profile_edit/{id}', [ClientController::class, 'show_edit']);
 Route::post('profile_edit/{id}', 'ClientController@update')->name('user-update')->middleware('auth');
 Route::delete('profile/{id}', 'ClientController@delete')->name('delete_user')->middleware('auth');
 
-
+Route::get('password', 'ClientController@password')->name('password');
 // API
 Route::patch('api/like/{id}', 'CommentController@like');
 Route::get('api/like/{id}', 'CommentController@like');
