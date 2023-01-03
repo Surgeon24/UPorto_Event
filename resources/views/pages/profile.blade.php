@@ -17,13 +17,8 @@
           <h3 class="">{{ $user->email }} </h3>
         </div>
 
-<<<<<<< HEAD
+
         @if ($user->id === Auth::id())
-
-
-=======
-        @if ($user['id'] === Auth::id())
->>>>>>> d2dd85eb4cdf1caa8f2a9296d4076a021ba92564
           <a href="{{ url('profile_edit/'. $user['id']) }}" class="btn btn-primary">Edit</a>
             <a href="{{ url('event_create/') }}" class="btn btn-primary">Create event</a>
             <a href="{{ url('profile/'. $user['id'].'/change-password') }}" class="btn btn-success">Change password</a>
