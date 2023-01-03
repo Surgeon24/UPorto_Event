@@ -83,14 +83,26 @@ Libraries used:
 > The owner of the user story should have the name in **bold**.
 > This table should be updated when a user story is completed and another one started. 
 
+
+| User |            |         |   |   |   |   |   |   |   |
+|------|------------|---------|---|---|---|---|---|---|---|
+| us01 | Search     | Michael | 1 |   |   |   |   |   |   |
+| us02 | View Event | Valter  | 1 |   |   |   |   |   |   |
+| us03 | About us   | David   | 1 |   |   |   |   |   |   |
+| us04 | FAQ        | David   | 1 |   |   |   |   |   |   |
+
+
 | US Identifier | Name    | Module | Priority                       | Team Members               | State  |
 | ------------- | ------- | ------ | ------------------------------ | -------------------------- | ------ |
 |  US01          | US Name 1 | Module A | High/Mandatory | **John Silva**, Ana Alice   |  100%  |
 |  US02          | US Name 2 | Module A | Medium/Important | **Ana Alice**, John Silva                 |   75%  | 
 |  US03          | US Name 3 | Module B | Low/Optional | **Francisco Alves**                 |   5%  | 
 |  US04          | US Name 4 | Module A | Low/Optional | -                 |   0%  | 
-| us01 | User | Search | High |As a user, I want to search for public events by name, organizer or tags to join them. | v0.1 |
-| us02 | User | View Event | High | As a User, I want to navigate through a specific public event so I can see more detailed information | v0.1 |
+| us01 | Search | User | High | **Mikhail** | 100% |
+| us02 | View Event | User | High | **Valter** | 100% |
+
+
+
 | us03 | User | About us | Medium|As a user, I want to access the about page, where I can find a description of the site and its creators. |v0.4|
 | us04 | User | FAQ | Medium|As a user, I want to access the FAQ page, where I can get answers to common questions about the site.|v0.4|
 |vi01| Visitor | Log In | High | As a visitor, I want to be able to log-in, to get a status of authenticated user. | v0.1|
