@@ -361,8 +361,9 @@ class EventController extends Controller{
         'question' => $request->input('question'),
     ]);
     
-    foreach ($data as $x => $option){
-      if ($x > 0) {
+    foreach ($data as $z => $option){
+      if ($z > 1) {
+        dd($z);
         Poll_choice::create([
           'poll_id' => $poll->id,
           'choice'  => $option,
