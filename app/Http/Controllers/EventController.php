@@ -95,7 +95,7 @@ class EventController extends Controller{
       }
 
 
-      if($request->input('start_date') < Carbon::now()){
+      if($request->input('start_date') < Carbon::now()->subDays(1)){
         return redirect('event_create')->with('message', 'Event cannot start in the past!');
       }
       
@@ -260,7 +260,7 @@ class EventController extends Controller{
           // sending notification
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
-          $owner->notify(new EventJoinNotification($user));
+          $owner->notify(new EventJoinNotification($user, $event));
         } else {
           User_event::create([
             'event_id' => $event->id,
