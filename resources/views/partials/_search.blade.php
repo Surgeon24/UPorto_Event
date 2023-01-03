@@ -34,7 +34,7 @@
 </style>
 <div id="searchBarWrap">
     <form action="{{ url('/search')}}">
-            <div class="srch">@include('partials._filter-search')</div>
+            {{-- <div class="srch">@include('partials._filter-search')</div> --}}
             <div class="srch"><input id="searchBar" type="text" name="search" placeholder="Search..."/>
             <button type="submit" id="searchBtn"><i class="fa fa-search">search</i></button></div>
     </form>
