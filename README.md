@@ -8,6 +8,14 @@ UPorto is an Event Management web application developed for the **Database and W
 
 Final release: https://lbaw22122.lbaw.fe.up.pt.
 
+#### 2.2. User Credentials
+
+| Type          | Email  | Password |
+| ------------- | --------- | -------- |
+| Administrator | admin@example.com    |  1234 |
+| Authenticated User | user@example.com    |   1234 |
+| Event Moderator   | moderator@example.com    | 1234 |
+
 ## Docker Commands
 
 Commands to run the project on localhost (linux):

@@ -55,19 +55,17 @@ composer update
 
 #### 2.1. Administration Credentials
 
-> Administration URL: URL  
 
 | Username | Password |
 | -------- | -------- |
-| admin@example.com    |   1234 |
+| admin@example.com    |  1234 |
 
 #### 2.2. User Credentials
-!!!!!!!!!!!!!!!!!!!!!!! CHANGE ADD
 
-| Type          | Username  | Password |
+| Type          | Email  | Password |
 | ------------- | --------- | -------- |
-| authenticated user | user@example.com    |   123456 |
-| news editor   | user 1    | password |
+| Authenticated User | user@example.com    |   1234 |
+| Event Moderator   | moderator@example.com    | 1234 |
 
 ### 3. Application Help
 
