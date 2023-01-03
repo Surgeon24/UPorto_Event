@@ -56,7 +56,7 @@
 
         </div>
         <div class="form-group">
-            <label for="option_2">First option</label>
+            <label for="option_2">Second option</label>
             <input class="form-control" type="text" id="option_2" name="option_2" placeholder="...">
 
             @error('option_2')
@@ -64,6 +64,26 @@
             @enderror
 
         </div>
+
+        <div id="additional-options"></div>
+    <!-- Add a button to add more options -->
+    <button type="button" class="btn btn-success" onclick="addOption()"><i class="fas fa-plus"></i> Add option</button>
+
+    <script>
+        // Initialize the option counter
+        let optionCounter = 2;
+      
+        // Function to add a new option input field
+        function addOption() {
+          optionCounter++;
+          const newOption = document.createElement("div");
+          newOption.setAttribute("class", "form-group");
+          newOption.setAttribute("id", `option-${optionCounter}`);
+          newOption.innerHTML = `<label for="option_${optionCounter}">Option ${optionCounter}</label><input class="form-control" type="text" id="option_${optionCounter}" name="option_${optionCounter}" placeholder="...">`;
+          document.getElementById("additional-options").appendChild(newOption);
+        }
+      </script>
+      
         <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
         </form>
     </div>
