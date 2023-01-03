@@ -118,7 +118,19 @@ class ClientController extends Controller{
       if($isAdmin){
         $user->is_banned = true;
         $user->save();
-        return redirect('home')->withSuccess('You blocked the user');
+        return redirect('profile/'.$id)->withSuccess('You blocked the user');
+      }
+      return redirect('home');
+    }
+
+    public function unban_user($id)
+    {
+      $user = User::where('id', $id)->first();
+      $isAdmin = User::find(Auth::id())->is_admin;
+      if($isAdmin){
+        $user->is_banned = false;
+        $user->save();
+        return redirect('profile/'.$id)->withSuccess('You unblocked the user');
       }
       return redirect('home');
     }

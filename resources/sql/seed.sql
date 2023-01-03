@@ -14,7 +14,6 @@ CREATE DOMAIN timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
 
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS authorized_user CASCADE;
-DROP TABLE IF EXISTS administrator CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
 DROP TABLE IF EXISTS user_event CASCADE;
@@ -32,7 +31,6 @@ DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
-DROP TABLE IF EXISTS administrators CASCADE;
 DROP TABLE IF EXISTS faqs CASCADE;
 DROP TABLE IF EXISTS password_resets CASCADE;
 
@@ -79,29 +77,12 @@ CREATE TABLE IF NOT EXISTS users(
 
 
 
-CREATE TABLE administrators(
-    user_id INTEGER, 
-    PRIMARY KEY (user_id),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-);
-
-
 
 CREATE TABLE IF NOT EXISTS faqs(
     id SERIAL PRIMARY KEY,
     Q VARCHAR,
     A VARCHAR
 );
-
-
-
-
-CREATE TABLE IF NOT EXISTS administrator(
-    id SERIAL PRIMARY KEY,
-    admin_id INTEGER,
-    FOREIGN KEY (admin_id) REFERENCES users(id)
-);
-
 
 
 
@@ -130,8 +111,7 @@ CREATE TABLE IF NOT EXISTS report(
         report_type REPORT_TYPE,
     report_status REPORT_STATUS,
     FOREIGN KEY (reported_id) REFERENCES users(id),
-    FOREIGN KEY (reporter_id) REFERENCES users(id),
-    FOREIGN KEY (admin_id) REFERENCES administrator(id)
+    FOREIGN KEY (reporter_id) REFERENCES users(id)
 );
 
 
@@ -481,6 +461,11 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 
 
 
+---------------------------------------------------------------------------------------------------------
+
+-- INSERT
+
+---------------------------------------------------------------------------------------------------------
 
 
 
@@ -488,6 +473,11 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 
 
 
+INSERT INTO faqs(Q, A) VALUES(
+    'What is UPorto Event?',
+    'UPorto Event is a Portugal-based international web service that focuses on creation 
+    and development of small and/or large-scale events mostly connected with U.Porto academic life. '
+);
 
 INSERT INTO faqs(Q, A) VALUES(
     'What is UPorto Event made for?',
@@ -515,7 +505,6 @@ INSERT INTO faqs(Q, A) VALUES(
 );
 
 
-
 INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_path) VALUES (
     'john_doe228',
     'John',
@@ -535,9 +524,6 @@ INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES
     '/image.png'
 ); -- Password is 123456
 
-INSERT INTO administrators VALUES (
-    1
-);
 
 INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
