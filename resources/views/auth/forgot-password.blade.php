@@ -1,20 +1,18 @@
-@extends('layouts.app')
+<x-layout>
 
-@section('forgot-password')
+    <form method="POST" action="{{ route('password.email') }}">
+    {{ csrf_field() }}
+        <label for="email">E-mail</label>
+        <input name="email" type="text" ></input>
+        @if ($errors->has('email'))
+            <span class="error">
+            {{ $errors->first('email') }}
+            </span>
+        @endif
 
-<form method="POST" action="{{ route('password.email') }}">
-{{ csrf_field() }}
-    <label for="email">E-mail</label>
-    <input name="email" type="text" ></input>
-    @if ($errors->has('email'))
-        <span class="error">
-          {{ $errors->first('email') }}
-        </span>
-    @endif
+        <button type="submit" style="color: rgb(5, 5, 89)">
+            Password-Reset Link
+        </button>
+    </form>
 
-    <button type="submit">
-        Password-Reset Link
-    </button>
-</form>
-
-@endsection
+</x-layout>
