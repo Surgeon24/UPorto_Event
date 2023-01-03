@@ -117,6 +117,7 @@ if($photo != null){
     <p></p>
     <div>
         @if (($role === 'Owner' or $role === 'Moderator' or $role === 'Participant') and !$user->is_banned)
+            @each('partials.poll',$event->polls()->get(), 'poll')
             <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
                 @csrf
                 <label> New comment </label>
@@ -124,7 +125,6 @@ if($photo != null){
                 <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
                 <button type="submit" class="btn btn-primary">Comment</button>
             </form>
-            @each('partials.poll',$event->polls()->get(), 'poll')
             @each('partials.comment',$event->comments()->get(), 'comment')
         @endif
     </div>
