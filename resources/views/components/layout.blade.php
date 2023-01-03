@@ -88,7 +88,7 @@
       <div>
         <form action="/search">
           <div><button class="search-button" type="submit"><i class="fa fa-search"> </i></button></div>
-          <div><input class="round-bar" type="text" placeholder="Search.." name="search"></div>
+          <div><input class="round-bar" type="text" placeholder="Search..." name="search"></div>
         </form>   
       </div>
     </div>
