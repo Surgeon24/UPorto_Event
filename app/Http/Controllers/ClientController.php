@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Rules\IsValidPassword;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller{ 
 
@@ -68,12 +70,22 @@ class ClientController extends Controller{
     }
 
     public function changePassword(Request $request){
-      dd($request->all());
       #Validation
+      $request->validate([
+        'currentPassword' => 'required',
+        'password' => ['required','confirmed', new IsValidPassword()],
+      ]);
 
       #Match the old password
+      if(!Hash::check($request->currentPassword, auth()->user()->password)){
+          return back()->with("error", "Old password doesn't match!");
+      }
 
       #Update the new password
+      User::whereId(auth()->user()->id)->update([
+          'password' => Hash::make($request->password)
+      ]);
+      return back()->with('message', 'Password changed successfully!');
     }
 
     public function delete(Request $request, $id)

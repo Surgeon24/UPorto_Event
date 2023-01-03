@@ -24,7 +24,7 @@
   
   #myInput:focus {outline: 3px solid #ebf8fc;}
   
-  .dropdown {
+  .dropdownSearch {
     color: black;
     position: relative;
     display: inline-block;
