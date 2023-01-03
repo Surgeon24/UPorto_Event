@@ -61,16 +61,7 @@
     }
     </style>
 
-@php
-$user = App\Models\User::where('id', Auth::id())->first();
-$photo = App\Models\Photo::where('event_id', $event->id)->first();
-if($photo != null){
-    $image_path = App\Models\Photo::where('event_id', $event->id)->first()->image_path;
-} else {
-    $image_path = "party.png";
-}
-@endphp
-
+<script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
 <div class="gray">
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
