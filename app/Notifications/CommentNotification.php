@@ -16,9 +16,10 @@ class CommentNotification extends Notification
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $event)
     {
         $this->user = $user;
+        $this->event = $event;
     }
 
     /**
@@ -60,6 +61,7 @@ class CommentNotification extends Notification
             'email' => '',
             'data' => 'Have commented your Event',
             'event_id' => '',
+            'event_title' => '('.$this->event->title.')',
             'action' => ''
             
         ];
