@@ -140,11 +140,11 @@ class EventController extends Controller{
         return redirect("event_edit/$id")->with('message', 'fill empty fields!');
       }
 
-      if($request->input('end_date') <= $request->input('start_date')){
+      if($request->input('end_date') < $request->input('start_date')){
         return redirect("event_edit/$id")->with('message', 'end date cannot be later than start date!');
       }
 
-      if($request->input('start_date') <= Carbon::now()){
+      if($request->input('start_date') < Carbon::now()->subDays(1)){
         return redirect("event_edit/$id")->with('message', 'Event cannot start in the past!');
       }
       
