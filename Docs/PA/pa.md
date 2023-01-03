@@ -62,7 +62,7 @@ composer update
 
 #### 2.2. User Credentials
 
-| Type          | Username  | Password |
+| Type          | Email  | Password |
 | ------------- | --------- | -------- |
 | Authenticated User | user@example.com    |   1234 |
 | Event Moderator   | moderator@example.com    | 1234 |
