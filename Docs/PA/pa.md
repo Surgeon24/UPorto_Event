@@ -134,13 +134,10 @@ _**New User Stories:**_
 
 #### 8.1. Libraries Used
 
-> Include reference to all the libraries and frameworks used in the product.  
-> Include library name and reference, description of the use, and link to the example where it's used in the product.  
+_Libraries used:_
+* Laravel's notification library (https://laravel.com/docs/master/notifications#database-notifications) is used to manage notifications. This is a standard Laravel's library that does not require additional installation.
 
-Libraries used:
-* Laravel's notification library (https://laravel.com/docs/master/notifications#database-notifications)
-
-* alpine.js
+* alpine.js (https://alpinejs.dev/) is a lightweight, JavaScript framework. It is used to make a successful return messages (e.g. after an event is created successfuly). Installation require adding one line of code.
 
 #### 8.2 User Stories
 
