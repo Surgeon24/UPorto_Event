@@ -36,39 +36,39 @@
     <div class="gray">
         <h1>Create new poll</h1>
         <form method="post" action="{{ route('create_poll', $event->id) }}" accept-charset="UTF-8" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        <div class="form-group">
-            <label for="question">Question</label>
-            <input class="form-control" type="text" id="question" name="question" placeholder="Put the question of the poll">
-
-            @error('question')
-            <p class="error">{{$message}}</p>
-            @enderror
-
-        </div>
-        <div class="form-group">
-            <label for="option_1">First option</label>
-            <input class="form-control" type="text" id="option_1" name="option_1" placeholder="...">
-
-            @error('option_1')
-            <p class="error">{{$message}}</p>
-            @enderror
-
-        </div>
-        <div class="form-group">
-            <label for="option_2">Second option</label>
-            <input class="form-control" type="text" id="option_2" name="option_2" placeholder="...">
-
-            @error('option_2')
-            <p class="error">{{$message}}</p>
-            @enderror
-
-        </div>
-
-        <div id="additional-options"></div>
-    <!-- Add a button to add more options -->
-    <button type="button" class="btn btn-success" onclick="addOption()"><i class="fas fa-plus"></i> Add option</button>
-
+            {{ csrf_field() }}
+            <div class="form-group">
+                <label for="question">Question</label>
+                <input class="form-control" type="text" id="question" name="question" placeholder="Put the question of the poll">
+                @error('question')
+                    <p class="error">{{$message}}</p>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="option_1">Option 1</label>
+                <input class="form-control" type="text" id="option_1" name="option_1" placeholder="...">
+                @error('option_1')
+                    <p class="error">{{$message}}</p>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="option_2">Option 2</label>
+                <input class="form-control" type="text" id="option_2" name="option_2" placeholder="...">
+                @error('option_2')
+                    <p class="error">{{$message}}</p>
+                @enderror
+            </div>
+            <div id="additional-options"></div>
+            <!-- Add a button to add more options -->
+            <button type="button" class="btn btn-success" style="background-color:rgb(140, 18, 18)" onclick="removeOption()"><i class="fas fa-minus"></i> Remove option</button>
+            <button type="button" class="btn btn-success" onclick="addOption()"><i class="fas fa-plus"></i> Add option</button>
+            <p></p>
+            <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
+        </form>
+    </div>
+    </div>
+    
+    
     <script>
         // Initialize the option counter
         let optionCounter = 2;
@@ -82,11 +82,17 @@
           newOption.innerHTML = `<label for="option_${optionCounter}">Option ${optionCounter}</label><input class="form-control" type="text" id="option_${optionCounter}" name="option_${optionCounter}" placeholder="...">`;
           document.getElementById("additional-options").appendChild(newOption);
         }
-      </script>
-      
-        <button type="submit" class="btn btn-primary btn-block btn-large">Submit</button>
-        </form>
-    </div>
-    </div>
-          
+
+
+        function removeOption() {
+        var x = document.getElementById("additional-options");
+        // document.getElementById("additional-options").innerHTML = x;
+        optionCounter--;
+        x.removeChild(x.lastElementChild);
+
+        }
+
+    </script>
+
+
 </x-layout>

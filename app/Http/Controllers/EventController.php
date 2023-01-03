@@ -352,30 +352,30 @@ class EventController extends Controller{
 
   public function create_poll(Request $request, $id)
   {
+    $data = $request->all();
     $event = Event::find($id);
-
-    $validated = $request->validate([
-      'question' => 'required|min:3|max:120',
-      'option_1' => 'required|min:3|max:120',
-      'option_2' => 'required|min:3|max:120',
-    ]);
+    foreach ($data as $i => $line){
+      if ($i > 0) {
+        Validator::make(
+          ['name' => $line],
+          ['name' => 'required'|'min:3'|'max:120']);
+      }
+    }
 
     $poll = Poll::create([
         'event_id' => $id,
         'question' => $request->input('question'),
     ]);
     
-    Poll_choice::create([
-        'poll_id' => $poll->id,
-        'choice'  => $request->input('option_1'),
-    ]);
-    Poll_choice::create([
-      'poll_id' => $poll->id,
-      'choice'  => $request->input('option_2'),
-    ]);
-
+    foreach ($data as $i => $line){
+      if ($i > 0) {
+        Poll_choice::create([
+          'poll_id' => $poll->id,
+          'choice'  => $line,
+        ]);
+      }
+    }
     return redirect('event/'.$id)->with('message', 'Poll created successfully!');
-
   }
 
   public function vote_in_poll($event_id, $poll_id, $choice_id)
