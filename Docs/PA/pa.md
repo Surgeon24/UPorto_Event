@@ -84,12 +84,23 @@ Libraries used:
 > This table should be updated when a user story is completed and another one started. 
 
 
-| User |            |         |   |   |   |   |   |   |   |
-|------|------------|---------|---|---|---|---|---|---|---|
-| us01 | Search     | Michael | 1 |   |   |   |   |   |   |
-| us02 | View Event | Valter  | 1 |   |   |   |   |   |   |
-| us03 | About us   | David   | 1 |   |   |   |   |   |   |
-| us04 | FAQ        | David   | 1 |   |   |   |   |   |   |
+| US Identifier | Name             | Module             | Priority | Team Members | State |
+| ------------- | ---------------- | ------------------ | -------- | ------------ | ----- |
+| us01          | Search           | User               | High     | Mikhail      | 100%  |
+| us02          | View event       | User               | High     | Valter       | 100%  |
+| vi01          | Log In           | Visitor            | High     | Valter       | 100%  |
+| vi02          | Sign Up          | Visitor            | High     | Valter       | 100%  |
+| au01          | Home             | Authenticated User | High     | Michael      | 100%  |
+| au02          | Events           | Authenticated User | High     | Michael      | 100%  |
+| au03          | Create Event     | Authenticated User | High     | Valter, Joao | 100%  |
+| au04          | Log Out          | Authenticated User | High     | Valter       | 100%  |
+| au05          | Participate      | Authenticated User | High     | Michael      | 100%  |
+| au06          | Edit Profile     | Authenticated User | High     | Valter       | 100%  |
+| au07          | Delete Profile   | Authenticated User | High     | Valter       | 100%  |
+| au08          | View Profile     | Authenticated User | High     | Valter       | 100%  |
+| au09          | Recover Password | Authenticated User | High     | Valter       | 100%  |
+| au10          | Change Password  | Authenticated User | High     | David        | 100%  |
+
 
 
 | US Identifier | Name    | Module | Priority                       | Team Members               | State  |
