@@ -9,13 +9,6 @@
 
         <h4 class="u-text u-text-default u-text-2"> It's never to late to do LBAW!</h4>
         <a class="button" href="{{ url('/all_events') }}"> Show all events </a>
-
-      
-    
-
-       
-      
       </div>
     
-    
-    </x-layout>
+</x-layout>
