@@ -86,7 +86,6 @@
 
         function removeOption() {
         var x = document.getElementById("additional-options");
-        // document.getElementById("additional-options").innerHTML = x;
         optionCounter--;
         x.removeChild(x.lastElementChild);
 

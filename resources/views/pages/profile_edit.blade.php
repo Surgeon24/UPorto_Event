@@ -34,13 +34,11 @@ border: 1px #000 solid;
     {{ csrf_field() }}
     <div>
       <label for="name">Username</label>
-      <input class="bar" type="text" id="name" name="name" value="{{$user['name']}}">
-      </input>
+      <input class="bar" type="text" id="name" name="name" value="{{$user['name']}}"></input>
     </div>
     <div>
       <label for="email">Email</label>
-      <input class="bar" type="text" id="email" name="email" value="{{$user['email']}}">
-      </input>
+      <input class="bar" type="text" id="email" name="email" value="{{$user['email']}}"></input>
       <p></p>
       <label for="exampleFormControlFile1">Profile image</label>
       <input type="file" name="photo_path" class="form-control-file" id="exampleFormControlFile1">

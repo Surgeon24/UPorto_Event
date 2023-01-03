@@ -62,6 +62,9 @@
       color: rgb(255, 255, 255);  
   }
 
+  .oneBlock{
+    display: inline-block;
+  }
 
 </style>
 
@@ -87,8 +90,10 @@
     <div id="outer">
       <div>
         <form action="/search">
+          <div style="oneBolck">
           <div><button class="search-button" type="submit"><i class="fa fa-search"> </i></button></div>
           <div><input class="round-bar" type="text" placeholder="Search..." name="search"></div>
+          </div>
         </form>   
       </div>
     </div>
