@@ -2,8 +2,8 @@
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
-create schema if not exists lbaw;
-set search_path=lbaw;
+create schema if not exists lbaw22122;
+set search_path=lbaw22122;
 
 drop type if exists email_t CASCADE;
 CREATE DOMAIN email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
