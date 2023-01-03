@@ -16,9 +16,10 @@ class JoinRequestNotification extends Notification
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $event)
     {
         $this->user=$user;
+        $this->event=$event;
     }
 
     /**
@@ -57,11 +58,11 @@ class JoinRequestNotification extends Notification
         return [
             'id' => $this->user->id,
             'name' => $this->user->name,
-            // 'event_id' => '',
-            // 'receiver_id' => '',
+            'event_id' => $this->event->id,
+            'event_title' => '('.$this->event->title.')',
             'email' => '',
             'data' => 'has made a request to join your Private Event',
-            'action' => 'Click to approve'
+            'action' => 'Go to approve'
             
         ];
     }

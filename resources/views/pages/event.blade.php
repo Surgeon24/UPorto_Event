@@ -65,86 +65,59 @@
 <div class="gray">
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
-        @php
-            $photo = App\Models\Photo::where('event_id', $event->id)->first();
-            if($photo != null){
-                $image_path = App\Models\Photo::where('event_id', $event->id)->first()->image_path;
-            } else {
-                $image_path = "party.png";
-            }
-        @endphp
-        <div>
-            <img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Profile Picture">
-        </div>
-        <h2 class="">{{ $event->description }} </h2>
-        @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
-      <h3 class="">
-        <label style=display:inline;>Date:</label>
-        {{ $event->start_date }} ({{ $timeLeft }} days until start, duration: {{ $duration }} days)
-      </h3>
-      <h3>
-        <label style="display:inline;">End date:</label> {{ $event->end_date }}
-      </h3>
-        <h4 class="">
-            <label style=display:inline;>Location: </label>
-            {{ $event->location }}
-        </h4>
-        @endif
-        <div>
+        <div><img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Event Picture"></div>
+        @if (!$user->is_banned)
+            <h2 class="">{{ $event->description }} </h2>
+            @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
+                <h3>
+                    <label style=display:inline;>Date:</label>
+                    {{ $event->start_date }} ({{ $timeLeft }} days until start, duration: {{ $duration }} days)
+                </h3>
+                <h3><label style="display:inline;">End date:</label> {{ $event->end_date }}</h3>
+                <h4 class="">
+                    <label style=display:inline;>Location: </label>
+                    {{ $event->location }}
+                </h4>
+            @endif
             <article>
-            @if ($role === 'Owner' or $role === 'Moderator')
+            @if ($role === 'Owner' or $role === 'Moderator' or $user->is_admin)
+                <div><a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a></div>
+                <div><a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a></div>
                 <div>
-                    <a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a>
-                </div>
-                @if ($role === 'Owner')
-                    <div>
-                    <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
-                        @csrf
-                        @method("DELETE")
+                    <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
                         <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
                         <button type="submit" class="btn btn-primary">
-                            Delete
+                            All participants
                         </button>
                     </form>
-                    </div>
-                @endif
-                <div>
-                    <div>
-                        <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
-                            <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
-                            <button type="submit" class="btn btn-primary">
-                                All participants
-                            </button>
-                        </form>
-                    </div>
                 </div>
             @endif
             </article>
-            @if ($role === 'Guest')
+            @if ($role === 'Guest' and !$user->is_banned)
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
             @elseif ($role === 'Unconfirmed')
-            <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Remove request</a>
-            @elseif ($role !== 'Owner')
+                <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Remove request</a>
+            @elseif ($role !== 'Owner' and $role !== 'Blocked')
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/quit"> Quit </a>
             @endif
-        </div>
+            @if ($role === 'Blocked')
+                <h2 style="color: rgb(230, 58, 10)"> You was banned by moderator! </h2>
+            @endif
+        @endif
     </div>
-</div>
-<div class="gray">
-    @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
-        <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
-            @csrf
-            <label> New comment </label>
-            <input style="color:#000" type="text" id="content" name="content"></input>
-            <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
-            <button type="submit" class="btn btn-primary">Comment</button>
-        </form>
-    @endif
-
-</div>
-@each('partials.comment',$event->comments()->get(), 'comment')
-
-
-</div>
+    <p></p>
+    <div>
+        @if (($role === 'Owner' or $role === 'Moderator' or $role === 'Participant') and !$user->is_banned)
+            @each('partials.poll',$event->polls()->get(), 'poll')
+            <form method="post" action="{{ route('new_comment', ['id' => $event->id]) }}">
+                @csrf
+                <label> New comment </label>
+                <input style="color:#000" type="text" id="content" name="content"></input>
+                <input type="hidden" id="event_id" name="event_id" value="{{$event['id']}}"></input>
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </form>
+            @each('partials.comment',$event->comments()->get(), 'comment')
+        @endif
+    </div>
 </div>
 </x-layout>

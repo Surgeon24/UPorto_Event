@@ -3,18 +3,17 @@
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
 create schema if not exists lbaw22122;
+set search_path=lbaw22122;
 
 drop type if exists email_t CASCADE;
-CREATE DOMAIN  email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
+CREATE DOMAIN email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
 
 drop type if exists timestamp_t CASCADE;
-CREATE DOMAIN  timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
+CREATE DOMAIN timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
 
-set search_path=lbaw22122;
 
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS authorized_user CASCADE;
-DROP TABLE IF EXISTS administrator CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
 DROP TABLE IF EXISTS report CASCADE;
 DROP TABLE IF EXISTS user_event CASCADE;
@@ -22,6 +21,7 @@ DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS tag CASCADE;
 DROP TABLE IF EXISTS photo CASCADE;
 DROP TABLE IF EXISTS poll CASCADE;
+DROP TABLE IF EXISTS event_poll CASCADE;
 DROP TABLE IF EXISTS poll_choice CASCADE;
 DROP TABLE IF EXISTS poll_vote CASCADE;
 DROP TABLE IF EXISTS event_notification CASCADE;
@@ -31,7 +31,6 @@ DROP TABLE IF EXISTS report_notification CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
-DROP TABLE IF EXISTS administrators CASCADE;
 DROP TABLE IF EXISTS faqs CASCADE;
 DROP TABLE IF EXISTS password_resets CASCADE;
 
@@ -45,7 +44,7 @@ drop type if exists REPORT_STATUS;
 CREATE TYPE REPORT_STATUS AS ENUM('Waiting', 'Ignored', 'Sanctioned');
 
 drop type if exists MEMBER_ROLE;
-CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed');
+CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed', 'Blocked');
 
 
 
@@ -70,19 +69,12 @@ CREATE TABLE IF NOT EXISTS users(
         birth_date <= (current_date - INTERVAL '18 YEAR')
     ),
     url TEXT UNIQUE,
-    status TEXT,
+    is_banned BOOLEAN DEFAULT false,
     is_admin BOOLEAN DEFAULT false NOT NULL,
     photo_path TEXT DEFAULT ('/default-profile-photo.webp'),
     remember_token VARCHAR
 );
 
-
-
-CREATE TABLE administrators(
-    user_id INTEGER, 
-    PRIMARY KEY (user_id),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-);
 
 
 
@@ -91,16 +83,6 @@ CREATE TABLE IF NOT EXISTS faqs(
     Q VARCHAR,
     A VARCHAR
 );
-
-
-
-
-CREATE TABLE IF NOT EXISTS administrator(
-    id SERIAL PRIMARY KEY,
-    admin_id INTEGER,
-    FOREIGN KEY (admin_id) REFERENCES users(id)
-);
-
 
 
 
@@ -129,8 +111,7 @@ CREATE TABLE IF NOT EXISTS report(
         report_type REPORT_TYPE,
     report_status REPORT_STATUS,
     FOREIGN KEY (reported_id) REFERENCES users(id),
-    FOREIGN KEY (reporter_id) REFERENCES users(id),
-    FOREIGN KEY (admin_id) REFERENCES administrator(id)
+    FOREIGN KEY (reporter_id) REFERENCES users(id)
 );
 
 
@@ -140,7 +121,6 @@ CREATE TABLE IF NOT EXISTS user_event(
     user_id INT,
     event_id INT,  
     role MEMBER_ROLE,
-    accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
     FOREIGN KEY (user_id) REFERENCES users(id) 
                             ON DELETE CASCADE
@@ -158,8 +138,9 @@ CREATE TABLE IF NOT EXISTS comments(
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (current_date <= comment_date),
-        FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
-        FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+    FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+                                        ON DELETE CASCADE
+                                        ON UPDATE CASCADE
 );
 
 
@@ -172,7 +153,8 @@ CREATE TABLE IF NOT EXISTS comment_votes(
     comment_id INTEGER,
     type comment_vote NOT NULL DEFAULT ('like'),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
+    FOREIGN KEY (comment_id) REFERENCES comments(id) 
+                                ON DELETE CASCADE
 );
 
 
@@ -186,6 +168,8 @@ CREATE TABLE IF NOT EXISTS photo(
     image_path TEXT UNIQUE,
     event_id INT,
     FOREIGN KEY (event_id) REFERENCES event(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
 );
 
 
@@ -197,6 +181,9 @@ CREATE TABLE IF NOT EXISTS poll(
     ends_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '1 DAY') check(ends_at > starts_at) NOT NULL,
     UNIQUE(id, event_id),
     FOREIGN KEY (event_id) REFERENCES event(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
+    
 );
 
 
@@ -206,6 +193,8 @@ CREATE TABLE IF NOT EXISTS poll_choice(
     choice TEXT NOT NULL,
     UNIQUE(poll_id, id),
     FOREIGN KEY (poll_id) REFERENCES poll(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE
 );
 
 
@@ -216,8 +205,12 @@ CREATE TABLE IF NOT EXISTS event_poll(
     poll_id INT,
     UNIQUE(user_id, poll_id),
     UNIQUE(user_id, event_id, poll_id),
-    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id),     -- double reference 
+    FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id)
+                                     ON DELETE CASCADE
+                                     ON UPDATE CASCADE,
     FOREIGN KEY (poll_id, event_id) REFERENCES poll (id, event_id) 
+                                     ON DELETE CASCADE
+                                     ON UPDATE CASCADE
 );
 
 
@@ -229,8 +222,12 @@ CREATE TABLE IF NOT EXISTS poll_vote(
     choice_id INT,
     date TIMESTAMP DEFAULT(CURRENT_TIMESTAMP) NOT NULL,
     UNIQUE (user_id, event_id, poll_id),
-    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id),
+    FOREIGN KEY (user_id, event_id, poll_id) REFERENCES event_poll (user_id, event_id, poll_id)
+                                                ON DELETE CASCADE
+                                                ON UPDATE CASCADE,
     FOREIGN KEY (choice_id, poll_id) REFERENCES poll_choice (id, poll_id)
+                                                ON DELETE CASCADE
+                                                ON UPDATE CASCADE
 
 );
 
@@ -240,23 +237,22 @@ CREATE TABLE IF NOT EXISTS poll_vote(
 
 
 create table IF NOT EXISTS "notifications" (
-    "id" uuid not null, 
-    "type" varchar(255) not null, 
-    "notifiable_type" varchar(255) not null, 
-    "notifiable_id" bigint not null, 
-    "data" text not null, 
-    "read_at" timestamp(0) without time zone null, 
-    "created_at" timestamp(0) without time zone null, 
-    "updated_at" timestamp(0) without time zone null);  
+    id uuid not null PRIMARY KEY, 
+    type varchar(255) not null, 
+    notifiable_type varchar(255) not null, 
+    notifiable_id bigint not null, 
+    data text not null, 
+    read_at timestamp(0) without time zone null, 
+    created_at timestamp(0) without time zone null, 
+    updated_at timestamp(0) without time zone null,
+    FOREIGN KEY (notifiable_id) REFERENCES users(id)
+                                    ON DELETE CASCADE
+                                    ON UPDATE CASCADE
+    );  
 
-DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
-  create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
-  ("notifiable_type", "notifiable_id");
-  alter table "notifications" add primary key ("id");
-
-
-
-
+    DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE;
+    create index "notifications_notifiable_type_notifiable_id_index" on "notifications" 
+                                                ("notifiable_type", "notifiable_id");
 
 
 
@@ -267,11 +263,11 @@ DROP INDEX IF EXISTS "notifications_notifiable_type_notifiable_id_index" CASCADE
 
 CREATE TABLE password_resets
 (
-    id               SERIAL PRIMARY KEY,
-    email            email_t,
-    token            VARCHAR(100),
-    created_at       timestamp_t,
-    updated_at       timestamp_t,
+    id SERIAL PRIMARY KEY,
+    email email_t,
+    token VARCHAR(100),
+    created_at timestamp_t,
+    updated_at timestamp_t,
     CONSTRAINT ck_updated_after_created CHECK ( updated_at >= created_at )
 );
 
@@ -465,7 +461,11 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 
 
 
+---------------------------------------------------------------------------------------------------------
 
+-- INSERT
+
+---------------------------------------------------------------------------------------------------------
 
 
 
@@ -474,26 +474,35 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 
 
 INSERT INTO faqs(Q, A) VALUES(
-    'What is UPorto Event made for?',
-    'For creating events'
+    'What is UPorto Event?',
+    'UPorto Event is a Portugal-based international web service that focuses on creation 
+    and development of small and/or large-scale events mostly connected with U.Porto academic life. '
 );
 
 INSERT INTO faqs(Q, A) VALUES(
-    'How much does it cost?',
-    'UPorto Event is free'
+    'What is UPorto Event made for?',
+    'UPorto Event is made for creating students and not only events such as institutional conferences, parties and traditional academic celebrations.'
 );
 
 INSERT INTO faqs(Q, A) VALUES(
     'When UPorto event was founded?',
-    '2022'
+    'It was founded in 2022 as a student project of the University of Porto.'
 );
 
 INSERT INTO faqs(Q, A) VALUES(
     'How long did it take to create UPorto Event?',
-    '4 month'
+    '4 month of hard preparing for 7 days work.'
 );
 
+INSERT INTO faqs(Q, A) VALUES(
+    'What do I need to create event?',
+    'You just have to create your own profile. It`s fast and absolutly free!'
+);
 
+INSERT INTO faqs(Q, A) VALUES(
+    'What information can I find without registrating?',
+    'As a guest, you still can search for events, but you need to aftorise to join events, write comments and participate in polls.'
+);
 
 
 INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_path) VALUES (
@@ -515,9 +524,6 @@ INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES
     '/image.png'
 ); -- Password is 123456
 
-INSERT INTO administrators VALUES (
-    1
-);
 
 INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'FEUP CAFE',

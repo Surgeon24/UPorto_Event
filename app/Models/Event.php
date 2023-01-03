@@ -22,6 +22,11 @@ class Event extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function polls(): HasMany
+    {
+        return $this->hasMany(Poll::class);
+    }
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

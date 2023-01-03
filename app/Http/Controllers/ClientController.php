@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Rules\IsValidPassword;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller{ 
 
@@ -15,12 +17,13 @@ class ClientController extends Controller{
 
     public function show($id){
       $user = User::find($id);
-      if (Auth::check()) {
+      $isAdmin = User::where('id', Auth::id())->first()->is_admin;
+      if (Auth::check() and (Auth::id() == $id or $isAdmin)) {
         if ($user){
           //$this->authorize('show', $user);
           return view('pages.profile', ['user' => $user]);
         } else {
-          abort('404');
+          return redirect('/login');
         }
       } else {
         return redirect('/login');
@@ -41,9 +44,9 @@ class ClientController extends Controller{
       ]);
       $input = $request->all();
       if($request->file('photo_path') != null){
-        $request->validate([
-          'image_path' => 'max:2047',
-        ]);
+        // $request->validate([
+        //   'image_path' => 'max:2047',
+        // ]);
         $image = $request->file('photo_path');
         $image_name = $image->getClientOriginalName();
         $image->move('assets/profileImages/', $id.".{$image->getClientOriginalExtension()}");
@@ -61,6 +64,30 @@ class ClientController extends Controller{
       return redirect('profile/' . $id)->withSuccess('Your profile was successfully updated!');
     }
 
+    public function getPassword($id){
+      $user = User::find($id);
+      return view('auth.change-password', ['user'=> $user]);
+    }
+
+    public function changePassword(Request $request){
+      #Validation
+      $request->validate([
+        'currentPassword' => 'required',
+        'password' => ['required','confirmed', new IsValidPassword()],
+      ]);
+
+      #Match the old password
+      if(!Hash::check($request->currentPassword, auth()->user()->password)){
+          return back()->with("error", "Old password doesn't match!");
+      }
+
+      #Update the new password
+      User::whereId(auth()->user()->id)->update([
+          'password' => Hash::make($request->password)
+      ]);
+      return back()->with('message', 'Password changed successfully!');
+    }
+
     public function delete(Request $request, $id)
     {
       $user = User::find($id);
@@ -71,5 +98,40 @@ class ClientController extends Controller{
       $user->delete();
 
       return redirect('home')->withSuccess('Your account was successfully deleted!');
+    }
+
+
+    public function list()
+    {
+      $user = User::find(Auth::id());
+      if($user->is_admin){
+        $all_users = User::orderBy('id')->get();
+        return view('pages.all_users', ['user' => $all_users]);
+      }
+      return redirect('home');
+    }
+
+    public function ban_user($id)
+    {
+      $user = User::where('id', $id)->first();
+      $isAdmin = User::find(Auth::id())->is_admin;
+      if($isAdmin){
+        $user->is_banned = true;
+        $user->save();
+        return redirect('profile/'.$id)->withSuccess('You blocked the user');
+      }
+      return redirect('home');
+    }
+
+    public function unban_user($id)
+    {
+      $user = User::where('id', $id)->first();
+      $isAdmin = User::find(Auth::id())->is_admin;
+      if($isAdmin){
+        $user->is_banned = false;
+        $user->save();
+        return redirect('profile/'.$id)->withSuccess('You unblocked the user');
+      }
+      return redirect('home');
     }
 }

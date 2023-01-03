@@ -7,6 +7,11 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Photo;
+use App\Models\Poll;
+use App\Models\Poll_choice;
+use App\Models\Poll_vote;
+use App\Models\Event_poll;
+
 
 
 use App\Models\Comment;
@@ -32,7 +37,7 @@ class EventController extends Controller{
           $role = $role->role;
         }
 
-        if (Auth::check()) {        // check, if user is loged in
+        if (Auth::check()) {
           if ($event){              // check, if event is exist
             return view('pages.event', ['event' => $event, 'role' => $role]);
           } else {
@@ -46,7 +51,7 @@ class EventController extends Controller{
       public function show_edit($id){
         $event = Event::find($id);
         if (Auth::check()) {
-          if (Auth::id() === $event->owner_id){        //should be changed on veryfing the owner
+          if (Auth::id() === $event->owner_id){  
             return view('pages.event_edit', ['event' => $event]);
           }
         } else {
@@ -90,7 +95,7 @@ class EventController extends Controller{
       }
 
 
-      if($request->input('start_date') < Carbon::now()){
+      if($request->input('start_date') < Carbon::now()->subDays(1)){
         return redirect('event_create')->with('message', 'Event cannot start in the past!');
       }
       
@@ -158,7 +163,6 @@ class EventController extends Controller{
       ]);      
       $event->save();
 
-      //and $request->file('image_path')->size < 2048
       if($request->file('image_path') != null){
         $request->validate([
           'image_path' => 'max:2047',
@@ -240,36 +244,34 @@ class EventController extends Controller{
 
 
   public function join($id){
-      $user = Auth::id();
+      $user = User::find(Auth::id());
       $event = Event::find($id);
       //backend protection
-      $check = User_event::where('event_id', $event->id)->where('user_id', $user)->first();
+      $check = User_event::where('event_id', $event->id)->where('user_id', $user->id)->first();
       if ($check != null){
         return redirect("/event/$id");
       } else {
-        if ($event->is_public){
+        if ($event->is_public or $user->is_admin){
           User_event::create([
             'event_id' => $event->id,
-            'user_id'  => $user,
+            'user_id'  => $user->id,
             'role' => 'Participant'
           ]);
           // sending notification
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
-          $user = User::where('id', Auth::user()->id)->first();
-          $owner->notify(new EventJoinNotification($user));
+          $owner->notify(new EventJoinNotification($user, $event));
         } else {
           User_event::create([
             'event_id' => $event->id,
-            'user_id'  => $user,
+            'user_id'  => $user->id,
             'role' => 'Unconfirmed'
           ]);
 
 
           $owner_id = $event->owner_id;
           $owner = User::where('id', $owner_id)->first();
-          $user = User::where('id', Auth::user()->id)->first();
-          $owner->notify(new JoinRequestNotification($user));
+          $owner->notify(new JoinRequestNotification($user, $event));
 
         }
       }
@@ -332,6 +334,91 @@ class EventController extends Controller{
     $list = User::whereIn('id', $query)->get();
 
       return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
+  }
+
+  public function show_create_poll($id)
+  {
+    $event = Event::find($id);
+        if (Auth::check()) {
+          $isModerator = User_event::where('event_id', $id)->where('user_id', Auth::id())->where('role', 'Moderator')->first();
+          if ($event->owner_id == Auth::id() or $isModerator != null){
+            return view('pages.poll_create', ['event' => $event]);
+          }
+          return redirect('/event/'.$id);
+        } else {
+          return redirect('/login'); 
+        }
+  }
+
+  public function create_poll(Request $request, $id)
+  {
+    $event = Event::find($id);
+
+    $validated = $request->validate([
+      'question' => 'required|min:3|max:120',
+      'option_1' => 'required|min:3|max:120',
+      'option_2' => 'required|min:3|max:120',
+    ]);
+
+    $poll = Poll::create([
+        'event_id' => $id,
+        'question' => $request->input('question'),
+    ]);
+    
+    Poll_choice::create([
+        'poll_id' => $poll->id,
+        'choice'  => $request->input('option_1'),
+    ]);
+    Poll_choice::create([
+      'poll_id' => $poll->id,
+      'choice'  => $request->input('option_2'),
+    ]);
+
+    return redirect('event/'.$id)->with('message', 'Poll created successfully!');
+
+  }
+
+  public function vote_in_poll($event_id, $poll_id, $choice_id)
+  {
+    $user = Auth::id();
+    $user_event = User_event::where('event_id', $event_id)->where('user_id', $user)->first();
+    if ($user_event != null and ($user_event->role == 'Owner' or 
+    $user_event->role == 'Moderator' or $user_event->role == 'Participant')){
+      $vote = Poll_vote::where('user_id', $user)->where('event_id', $event_id)->where('poll_id', $poll_id)->first();
+      if ($vote == null){
+        Event_poll::create([
+          'user_id' => $user,
+          'event_id' => $event_id,
+          'poll_id' => $poll_id,
+        ]);
+        
+        Poll_vote::create([
+          'user_id' => $user,
+          'event_id' => $event_id,
+          'poll_id' => $poll_id,
+          'choice_id' => $choice_id,
+        ]);
+      } else {
+        return redirect('event/'.$event_id)->with('message', 'You already voted!');
+      }
+    } else {
+      return redirect('event/'.$event_id);
+    }
+    return redirect('event/'.$event_id)->with('message', 'You vote was counted!');
+  }
+
+  public function change_status($id, $user, $role)
+  {
+    $event = Event::find($id);
+    $isAdmin = User::where('id', Auth::id())->where('is_admin', true)->first();
+    if ($isAdmin != null or $event->owner_id == Auth::id()){
+      $user_event = User_event::where('event_id', $id)->where('user_id', $user)->first();
+      $user_event->update([
+        'role' => $role,
+      ]);      
+      $user_event->save();
+    }
+    return redirect('event/'.$id.'/all_participants');
   }
 }
 

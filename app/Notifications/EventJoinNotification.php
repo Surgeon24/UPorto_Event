@@ -16,9 +16,10 @@ class EventJoinNotification extends Notification
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $event)
     {
         $this->user=$user;
+        $this->event=$event;
     }
 
     /**
@@ -59,6 +60,8 @@ class EventJoinNotification extends Notification
             'name' => $this->user->name,
             'email' => '',
             'data' => 'Have joined your Event',
+            'event_id' => '',
+            'event_title' => '('.$this->event->title.')',
             'action' => ''
         ];
     }
