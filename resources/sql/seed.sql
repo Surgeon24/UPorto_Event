@@ -158,12 +158,9 @@ CREATE TABLE IF NOT EXISTS comments(
     event_id INT,
     parent_comment_id INT DEFAULT NULL, -- null if a new comment and comment_id of the parent if a reply
     comment_date DATE DEFAULT (current_date) CHECK (current_date <= comment_date),
-        FOREIGN KEY (user_id, event_id) REFERENCES user_event (user_id, event_id)
-                                            ON DELETE CASCADE
-                                            ON UPDATE CASCADE,
-        FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
-                                            ON DELETE CASCADE
-                                            ON UPDATE CASCADE
+    FOREIGN KEY (parent_comment_id) REFERENCES comments(id)
+                                        ON DELETE CASCADE
+                                        ON UPDATE CASCADE
 );
 
 
