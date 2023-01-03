@@ -35,12 +35,12 @@
                 
             @if($notification->data['action'] == null)
 
-            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}}  <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>
+            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->created_at}} {{$notification->data['event_title']}}  <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>
                  
             {{-- if notification is "JoinRequest type" --}}
             @else
                     {{-- event/{{$notification->data['event_id']}}/all_participants --}}
-            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} event_id={{$notification->data['event_id']}}, notifiable_id={{$notification->notifiable_id}} {{$notification->created_at}}  
+            <p style="padding:10px">{{$notification->data['name']}} {{$notification->data['email']}} {{$notification->data['data']}} {{$notification->data['event_title']}} {{$notification->created_at}}  
             <button style="color: rgb(1, 92, 28)" onclick="window.location.href='event/{{$notification->data['event_id']}}/all_participants'">{{$notification->data['action']}}</button> 
             <a style="color: rgb(7, 0, 105)" href="{{ route('markOne')}}">Mark as read</a></p>        
 

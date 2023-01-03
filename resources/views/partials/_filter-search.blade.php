@@ -3,7 +3,7 @@
 {{-- {{route('seach')}} --}}
 <form action="{{route('searchByDate')}}" method="POST">
 @csrf   
-<div class="dropdown">
+<div class="dropdownSearch">
     <button onclick="myFunction()" class="dropbtn">Advanced Search</button>
     
     <div id="myDropdown" class="dropdown-content">
@@ -12,7 +12,7 @@
       <p>end date: <input type="date" class="form-label input-sm" id="to" name="toDate" required style="background: #ebf8fc"></p> 
       <p>private: <input type="checkbox" name="checkPrivate" required style="background: #ebf8fc"></p>
       <p>current events: <input type="checkbox" name="checkRelevance" required style="background: #ebf8fc"></p>
-      <input type="submit" value="search" style="background: #3df9ff; border-radius: 10px 10px;"></button>
+      <input type="submit" value="search" style="background: #ff1717; border-radius: 10px 10px;"></button>
 
     </div>
 

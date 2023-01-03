@@ -26,11 +26,13 @@ class CommentController extends Controller
         ]);
 
         // sending notification 
-        $owner_id = Event::where('id', $request->input('event_id'))->first()->owner_id;
+        $event = Event::where('id', $request->input('event_id'))->first();
+        $owner_id = $event->owner_id;
         $user = User::where('id', Auth::user()->id)->first();
         $owner = User::where('id', $owner_id)->first();
         
-        $owner->notify(new CommentNotification($user));
+        
+        $owner->notify(new CommentNotification($user, $event));
         
         return redirect()->back()->withSuccess('Your comment was successfully posted!');
     }
