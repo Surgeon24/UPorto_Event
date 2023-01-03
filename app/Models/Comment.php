@@ -31,4 +31,5 @@ class Comment extends Model
     public function votes():HasMany {
         return $this->hasMany('App\Models\CommentVote');
     }
+
 }

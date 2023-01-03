@@ -6,12 +6,13 @@ function addEventListeners() {
   
   let itemLike = document.querySelectorAll('.like');
   [].forEach.call(itemLike, function(likes) {
-    likes.addEventListener('click', sendLikeItemRequest);
+    likes.children[0].addEventListener('click', sendLikeItemRequest);
   });
 }
 
 function sendLikeItemRequest(event) {
   let id = this.getAttribute('data-id');
+  console.log(id);
   this.classList.toggle("liked");  
 
   sendAjaxRequest('PATCH', '/api/like/' + id, null, commentLikeHandler);
