@@ -56,7 +56,7 @@ class SearchController extends Controller
       }
       
       if($checkRelevance == true){
-        $event = $event->where('end_date','>=', Carbon::now());
+        $event = $event->where('end_date','>', Carbon::now());
       }
 
       return view('pages.search',compact('event'));
