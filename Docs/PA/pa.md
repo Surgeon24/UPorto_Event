@@ -191,12 +191,15 @@ _Libraries used:_
 
 
 ## A10: Presentation
- 
+
+The purpose of this project was to develop a web application for an event management platform.
+
+The goal of this artefact is to promote, present and demonstrate the product developed.
+
 ### 1. Product presentation
 
-This project intends to specify, develop and promote a system available through the web for event management.
 
-Upon selecting a project, the user can create public and private events, comment on events, participate on events and polls. There's also administrator functionality, administrator can block, unblock and delete undesirable users.
+After registering to the platform, the user can create public and private events, comment on events, participate on events and polls. There's also administrator functionality, administrator can block, unblock and delete undesirable users. Event Owners can assign Event Moderators that can help the Owner with organising the event.
 
 The link to the final product is the following: http://lbaw22122.lbaw.fe.up.pt
 
