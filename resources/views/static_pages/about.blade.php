@@ -3,10 +3,13 @@
 <link href="{{ asset('css/about.css') }}" rel="stylesheet">
 
 <div class="about-section">
-    <h1>About Us Page</h1>
+    <h1>About Page</h1>
 
-    <p>Some text about who we are and what we do.</p>
-    <p>Resize the browser window to see that this page is responsive by the way.</p>
+    <p>UPorto Event is a Portugal-based international web service that focuses on creation and development of small and/or large-scale events</p> 
+      <p>mostly connected with U.Porto academic life such as student parties, institutional conferences, traditional academic celebrations</p>
+      <p>(Queima das Fitas, Latada and Receção ao Caloiro) as well as unrelatable events, like festivals, ceremonies and concerts developed</p>
+      <p>by 4 students enthusiasts from Universidade do Porto in 2022.</p>
+    <p>The main goal of the project is to provide assistance in event creation and management to University of Porto's community.</p>
   </div>
   
   <h2 style="text-align:center">Our Team</h2>

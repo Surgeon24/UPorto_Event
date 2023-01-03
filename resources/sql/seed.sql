@@ -491,24 +491,28 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 
 INSERT INTO faqs(Q, A) VALUES(
     'What is UPorto Event made for?',
-    'For creating events'
-);
-
-INSERT INTO faqs(Q, A) VALUES(
-    'How much does it cost?',
-    'UPorto Event is free'
+    'UPorto Event is made for creating students and not only events such as institutional conferences, parties and traditional academic celebrations.'
 );
 
 INSERT INTO faqs(Q, A) VALUES(
     'When UPorto event was founded?',
-    '2022'
+    'It was founded in 2022 as a student project of the University of Porto.'
 );
 
 INSERT INTO faqs(Q, A) VALUES(
     'How long did it take to create UPorto Event?',
-    '4 month'
+    '4 month of hard preparing for 7 days work.'
 );
 
+INSERT INTO faqs(Q, A) VALUES(
+    'What do I need to create event?',
+    'You just have to create your own profile. It`s fast and absolutly free!'
+);
+
+INSERT INTO faqs(Q, A) VALUES(
+    'What information can I find without registrating?',
+    'As a guest, you still can search for events, but you need to aftorise to join events, write comments and participate in polls.'
+);
 
 
 
