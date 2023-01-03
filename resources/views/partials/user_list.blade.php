@@ -4,7 +4,7 @@
 <ul>
 
     @foreach($users as $user)
-    <li style="background-color: rgba(0, 0, 0, 0.95); width: 100%; margin-top:20px;" >
+    <div style="background-color: rgba(0, 0, 0, 0.95); width: 100%; margin-top:30px; border-radius: 1.7em 1.7em 1.7em 1.7em; padding: .1em 3em 1em 3em;" >
       
       
       <a href="{{ route('user', ['id' => $user->id]) }}">
@@ -15,7 +15,7 @@
         @endif
         <img src="" alt="">
       </a>
-    </li>
+    </div>
 
     @endforeach
 

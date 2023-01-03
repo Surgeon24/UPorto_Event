@@ -97,7 +97,7 @@ if($photo != null){
                             @method("DELETE")
                             <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
                             <button type="submit" class="btn btn-primary">
-                               Delete
+                               Delete event
                             </button>
                         </form>
                     </div>

@@ -89,11 +89,9 @@ class EventController extends Controller{
         'end_date' => 'required'
       ]);
 
-
       if($request->input('end_date') < $request->input('start_date')){
         return redirect('event_create')->with('message', 'end date cannot be later than start date!');
       }
-
 
       if($request->input('start_date') < Carbon::now()->subDays(1)){
         return redirect('event_create')->with('message', 'Event cannot start in the past!');
@@ -121,9 +119,7 @@ class EventController extends Controller{
           ]);
         }
       }
-
       return redirect('home')->with('message', 'Event created successfully!');
-
     }
 
 
@@ -219,21 +215,6 @@ class EventController extends Controller{
         }
         return redirect('/home');
     }
-
-    function index(Request $request) {
-      
-      $events_query = Event::query();
-
-      $search_param = $request->query('q');
-
-      if ($search_param) {
-          $events_query = Event::search($search_param);
-      }
-      
-      $events = $events_query->get();
-
-      return view('index', compact('events', 'search_param'));
-  }
   
 
 
@@ -328,80 +309,6 @@ class EventController extends Controller{
     $list = User::whereIn('id', $query)->get();
 
       return view('pages.all_participants', ['participants' => $list, 'event' => $event]);
-  }
-
-  public function show_create_poll($id)
-  {
-    $event = Event::find($id);
-        if (Auth::check()) {
-          $isModerator = User_event::where('event_id', $id)->where('user_id', Auth::id())->where('role', 'Moderator')->first();
-          if ($event->owner_id == Auth::id() or $isModerator != null){
-            return view('pages.poll_create', ['event' => $event]);
-          }
-          return redirect('/event/'.$id);
-        } else {
-          return redirect('/login'); 
-        }
-  }
-
-  public function create_poll(Request $request, $id)
-  {
-    $data = $request->all();
-    $event = Event::find($id);
-    $counter = 0;
-    foreach ($data as $line){
-      if ($counter > 0) {
-        Validator::make(
-          ['name' => $line],
-          ['name' => 'required'|'min:3'|'max:120']);
-      }
-      $counter++;
-    }
-
-    $poll = Poll::create([
-        'event_id' => $id,
-        'question' => $request->input('question'),
-    ]);
-    $counter = 0;
-    foreach ($data as $option){
-      if ($counter > 1) {
-        Poll_choice::create([
-          'poll_id' => $poll->id,
-          'choice'  => $option,
-        ]);
-      }
-      $counter++;
-    }
-    return redirect('event/'.$id)->with('message', 'Poll created successfully!');
-  }
-
-  public function vote_in_poll($event_id, $poll_id, $choice_id)
-  {
-    $user = Auth::id();
-    $user_event = User_event::where('event_id', $event_id)->where('user_id', $user)->first();
-    if ($user_event != null and ($user_event->role == 'Owner' or 
-    $user_event->role == 'Moderator' or $user_event->role == 'Participant')){
-      $vote = Poll_vote::where('user_id', $user)->where('event_id', $event_id)->where('poll_id', $poll_id)->first();
-      if ($vote == null){
-        Event_poll::create([
-          'user_id' => $user,
-          'event_id' => $event_id,
-          'poll_id' => $poll_id,
-        ]);
-        
-        Poll_vote::create([
-          'user_id' => $user,
-          'event_id' => $event_id,
-          'poll_id' => $poll_id,
-          'choice_id' => $choice_id,
-        ]);
-      } else {
-        return redirect('event/'.$event_id)->with('message', 'You already voted!');
-      }
-    } else {
-      return redirect('event/'.$event_id);
-    }
-    return redirect('event/'.$event_id)->with('message', 'You vote was counted!');
   }
 
   public function change_status($id, $user, $role)
