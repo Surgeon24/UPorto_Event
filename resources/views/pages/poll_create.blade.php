@@ -56,7 +56,7 @@
 
         </div>
         <div class="form-group">
-            <label for="option_2">First option</label>
+            <label for="option_2">Second option</label>
             <input class="form-control" type="text" id="option_2" name="option_2" placeholder="...">
 
             @error('option_2')
