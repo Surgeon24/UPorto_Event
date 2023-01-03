@@ -91,6 +91,18 @@ if($photo != null){
             @endif
             <article>
             @if ($role === 'Owner' or $role === 'Moderator' or $user->is_admin)
+                @if ($role === 'Owner' or $user->is_admin)
+                    <div>
+                        <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
+                            @csrf
+                            @method("DELETE")
+                            <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
+                            <button type="submit" class="btn btn-primary">
+                               Delete
+                            </button>
+                        </form>
+                    </div>
+            @endif
                 <div><a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a></div>
                 <div><a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a></div>
                 <div>

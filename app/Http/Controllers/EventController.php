@@ -211,19 +211,12 @@ class EventController extends Controller{
 
     public function delete(Request $request)
     {   
-       
         $id = $request->input('id');
         $event= Event::find($id);
-        /* 
-        $comments = $event->comments();
-        foreach ($comments as $comment){
-          $comment->votes()->delete();
-          if($comment->event() == $event){
-            $comment->delete();
-          }
+        $isAdmin = User::where('id', Auth::id())->first()->is_admin;
+        if ($isAdmin or $event->owner_id == Auth::id()){
+          $event->delete();
         }
-        */
-        $event->delete();
         return redirect('/home');
     }
 
@@ -368,11 +361,11 @@ class EventController extends Controller{
         'question' => $request->input('question'),
     ]);
     
-    foreach ($data as $i => $line){
-      if ($i > 0) {
+    foreach ($data as $x => $option){
+      if ($x > 0) {
         Poll_choice::create([
           'poll_id' => $poll->id,
-          'choice'  => $line,
+          'choice'  => $option,
         ]);
       }
     }
