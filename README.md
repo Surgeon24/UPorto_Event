@@ -53,5 +53,5 @@ GROUP22122, 03/01/2023
 
 * João Sousa, up201904739@up.pt    
 * Mikhail Ermolaev, up202203498@up.pt
-* David Burchakov, up202203777@up.pt (editor)
+* David Burchakov, up202203777@up.pt
 * Válter Castro, up201706546@up.pt
