@@ -13,6 +13,11 @@ class ClientController extends Controller{
 
   protected $table = 'users';
 
+  public function password(){
+    ddd();
+    return view('auth.password');
+}
+
     public function show($id){
       $user = User::find($id);
       if (Auth::check()) {
@@ -60,6 +65,8 @@ class ClientController extends Controller{
 
       return redirect('profile/' . $id)->withSuccess('Your profile was successfully updated!');
     }
+
+    
 
     public function delete(Request $request, $id)
     {
