@@ -59,6 +59,16 @@
         columns: 3;
 
     }
+
+
+    .line{
+        position: float;
+        text-align:center;
+    }
+
+    .block{
+        display: inline-block;
+    }
     </style>
 @php
 $user = App\Models\User::where('id', Auth::id())->first();
@@ -75,8 +85,11 @@ if($photo != null){
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
         <div><img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Event Picture"></div>
+        
+        
         @if (!$user->is_banned)
             <h2 class="">{{ $event->description }} </h2>
+            
             @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
                 <h3>
                     <label style=display:inline;>Date:</label>
@@ -88,10 +101,14 @@ if($photo != null){
                     {{ $event->location }}
                 </h4>
             @endif
+
+            <div class="line">
             <article>
             @if ($role === 'Owner' or $role === 'Moderator' or $user->is_admin)
+                
+            
                 @if ($role === 'Owner' or $user->is_admin)
-                    <div>
+                    <div class="block">
                         <form method="post" action="{{ route('delete_event', ['id' => $event->id]) }}">
                             @csrf
                             @method("DELETE")
@@ -101,19 +118,33 @@ if($photo != null){
                             </button>
                         </form>
                     </div>
-            @endif
-                <div><a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a></div>
-                <div><a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a></div>
-                <div>
-                    <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
-                        <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
-                        <button type="submit" class="btn btn-primary">
-                            All participants
-                        </button>
-                    </form>
-                </div>
+                @endif
+                
+            
+                
+            <div class="block"><a class="btn btn-primary" href="{{ url('event_edit/'. $event['id']) }}"> Edit </a></div>
+            
+            
+            
+            <div class="block"><a class="btn btn-primary" href="{{ url('event/'. $event['id'].'/create_poll') }}"> Create poll </a></div>
+            
+            
+            
+            <div class="block">
+                <form action="{{ url('event/'. $event['id']. '/all_participants') }}">
+                    <input type='hidden' id='id' name='id' value='{{ $event->id }}'>
+                    <button type="submit" class="btn btn-primary">
+                        All participants
+                    </button>
+                </form>
+            </div>
+
             @endif
             </article>
+            </div>
+
+
+
             @if ($role === 'Guest' and !$user->is_banned)
                 <a class="btn btn-primary" href="/event/{{ request()->route('id') }}/join"> Join </a>
             @elseif ($role === 'Unconfirmed')
@@ -125,6 +156,9 @@ if($photo != null){
                 <h2 style="color: rgb(230, 58, 10)"> You was banned by moderator! </h2>
             @endif
         @endif
+
+
+
     </div>
     <p></p>
     <div>
