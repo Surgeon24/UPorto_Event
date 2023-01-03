@@ -10,7 +10,7 @@ Final release: https://lbaw22122.lbaw.fe.up.pt.
 
 #### 2.2. User Credentials
 
-| Type          | Username  | Password |
+| Type          | Email  | Password |
 | ------------- | --------- | -------- |
 | Administrator | admin@example.com    |  1234 |
 | Authenticated User | user@example.com    |   1234 |
