@@ -1,16 +1,53 @@
 # PA: Product and Presentation
 
-> Project vision.
+UPorto Event is the new essential web platform for event management, allowing users to better plan and promote events mainly connected with academic life of Universidade do Porto.
 
 
 ## A9: Product
 
-> Brief presentation of the product developed.  
+UPorto Event is a Portugal-based international web service that focuses on creation and development of small and/or large-scale events mostly connected with U.Porto academic life.
+
+The main goal of the project is to provide assistance in event creation and management to University of Porto's community. UPorto Event is a centralized service approved by the university officials. 
+
+Events creation, management and promotion is assisted bt UPorto event service, offering easy to grasp system, user-friendly interface, unique features and attractive design.
 
 ### 1. Installation
 
 > Link to the release with the final version of the source code in the group's Git repository.  
 > Include the full Docker command to start the image available at the group's GitLab Container Registry using the production database.  
+
+The source code can be found [here](https://git.fe.up.pt/lbaw/lbaw2223/lbaw22122).
+
+The final release can be found at: https://lbaw22122.lbaw.fe.up.pt.
+
+Commands to run the project on localhost(linux):
+
+~~~~
+#run the composer
+docker-compose up
+
+# update database
+php artisan db:seed
+
+# in another terminal
+php artisan serve
+
+# common error fix: kill the docker image if it is already running
+docker ps
+docker kill id
+
+# download composer if not installed 
+composer install
+# or
+composer update
+
+
+# web app https://localhost:8000 
+# pgadmin database http://localhost:4321/
+
+~~~~
+
+
 
 ### 2. Usage
 
@@ -25,6 +62,7 @@
 | admin@example.com    |   1234 |
 
 #### 2.2. User Credentials
+!!!!!!!!!!!!!!!!!!!!!!! CHANGE ADD
 
 | Type          | Username  | Password |
 | ------------- | --------- | -------- |
