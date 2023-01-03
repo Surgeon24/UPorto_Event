@@ -54,11 +54,10 @@ class IsValidPassword implements Rule
     public function passes($attribute, $value)
     {
         
-        // Commented for testing. Uncomment for final version
-        $this->lengthPasses = (Str::length($value) >= 6); //10
-        // $this->uppercasePasses = (Str::lower($value) !== $value);
-        // $this->numericPasses = ((bool) preg_match('/[0-9]/', $value));
-        // $this->specialCharacterPasses = ((bool) preg_match('/[^A-Za-z0-9]/', $value));
+        $this->lengthPasses = (Str::length($value) >= 6); 
+        $this->uppercasePasses = (Str::lower($value) !== $value);
+        $this->numericPasses = ((bool) preg_match('/[0-9]/', $value));
+        $this->specialCharacterPasses = ((bool) preg_match('/[^A-Za-z0-9]/', $value));
 
         return ($this->lengthPasses && $this->uppercasePasses && $this->numericPasses && $this->specialCharacterPasses);
     }

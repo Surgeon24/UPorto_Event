@@ -105,7 +105,7 @@
         <div class="like">
         <button  data-id="{{$comment->id}}" style="background-color:rgb(23, 95, 219)">
             <i class="fa fa-thumbs-up"></i>
-            <span class="icon" style="color:rgb(248, 248, 248)">Like {{$numberOfVotes}}</span>
+            <span class="icon" style="color:rgb(248, 248, 248)">Like</span>
         </button>
         </div>
     </td>
