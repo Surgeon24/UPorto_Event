@@ -12,7 +12,7 @@
       <p>end date: <input type="date" class="form-label input-sm" id="to" name="toDate" required style="background: #ebf8fc"></p> 
       <p>private: <input type="checkbox" name="checkPrivate" required style="background: #ebf8fc"></p>
       <p>current events: <input type="checkbox" name="checkRelevance" required style="background: #ebf8fc"></p>
-      <input type="submit" value="search" style="background: #ff1717; border-radius: 10px 10px;"></button>
+      <input type="submit" value="search" style="background: #c2f09c; border-radius: 10px 10px;"></button>
 
     </div>
 

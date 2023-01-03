@@ -4,7 +4,7 @@
 
 @include('partials._search')
 
-@include('partials._filter-search')
+{{-- @include('partials._filter-search') --}}
 <div style="display: flex;justify-content: center">
 <ul>
 
