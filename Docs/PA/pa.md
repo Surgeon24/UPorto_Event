@@ -192,15 +192,13 @@ _Libraries used:_
 
 ## A10: Presentation
  
-> This artefact corresponds to the presentation of the product.
-
 ### 1. Product presentation
 
-> Brief presentation of the product and its main features (2 paragraphs max).  
->
-> URL to the product: http://lbaw22122.lbaw.fe.up.pt  
->
-> Slides used during the presentation should be added, as a PDF file, to the group's repository and linked to here.
+This project intends to specify, develop and promote a system available through the web for event management.
+
+Upon selecting a project, the user can create public and private events, comment on events, participate on events and polls. There's also administrator functionality, administrator can block, unblock and delete undesirable users.
+
+The link to the final product is the following: http://lbaw22122.lbaw.fe.up.pt
 
 
 ### 2. Video presentation
