@@ -39,21 +39,21 @@
             {{ csrf_field() }}
             <div class="form-group">
                 <label for="question">Question</label>
-                <input class="form-control" type="text" id="question" name="question" placeholder="Put the question of the poll">
+                <input class="form-control" type="text" id="question" name="question" placeholder="Put the question of the poll" required>
                 @error('question')
                     <p class="error">{{$message}}</p>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="option_1">Option 1</label>
-                <input class="form-control" type="text" id="option_1" name="option_1" placeholder="...">
+                <input class="form-control" type="text" id="option_1" name="option_1" placeholder="..." required>
                 @error('option_1')
                     <p class="error">{{$message}}</p>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="option_2">Option 2</label>
-                <input class="form-control" type="text" id="option_2" name="option_2" placeholder="...">
+                <input class="form-control" type="text" id="option_2" name="option_2" placeholder="..." required>
                 @error('option_2')
                     <p class="error">{{$message}}</p>
                 @enderror
