@@ -74,7 +74,7 @@
 
 <body translate="no" >
 
-    <x-flash-message/>
+  <x-flash-message/>
 
 
 
@@ -85,22 +85,19 @@
     <div id="outer">
       <div>
         <form action="/search">
-          <div class="inner"><button class="search-button" type="submit"><i class="fa fa-search"> </i></button></div>
-          <div class="inner"><input class="round-bar" type="text" placeholder="Search.." name="search"></div>
+          <div><button class="search-button" type="submit"><i class="fa fa-search"> </i></button></div>
+          <div><input class="round-bar" type="text" placeholder="Search.." name="search"></div>
         </form>   
       </div>
     </div>
     <div class="content">
-    
-      @if (Request::url() != url('/login') && Request::url() != url('/register'))    
-      
-    @endif
+
 
 
 @php
     $user = App\Models\User::where('id', Auth::id())->first();
 @endphp  
-    
+ <h4>   
 <div class="container-fluid">
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
