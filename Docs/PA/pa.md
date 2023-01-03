@@ -35,7 +35,7 @@
 
 Help has been implemented in forms, giving the user a real time feedback about the inputs he typed, if they were wrong, and displaying a message on what was supposed to be submitted.
 
-There is also a FAQ (Frequently Asked Questions) page where the user can see a couple of questions that would help him use the app.
+There is also a FAQ (Frequently Asked Questions) page where the user can find answers that could help him use the app.
 
 ### 4. Input Validation
 
