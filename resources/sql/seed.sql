@@ -1,7 +1,6 @@
 -----------------------------------------
 -- DROPPING TABLES
 -----------------------------------------
--- CASCADE Automatically drop objects that depend on the table
 create schema if not exists lbaw22122;
 set search_path=lbaw22122;
 
@@ -15,7 +14,6 @@ CREATE DOMAIN timestamp_t AS TIMESTAMP NOT NULL DEFAULT NOW();
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS authorized_user CASCADE;
 DROP TABLE IF EXISTS event CASCADE;
-DROP TABLE IF EXISTS report CASCADE;
 DROP TABLE IF EXISTS user_event CASCADE;
 DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS tag CASCADE;
@@ -24,11 +22,6 @@ DROP TABLE IF EXISTS poll CASCADE;
 DROP TABLE IF EXISTS event_poll CASCADE;
 DROP TABLE IF EXISTS poll_choice CASCADE;
 DROP TABLE IF EXISTS poll_vote CASCADE;
-DROP TABLE IF EXISTS event_notification CASCADE;
-DROP TABLE IF EXISTS comment_notification CASCADE;
-DROP TABLE IF EXISTS poll_notification CASCADE;
-DROP TABLE IF EXISTS report_notification CASCADE;
-DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS comment_votes CASCADE;
 DROP TABLE IF EXISTS faqs CASCADE;
@@ -37,11 +30,6 @@ DROP TABLE IF EXISTS password_resets CASCADE;
 -----------------------------------------
 -- TYPES
 -----------------------------------------
-drop type if exists REPORT_TYPE;
-CREATE TYPE REPORT_TYPE AS ENUM('Spam', 'Nudity or sexual activity', 'Hate speech or symbols', 'Violence or dangerous organisations', 'Bullying or harassment', 'Selling illegal or regulated goods', 'Scams or fraud', 'False information', 'Other');
-
-drop type if exists REPORT_STATUS;
-CREATE TYPE REPORT_STATUS AS ENUM('Waiting', 'Ignored', 'Sanctioned');
 
 drop type if exists MEMBER_ROLE;
 CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed', 'Blocked');
@@ -98,20 +86,6 @@ CREATE TABLE IF NOT EXISTS event(
     is_public BOOLEAN DEFAULT TRUE NOT NULL,
     owner_id INT NOT NULL,
     location TEXT DEFAULT 'Adega Leonor' NOT NULL
-);
-
-
-CREATE TABLE IF NOT EXISTS report(
-    id SERIAL PRIMARY KEY,
-    reported_id INT,
-    reporter_id INT,
-    admin_id INT,
-    report_text TEXT NOT NULL,
-        report_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
-        report_type REPORT_TYPE,
-    report_status REPORT_STATUS,
-    FOREIGN KEY (reported_id) REFERENCES users(id),
-    FOREIGN KEY (reporter_id) REFERENCES users(id)
 );
 
 
@@ -271,62 +245,6 @@ CREATE TABLE password_resets
     CONSTRAINT ck_updated_after_created CHECK ( updated_at >= created_at )
 );
 
------------------------------------------
--- TRIGGERS
------------------------------------------
-
--- Trigger to create a notification when a comment is replied 
-
--- CREATE OR REPLACE FUNCTION comment_notification() RETURNS trigger AS 
--- $BODY$
-
--- DECLARE reply_username TEXT = (
---   SELECT name FROM users WHERE id = NEW.user_id
--- );
-
--- DECLARE parent_id INT = (
---     select user_id from comments where NEW.parent_comment_id = id
--- );
-
--- DECLARE parent_username TEXT = (
---     select name from users where id = parent_id
--- );
-
--- DECLARE title_text TEXT = (
---         select concat(reply_username, ' replied to your comment!')
--- );
-
---         BEGIN
---         IF (NEW.parent_comment_id IS NOT NULL)
---             THEN
---                 WITH INSERTED AS (
---                                         INSERT INTO 
---                     notification(notification_title,notification_date, notification_type, user_id, body)
---                     VALUES(title_text, CURRENT_TIMESTAMP, 'comment', parent_id, NEW.comment_text)
---                                         RETURNING id)
---                                 INSERT INTO 
---                                         comment_notification(id, comment)
---                                         select inserted.id, NEW.id from inserted;
---              END IF;
---                          RETURN new;
-        
--- END;
--- $BODY$
--- language plpgsql;
-                
-
-
--- DROP TRIGGER IF EXISTS trig_comment ON comments;
-
--- CREATE TRIGGER trig_comment
---      AFTER INSERT OR UPDATE ON comments
---      FOR EACH ROW
---      EXECUTE PROCEDURE comment_notification();
-         
-         
-
-
-
 
 
 
@@ -414,11 +332,7 @@ CREATE INDEX IF NOT EXISTS search_idx_event ON event USING GIN (tsvectors);
 
 
 
-
-
-
-
-
+-- search
 ALTER TABLE users
 ADD COLUMN IF NOT EXISTS tsvectors TSVECTOR;
 
@@ -468,11 +382,6 @@ CREATE INDEX IF NOT EXISTS search_user_idx ON users USING GIN (tsvectors);
 ---------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
 INSERT INTO faqs(Q, A) VALUES(
     'What is UPorto Event?',
     'UPorto Event is a Portugal-based international web service that focuses on creation 
@@ -506,7 +415,7 @@ INSERT INTO faqs(Q, A) VALUES(
 
 
 INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_path) VALUES (
-    'john_doe228',
+    'john_admin',
     'John',
     'Doe',
     '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
@@ -516,21 +425,38 @@ INSERT INTO users(name, firstname, lastname, password, email, is_admin,photo_pat
 ); -- Password is 1234. Generated using Hash::make('1234')
 
 INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
-    'tvoya_mama',
+    'simple_alex',
     'Alex',
     'Ham',
-    '$2a$12$de8vO5hCTMjKQpHd.OE/R.atg/xpTmVheKs3rTcSIPVvzYjhRKBE6',
+    '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
     'user@example.com',
     '/image.png'
-); -- Password is 123456
+); -- Password is 1234
 
+INSERT INTO users(name, firstname, lastname, password, email, photo_path) VALUES (
+    'Bob_moderator',
+    'Bob',
+    'Billy',
+    '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W',
+    'moderator@example.com',
+    '/image.png'
+); -- Password is 1234
+
+insert into users (name, firstname, lastname, password, email, url) values (
+    'Surgeon', 
+    'Michael', 
+    'Ermolaev', 
+    '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 
+    'ermol24@icloud.com', 
+    '/etc/public/images/mike.jpg'
+); -- Password is 1234
 
 INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
     'FEUP CAFE',
     'Convivio entre estudantes da FEUP',
-    'Food, Lisbon',
+    'Coffee, Porto',
     current_date,
-        1,
+    1,
     'AEFEUP'
 );
 
@@ -544,83 +470,11 @@ INSERT INTO event(title, description, tags, start_date, owner_id, location) VALU
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------------------------------------
-
--- EVENT
-
----------------------------------------------------------------------------------------------------------
-
-
-
-insert into event (title, description, tags, owner_id, location) values ('To Live and Die in L.A.', 'Action|Crime|Drama|Thriller', 'Syria', 1, '1 David Road');
-insert into event (title, description, tags, owner_id, location) values ('Bonhoeffer: Agent of Grace', 'Drama', 'Russia', 1, '5171 Esch Crossing');
-insert into event (title, description, tags, owner_id, location) values ('Toy Story 2', 'Adventure|Animation|Children|Comedy|Fantasy', 'Kyrgyzstan', 1, '81 Porter Point');
-insert into event (title, description, tags, owner_id, location) values ('Hiding Out', 'Comedy', 'China', 1, '50 Ridge Oak Terrace');
-insert into event (title, description, tags, owner_id, location) values ('Barber of Siberia, The (Sibirskij tsiryulnik)', 'Drama|Romance', 'Indonesia', 1, '483 Cambridge Avenue');
-insert into event (title, description, tags, owner_id, location) values ('Wesley Willis: The Daddy of Rock ''n'' Roll', 'Documentary', 'Russia', 1, '51655 Prentice Plaza');
-insert into event (title, description, tags, owner_id, location) values ('Apocalypto', 'Adventure|Drama|Thriller', 'Ethiopia', 1, '25108 Sunbrook Lane');
-insert into event (title, description, tags, owner_id, location) values ('Lilian''s Story', 'Drama', 'Russia', 1, '7904 Bobwhite Trail');
-insert into event (title, description, tags, owner_id, location) values ('Che: Part Two', 'Drama|War', 'Macedonia', 1, '33 Lyons Junction');
-insert into event (title, description, tags, owner_id, location) values ('Agenda: Grinding America Down', 'Documentary', 'China', 1, '9289 3rd Road');
-insert into event (title, description, tags, owner_id, location) values ('Polar Express, The', 'Adventure|Animation|Children|Fantasy|IMAX', 'China', 1, '75 Rieder Crossing');
-insert into event (title, description, tags, owner_id, location) values ('Song to Remember, A', 'Drama', 'Malaysia', 1, '5 Arapahoe Crossing');
-insert into event (title, description, tags, owner_id, location) values ('Revenge of the Nerds III: The Next Generation', 'Comedy', 'Tanzania', 1, '4 Center Street');
-insert into event (title, description, tags, owner_id, location) values ('Carancho', 'Crime|Drama|Romance', 'Portugal', 1, '5 Portage Plaza');
-insert into event (title, description, tags, owner_id, location) values ('All I Desire', 'Drama|Romance', 'Czech Republic', 1, '58073 Oneill Parkway');
-insert into event (title, description, tags, owner_id, location) values ('Garfield: A Tail of Two Kitties', 'Animation|Children|Comedy', 'Portugal', 1, '43108 Vidon Parkway');
-insert into event (title, description, tags, owner_id, location) values ('Jodhaa Akbar', 'Drama|Musical|Romance|War', 'China', 1, '57 Cardinal Park');
-insert into event (title, description, tags, owner_id, location) values ('Birthday Girl', 'Drama|Romance', 'Germany', 1, '019 Sheridan Drive');
-insert into event (title, description, tags, owner_id, location) values ('Immigrant, The', 'Drama|Romance', 'Argentina', 1, '4 Orin Parkway');
-insert into event (title, description, tags, owner_id, location) values ('Cat People', 'Drama|Horror|Romance|Thriller', 'Nigeria', 1, '57 Oak Valley Terrace');
-insert into event (title, description, tags, owner_id, location) values ('Project X', 'Comedy', 'China', 1, '86 Sullivan Trail');
-insert into event (title, description, tags, owner_id, location) values ('Patton Oswalt: Werewolves and Lollipops', 'Comedy', 'Portugal', 1, '26 Petterle Hill');
-insert into event (title, description, tags, owner_id, location) values ('Dark, The', 'Horror|Mystery|Thriller', 'Mongolia', 1, '7030 Victoria Center');
-insert into event (title, description, tags, owner_id, location) values ('Midnight Movies: From the Margin to the Mainstream', 'Documentary', 'China', 1, '05 Kennedy Court');
-insert into event (title, description, tags, owner_id, location) values ('Devil''s Playground', 'Documentary', 'Indonesia', 1, '53 Waywood Parkway');
-
-
-
-
----------------------------------------------------------------------------------------------------------
-
--- USERS
-
----------------------------------------------------------------------------------------------------------
-
-
-
-insert into users (id, name, firstname, lastname, password, email, url) values (51, 'Surgeon', 'Michael', 'Ermolaev', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ermol24@icloud.com', '/etc/public/images/mike.jpg');
-
-insert into users (id, name, firstname, lastname, password, email, url) values (29, 'cvasyutochkins', 'Chance', 'Vasyutochkin', '4EGiGxZ', 'cvasyutochkins@fda.gov', 'http://dummyimage.com/187x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (30, 'mknollesgreent', 'Margette', 'Knolles-Green', 'JqsLny9', 'mknollesgreent@hhs.gov', 'http://dummyimage.com/137x100.png/cc0000/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (31, 'ethroughtonu', 'Elvina', 'Throughton', 'cgiSwMZnL2', 'ethroughtonu@baidu.com', 'http://dummyimage.com/142x100.png/cc0000/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (32, 'scastellanv', 'Sigismund', 'Castellan', '4bJcPk4BnW0Z', 'scastellanv@cafepress.com', 'http://dummyimage.com/133x100.png/5fa2dd/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (33, 'nblumw', 'Nat', 'Blum', 'PEMVtY', 'nblumw@weebly.com', 'http://dummyimage.com/102x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (34, 'mrussanx', 'Meghan', 'Russan', 'UNTXfXkUi80R', 'mrussanx@foxnews.com', 'http://dummyimage.com/212x100.png/dddddd/000000');
-insert into users (id, name, firstname, lastname, password, email, url) values (35, 'jsidawayy', 'Jaymee', 'Sidaway', 'Xpuu0Mzfh', 'jsidawayy@comsenz.com', 'http://dummyimage.com/159x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (36, 'ppendellz', 'Petronia', 'Pendell', 'Qo0jMe6V50wp', 'ppendellz@meetup.com', 'http://dummyimage.com/143x100.png/dddddd/000000');
-insert into users (id, name, firstname, lastname, password, email, url) values (37, 'ogood10', 'Oliy', 'Good', 'C897qRxF', 'ogood10@1688.com', 'http://dummyimage.com/222x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (38, 'ccorderoy11', 'Christi', 'Corderoy', 'TG4vr9CPoxX', 'ccorderoy11@blogger.com', 'http://dummyimage.com/145x100.png/5fa2dd/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (39, 'xdemetz12', 'Xylina', 'De Metz', 'Ckd68y7w', 'xdemetz12@comcast.net', 'http://dummyimage.com/178x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (40, 'mjohnke13', 'Minette', 'Johnke', 'oC8ior', 'mjohnke13@dagondesign.com', 'http://dummyimage.com/203x100.png/cc0000/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (41, 'fglaysher14', 'Freddy', 'Glaysher', 'SgOQKP', 'fglaysher14@gizmodo.com', 'http://dummyimage.com/125x100.png/ff4444/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (42, 'hranaghan15', 'Husein', 'Ranaghan', 'JSihzete8LM', 'hranaghan15@barnesandnoble.com', 'http://dummyimage.com/153x100.png/dddddd/000000');
-insert into users (id, name, firstname, lastname, password, email, url) values (43, 'cmacginney16', 'Cleve', 'MacGinney', 'ErASWtt', 'cmacginney16@ebay.com', 'http://dummyimage.com/178x100.png/5fa2dd/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (44, 'mconaboy17', 'Marabel', 'Conaboy', 'TCvRIcXrqbiB', 'mconaboy17@rakuten.co.jp', 'http://dummyimage.com/116x100.png/dddddd/000000');
-insert into users (id, name, firstname, lastname, password, email, url) values (45, 'cmcmeekin18', 'Carleen', 'McMeekin', 'a0nx5F', 'cmcmeekin18@sphinn.com', 'http://dummyimage.com/215x100.png/dddddd/000000');
-insert into users (id, name, firstname, lastname, password, email, url) values (46, 'lpiggen19', 'Linn', 'Piggen', 'EWi3WN5BzDc', 'lpiggen19@etsy.com', 'http://dummyimage.com/167x100.png/5fa2dd/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (47, 'dgopsall1a', 'Devon', 'Gopsall', 'KWj1Bbs4', 'dgopsall1a@imdb.com', 'http://dummyimage.com/111x100.png/cc0000/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (48, 'kburditt1b', 'Keeley', 'Burditt', 'AAqZWWfdvT', 'kburditt1b@nature.com', 'http://dummyimage.com/249x100.png/5fa2dd/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (49, 'dkowal1c', 'Dayle', 'Kowal', 'DGX6bHwp', 'dkowal1c@wordpress.org', 'http://dummyimage.com/155x100.png/cc0000/ffffff');
-insert into users (id, name, firstname, lastname, password, email, url) values (50, 'hannand1d', 'Horatio', 'Annand', 'Dob8QtCZU', 'hannand1d@lulu.com', 'http://dummyimage.com/165x100.png/5fa2dd/ffffff');
+INSERT INTO event(title, description, tags, start_date, owner_id, location) VALUES (
+    'Jantar Curso LEIC',
+    'Convivio entre estudantes do LEIC',
+    'Porto, Food',
+    current_date,
+    1,
+    'Um sitio fixe'
+);
