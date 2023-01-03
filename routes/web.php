@@ -84,6 +84,7 @@ Route::get('all_users', 'ClientController@list')->name('user_list');
 
 //Admin
 Route::get('ban_user/{id}', 'ClientController@ban_user');
+Route::get('unban_user/{id}', 'ClientController@unban_user');
 
 
 
