@@ -1,70 +1,9 @@
-<style>
-    .card {
-        /* Add shadows to create the "card" effect */
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
-    }
-
-    /* On mouse-over, add a deeper shadow */
-    .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    /* Add some padding inside the card container */
-    .container {
-        padding: 2px 16px;
-    }
-
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        box-sizing: border-box;
-        transition: 0.3s;
-        border-radius: 5px;
-        /* 5px rounded corners */
-        border-style: solid;
-        border-width: medium;
-    }
-
-    /* Add rounded corners to the top left and the top right corner of the image */
-    img {
-        border-radius: 5px 5px 0 0;
-    }
-
-    @keyframes anim {
-        100% {
-            transform: rotate(-15deg) scale(1.3);
-            -webkit-transform: rotate(-15deg) scale(1.3);
-            -moz-transform: rotate(-15deg) scale(1.3);
-            -ms-transform: rotate(-15deg) scale(1.3);
-            -o-transform: rotate(-15deg) scale(1.3);
-            filter: blur(0.5px);
-            -webkit-filter: blur(0.5px);
-        }
-    }
-
-
-
-
-    .g{
-    padding: 50px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    height: 300px;
-  }
-
-    * {
-      box-sizing: border-box;
-    }
-</style>
-
-
 @php
     $options= \App\Models\Poll_choice::where('poll_id', $poll->id)->get();
 @endphp
 
 <p></p>
-<div class="g">
+<div>
     <div class="poll_head">
         <p>
             <span class="hl-scrolled-to-wrap">

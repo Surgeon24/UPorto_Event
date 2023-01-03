@@ -2,8 +2,8 @@
 -- DROPPING TABLES
 -----------------------------------------
 -- CASCADE Automatically drop objects that depend on the table
-create schema if not exists lbaw;
-set search_path=lbaw;
+create schema if not exists lbaw22122;
+set search_path=lbaw22122;
 
 drop type if exists email_t CASCADE;
 CREATE DOMAIN email_t AS VARCHAR(320) NOT NULL CHECK (VALUE LIKE '_%@_%._%');
@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS tag CASCADE;
 DROP TABLE IF EXISTS photo CASCADE;
 DROP TABLE IF EXISTS poll CASCADE;
+DROP TABLE IF EXISTS event_poll CASCADE;
 DROP TABLE IF EXISTS poll_choice CASCADE;
 DROP TABLE IF EXISTS poll_vote CASCADE;
 DROP TABLE IF EXISTS event_notification CASCADE;
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS users(
         birth_date <= (current_date - INTERVAL '18 YEAR')
     ),
     url TEXT UNIQUE,
-    status TEXT,
+    is_banned BOOLEAN DEFAULT false,
     is_admin BOOLEAN DEFAULT false NOT NULL,
     photo_path TEXT DEFAULT ('/default-profile-photo.webp'),
     remember_token VARCHAR

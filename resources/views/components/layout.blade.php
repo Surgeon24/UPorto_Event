@@ -153,7 +153,7 @@
       </ul>     
         
       
-      <div class="search-parent">
+      <div>
         <div class="search-right">
           <form action="/search">
             <input class="round-bar" type="text" placeholder="Search.." name="search">

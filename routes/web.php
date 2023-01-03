@@ -81,6 +81,11 @@ Route::post('search', 'SearchController@searchByDate')->name('searchByDate');
 Route::get('search_user', 'SearchController@userSearch');
 Route::get('all_users', 'ClientController@list')->name('user_list');
 
+//Admin
+Route::get('ban_user/{id}', 'ClientController@ban_user');
+
+
+
 Route::get('index', [EventController::class, 'index'])->name('index');
 
 

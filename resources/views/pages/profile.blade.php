@@ -18,7 +18,7 @@
             <h3 class="">{{ $user->email }} </h3>
         </div>
 
-        @if ($user['id'] === Auth::id())
+        @if ($user->id === Auth::id())
 
 
           <a href="{{ url('profile_edit/'. $user['id']) }}" class="btn btn-primary">Edit</a>
@@ -31,6 +31,12 @@
               Delete
             </button>
           </form>      
-        @endif    
+        @endif 
+        @php
+            $isAdmin = App\Models\User::where('id', Auth::id())->first()->is_admin;
+        @endphp
+        @if (!$user->is_admin and $isAdmin)
+          <h2><a style="background-color: rgb(255, 0, 0)" href="{{ url('ban_user/'. $user['id']) }}" class="btn btn-primary">Block user</a></h2>
+        @endif 
   </div> 
 </x-layout>

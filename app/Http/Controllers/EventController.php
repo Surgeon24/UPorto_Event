@@ -37,7 +37,7 @@ class EventController extends Controller{
           $role = $role->role;
         }
 
-        if (Auth::check()) {        // check, if user is loged in
+        if (Auth::check()) {
           if ($event){              // check, if event is exist
             return view('pages.event', ['event' => $event, 'role' => $role]);
           } else {
@@ -382,7 +382,8 @@ class EventController extends Controller{
   {
     $user = Auth::id();
     $user_event = User_event::where('event_id', $event_id)->where('user_id', $user)->first();
-    if ($user_event != null and $user_event->role != 'Unconfirmed'){
+    if ($user_event != null and ($user_event->role == 'Owner' or 
+    $user_event->role == 'Moderator' or $user_event->role == 'Participant')){
       $vote = Poll_vote::where('user_id', $user)->where('event_id', $event_id)->where('poll_id', $poll_id)->first();
       if ($vote == null){
         Event_poll::create([

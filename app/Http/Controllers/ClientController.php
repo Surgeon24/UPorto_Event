@@ -15,12 +15,13 @@ class ClientController extends Controller{
 
     public function show($id){
       $user = User::find($id);
-      if (Auth::check()) {
+      $isAdmin = User::where('id', Auth::id())->first()->is_admin;
+      if (Auth::check() and (Auth::id() == $id or $isAdmin)) {
         if ($user){
           //$this->authorize('show', $user);
           return view('pages.profile', ['user' => $user]);
         } else {
-          abort('404');
+          return redirect('/login');
         }
       } else {
         return redirect('/login');
@@ -80,6 +81,18 @@ class ClientController extends Controller{
       if($user->is_admin){
         $all_users = User::orderBy('id')->get();
         return view('pages.all_users', ['user' => $all_users]);
+      }
+      return redirect('home');
+    }
+
+    public function ban_user($id)
+    {
+      $user = User::where('id', $id)->first();
+      $isAdmin = User::find(Auth::id())->is_admin;
+      if($isAdmin){
+        $user->is_banned = true;
+        $user->save();
+        return redirect('home')->withSuccess('You blocked the user');
       }
       return redirect('home');
     }
