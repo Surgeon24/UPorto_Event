@@ -1,7 +1,8 @@
 .dropbtn {
     background-color: #045aaa;
     color: #ebf8fc;
-    padding: 16px;
+    padding: 5px;
+    border-radius: .7em .7em .7em .7em;
     font-size: 16px;
     border: none;
     cursor: pointer;
@@ -30,7 +31,7 @@
     display: inline-block;
     right: 25%;
     border-radius: 50px 20px;
-    box-shadow: 0 0 12px 0 rgba(140, 0, 255, 0.9);
+    box-shadow: 0 0 12px 0 rgba(9, 69, 152, 0.9);
   }
   
   .dropdown-content {
@@ -43,7 +44,7 @@
     z-index: 1;
 
     border-radius: 12px 12px;
-    box-shadow: 0 0 12px 0 rgba(140, 0, 255, 0.6);
+    box-shadow: 0 0 12px 0 rgba(64, 0, 255, 0.6);
   }
   
   .dropdown-content a {

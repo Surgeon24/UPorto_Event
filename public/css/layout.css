@@ -20,7 +20,7 @@
     width:90%;
     opacity:0;
     background: -webkit-radial-gradient(center, ellipse, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 80%);
-    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 80%);
+    background: radial-gradient(ellipse at center, rgba(21, 53, 195, 0.35) 0%, rgba(255, 255, 255, 0) 80%);
     /* W3C */
     transition-duration: 0.3s;
     transition-property: transform, opacity;
@@ -37,7 +37,7 @@
 
 
 /* Search bar */
-.round-bar {
+/* .round-bar {
   position: absolute;
   background-color:#363230;
   color:white;
@@ -48,16 +48,37 @@
   height: 25px;
   top:15px;
   right:0;
+} */
+
+.round-bar {
+  float: right;
+  background-color:#363230;
+  color:white;
+  width: 250px;
+  border-radius: 25px;
+  border: 1px #000 solid;
+  padding: 5px 5px 5px 25px;
+  
 }
 
 
-.search-button{
+
+/* .search-button{
   position: absolute;
   border-radius: 15px;
   top: 15px;
   left: 10px;
   background-color:#363230;
+} */
+.search-button{
+  float: right;
+  width: 4%;
+  padding: 2px;
+  border-radius: 15px;
+  background-color:#363230;
+  /* margin-top: -30px; */
 }
+
 .error{
   color: red;
   text-emphasis: xs;
@@ -76,11 +97,11 @@
   right: -500px;
 } */
 
-.searcg-right{
+/* .search-right{
   float: right;
 width: 20%;
 padding: 20px;
-}
+} */
 
 
 

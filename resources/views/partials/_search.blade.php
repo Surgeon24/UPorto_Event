@@ -25,10 +25,17 @@
         padding-bottom: .2em;
     }
 
+.srch
+{
+    display: inline-block;
+    max-width: 100 px;
+}
+
 </style>
 <div id="searchBarWrap">
     <form action="{{ url('/search')}}">
-    <input id="searchBar" type="text" name="search" placeholder="Search..."/>
-    <button type="submit" id="searchBtn"><i class="fa fa-search">search</i></button>
+            <div class="srch">@include('partials._filter-search')</div>
+            <div class="srch"><input id="searchBar" type="text" name="search" placeholder="Search..."/>
+            <button type="submit" id="searchBtn"><i class="fa fa-search">search</i></button></div>
     </form>
 </div>

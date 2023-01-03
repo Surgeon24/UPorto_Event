@@ -74,7 +74,7 @@ if($photo != null){
 <div class="gray">
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
-        <div><img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Profile Picture"></div>
+        <div><img class="right" style="max-height:100px; max-width:100px;" src="{{ asset('assets/eventImages/' .$image_path) }}" alt="Event Picture"></div>
         @if (!$user->is_banned)
             <h2 class="">{{ $event->description }} </h2>
             @if ($role === 'Owner' or $role === 'Moderator' or $role === 'Participant')
