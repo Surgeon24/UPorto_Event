@@ -2,6 +2,7 @@
 
 > Project vision.
 
+
 ## A9: Product
 
 > Brief presentation of the product developed.  
@@ -62,6 +63,34 @@ For example: when a user is creating an account he has to create a password that
 ### 7. Revisions to the Project
 
 > Describe the revisions made to the project since the requirements specification stage.  
+
+
+Some Priorities were changed when we learned about product requirements(features in A9 checklist). User Stories were implemented by order of importance. During production we have had realised that some of the User Stories are unnecessary or of less importance. Giving up some of the User Stories allowed us to focus on more important ones, resulting in have more User Stories (_35_) than initially planned (_29_ see ER component)
+
+_**Rejected User Stories:**_
+
+| Rejected |               |
+| --------- | ------------- |
+| au13      | Invite        |
+| au10      | Preferences   |
+| em01      | Announcement  |
+| em05      | Block Content |
+| ad03      | Message       |
+
+_**New User Stories:**_
+
+| Additional User Stories: |                                                                   |
+| ------------------------ | ----------------------------------------------------------------- |
+| high au13                | Full-text search with multiple weighted fields                    |
+| high au12                | Advanced search using filters                                     |
+| high ep2                 | Like button with AJAX                                             |
+| high au10                | Change password                                                   |
+| high au14                | Private events                                                    |
+| medium au15              | search by tags                                                    |
+| medium ee03              | interactive notification for owner of public event (Join Request) |
+| medium au16              | images for users and events                                       |
+| high ad03                | search by users                                                   |
+
 
 ### 8. Implementation Details
 
