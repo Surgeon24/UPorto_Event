@@ -71,7 +71,6 @@ if($photo != null){
 @endphp
 
 
-<script type="text/javascript" src={{ asset('js/app.js') }} defer></script>
 <div class="gray">
     <div>
         <h1 style=display:inline; class="">{{ $event->title }} </h1>
