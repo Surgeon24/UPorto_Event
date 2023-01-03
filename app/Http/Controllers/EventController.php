@@ -126,7 +126,6 @@ class EventController extends Controller{
 
     public function update(Request $request, $id)
     {
-      dd($id);
       $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',

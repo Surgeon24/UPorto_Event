@@ -83,7 +83,7 @@
             <p class="post-time">
                 <span class="hl-scrolled-to-wrap">
                     <div>{{$comment->comment_date}}</div>
-                    @if(Auth::user()->isStaff() || Auth::user()->id === $comment->user_id)
+                    @if(Auth::user()->is_admin || Auth::user()->id === $comment->user_id)
                         <div class="delete">
                         <form action="{{ route('delete_comment', ['id' => $comment->event_id]) }}" method="post">
                             @csrf
