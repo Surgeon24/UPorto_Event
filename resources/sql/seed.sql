@@ -45,7 +45,7 @@ drop type if exists REPORT_STATUS;
 CREATE TYPE REPORT_STATUS AS ENUM('Waiting', 'Ignored', 'Sanctioned');
 
 drop type if exists MEMBER_ROLE;
-CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed');
+CREATE TYPE MEMBER_ROLE AS ENUM('Owner', 'Moderator', 'Participant', 'Unconfirmed', 'Blocked');
 
 
 
@@ -140,7 +140,6 @@ CREATE TABLE IF NOT EXISTS user_event(
     user_id INT,
     event_id INT,  
     role MEMBER_ROLE,
-    accepted BOOLEAN,   -- used only in private events
     UNIQUE (user_id, event_id),  -- combination of user_id and event_id is UNIQUE because user can be registered at the event only once
     FOREIGN KEY (user_id) REFERENCES users(id) 
                             ON DELETE CASCADE
