@@ -62,6 +62,20 @@ class ClientController extends Controller{
       return redirect('profile/' . $id)->withSuccess('Your profile was successfully updated!');
     }
 
+    public function getPassword($id){
+      $user = User::find($id);
+      return view('auth.change-password', ['user'=> $user]);
+    }
+
+    public function changePassword(Request $request){
+      dd($request->all());
+      #Validation
+
+      #Match the old password
+
+      #Update the new password
+    }
+
     public function delete(Request $request, $id)
     {
       $user = User::find($id);

@@ -11,18 +11,22 @@
   }
 </style>
     <div class="gray">
-              <img class="center" style="max-height:100px; max-width:100px;" src="{{ asset('assets/profileImages/' . $user->photo_path) }}" alt="Profile Picture">
-                    <div>    
-
-            <h2 class="">{{ $user->name }} </h2>
-            <h3 class="">{{ $user->email }} </h3>
+        <img class="center" style="max-height:100px; max-width:100px;" src="{{ asset('assets/profileImages/' . $user->photo_path) }}" alt="Profile Picture">
+        <div>    
+          <h2 class="">{{ $user->name }} </h2>
+          <h3 class="">{{ $user->email }} </h3>
         </div>
 
+<<<<<<< HEAD
         @if ($user->id === Auth::id())
 
 
+=======
+        @if ($user['id'] === Auth::id())
+>>>>>>> d2dd85eb4cdf1caa8f2a9296d4076a021ba92564
           <a href="{{ url('profile_edit/'. $user['id']) }}" class="btn btn-primary">Edit</a>
             <a href="{{ url('event_create/') }}" class="btn btn-primary">Create event</a>
+            <a href="{{ url('profile/'. $user['id'].'/change-password') }}" class="btn btn-success">Change password</a>
             <p></p>
           <form action="{{ route('delete_user', ['id' => $user->id]) }}"  method="post">
             @csrf

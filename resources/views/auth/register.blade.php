@@ -1,8 +1,5 @@
 <x-layout>
 
-  <style>
-
-    </style>
 <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 <div class="login">
 	<h1>Register</h1>
